@@ -1,0 +1,29 @@
+mongo:
+  uri: "${MONGO_URI:-mongodb://localhost:27017}"
+  db: "news_intel"
+
+weaviate:
+  host: "${WEAVIATE_HOST:-localhost}"
+  port: 8080
+
+models:
+  embedder: "BAAI/bge-m3"
+  reranker: "BAAI/bge-reranker-v2-m3"
+  fp16: true
+  device: "cuda"  # or "cpu"
+
+retrieval:
+  top_k_hybrid: 30
+  top_k_reranked: 8
+  hybrid_alpha: 0.7
+  dedup_threshold: 0.95
+
+clustering:
+  umap_n_components: 5
+  hdbscan_min_cluster_size: 15
+  random_seed: 42
+
+gemini:
+  model: "gemini-1.5-flash"
+  max_output_tokens: 1024
+  temperature: 0.1
