@@ -1,10 +1,10 @@
 .PHONY: up down api eval ingest index cluster
 
 up:
-	docker-compose up -d
+	docker compose -f infra/docker-compose.yml up -d
 
 down:
-	docker-compose down
+	docker compose -f infra/docker-compose.yml down
 
 api:
 	uvicorn api.main:app --reload --host 0.0.0.0 --port 8000

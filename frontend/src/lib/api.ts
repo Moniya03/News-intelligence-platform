@@ -433,8 +433,8 @@ export async function searchArticles(req: SearchRequest): Promise<SearchResult[]
       throw new Error(`Search API error (${res.status}): ${res.statusText}`);
     }
 
-    const data: SearchResult[] = await res.json();
-    return data;
+    const data = await res.json();
+    return ((data && data.results) ? data.results : data) as SearchResult[];
   } catch (error) {
     // Filter mock results by language filter if present
     let results = [...MOCK_SEARCH_RESULTS];
@@ -470,8 +470,8 @@ export async function getClusters(): Promise<Cluster[]> {
       throw new Error(`Clusters API error (${res.status}): ${res.statusText}`);
     }
 
-    const data: Cluster[] = await res.json();
-    return data;
+    const data = await res.json();
+    return ((data && data.clusters) ? data.clusters : data) as Cluster[];
   } catch (error) {
     return MOCK_CLUSTERS;
   }
@@ -509,7 +509,7 @@ export async function getClusterDetail(
 
 export async function checkHealth(): Promise<HealthResponse> {
   try {
-    const res = await fetchWithTimeout(`${API_URL}/health`, { method: "GET" }, 3000);
+    const res = await fetchWithTimeout(`${API_URL}/api/health`, { method: "GET" }, 3000);
     if (!res.ok) {
       return { status: "unhealthy" };
     }
