@@ -333,10 +333,12 @@ News-Intelligence-Platform/
 ## 📚 Further Documentation
 
 For complete technical specifications, review the dedicated guides in [`docs/`](file:///home/vasu/personal/News-Intelligence-Platform/docs):
+- [**Why Does This Project Exist? (`docs/project_purpose.md`)**](file:///home/vasu/personal/News-Intelligence-Platform/docs/project_purpose.md): Simple, clear explanation of the real-world problem, purpose, and value proposition.
 - [**Developer Setup Guide (`docs/setup.md`)**](file:///home/vasu/personal/News-Intelligence-Platform/docs/setup.md): Complete setup instructions from a fresh clone.
 - [**Problem Statement & Context (`docs/problem_statement.md`)**](file:///home/vasu/personal/News-Intelligence-Platform/docs/problem_statement.md): Theoretical background on CLIR, Indian language news processing, RAG hallucinations, and veracity verification.
 - [**System Architecture (`docs/architecture.md`)**](file:///home/vasu/personal/News-Intelligence-Platform/docs/architecture.md): Detailed architectural components, data pipelines, and sequence flows.
 - [**REST API Reference (`docs/api_reference.md`)**](file:///home/vasu/personal/News-Intelligence-Platform/docs/api_reference.md): Endpoint specifications, JSON request/response models, and executable curl snippets.
+- [**Master Presentation & Viva Defense Guide (`PPT_CONTEXT.md`)**](file:///home/vasu/personal/News-Intelligence-Platform/PPT_CONTEXT.md): 14-slide academic presentation blueprint, formulas, empirical tables, and viva defense Q&A.
 
 ---
 
