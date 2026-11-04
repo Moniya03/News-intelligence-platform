@@ -1,6 +1,6 @@
 """RAG pipeline module for Multilingual News Intelligence Platform.
 
-Constructs grounded prompts, queries Google Gemini Flash model, extracts
+Constructs grounded prompts, queries OpenAI (e.g. gpt-6-luna) or Google Gemini, extracts
 citations, and provides deterministic fallback responses for offline testing.
 """
 
@@ -11,6 +11,8 @@ import os
 import re
 from typing import Any, Dict, List, Optional
 import google.generativeai as genai
+import openai
+from openai import OpenAI
 
 from core.config import get_config
 
@@ -24,11 +26,23 @@ SYSTEM_PROMPT = (
 )
 
 
+def get_openai_client() -> Optional[OpenAI]:
+    """Initialize and return OpenAI client if OPENAI_API_KEY is present."""
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key or api_key in ("your_openai_api_key_here", "your_key_here"):
+        return None
+    try:
+        client = OpenAI(api_key=api_key)
+        return client
+    except Exception as e:
+        logger.error("Failed to initialize OpenAI client: %s", e)
+        return None
+
+
 def get_gemini_client() -> Optional[Any]:
     """Initialize and return Gemini generative model client if API key is present."""
     api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key or api_key == "your_key_here":
-        logger.warning("GEMINI_API_KEY is not configured. Fallback generator will be used.")
+    if not api_key or api_key in ("your_gemini_api_key_here", "your_key_here"):
         return None
 
     try:
@@ -40,6 +54,14 @@ def get_gemini_client() -> Optional[Any]:
     except Exception as e:
         logger.error("Failed to initialize Gemini client: %s", e)
         return None
+
+
+def get_llm_client() -> Optional[Any]:
+    """Return primary LLM client (OpenAI first, fallback to Gemini)."""
+    openai_client = get_openai_client()
+    if openai_client is not None:
+        return openai_client
+    return get_gemini_client()
 
 
 def build_prompt(query: str, chunks: List[Dict[str, Any]]) -> str:
@@ -130,7 +152,7 @@ def parse_citations(answer_text: str, chunks: List[Dict[str, Any]]) -> List[Dict
 
 
 def _generate_mock_answer(query: str, chunks: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Generate a high-quality deterministic fallback response when Gemini API is unavailable."""
+    """Generate a high-quality deterministic fallback response when LLM API is unavailable."""
     if not chunks:
         return {
             "answer": "Not found in the indexed articles. No relevant passages matched the query.",
@@ -169,13 +191,13 @@ def _generate_mock_answer(query: str, chunks: List[Dict[str, Any]]) -> Dict[str,
     }
 
 
-def generate_answer(query: str, chunks: List[Dict[str, Any]], gemini_client: Optional[Any] = None) -> Dict[str, Any]:
+def generate_answer(query: str, chunks: List[Dict[str, Any]], llm_client: Optional[Any] = None) -> Dict[str, Any]:
     """Generate an English answer grounded strictly in retrieved passages.
 
     Args:
         query: User question.
         chunks: Retrieved context chunks.
-        gemini_client: Gemini GenerativeModel client instance or None.
+        llm_client: OpenAI or Gemini client instance or None.
 
     Returns:
         Dict with keys: 'answer' (str), 'cited_chunk_ids' (list of str).
@@ -186,33 +208,68 @@ def generate_answer(query: str, chunks: List[Dict[str, Any]], gemini_client: Opt
             "cited_chunk_ids": [],
         }
 
-    client = gemini_client or get_gemini_client()
+    client = llm_client or get_llm_client()
     if client is None:
         return _generate_mock_answer(query, chunks)
 
-    try:
-        cfg = get_config()
-        g_cfg = cfg.get("gemini", {})
-        prompt = build_prompt(query, chunks)
+    cfg = get_config()
 
-        response = client.generate_content(
-            prompt,
-            generation_config=genai.types.GenerationConfig(
-                temperature=float(g_cfg.get("temperature", 0.1)),
-                max_output_tokens=int(g_cfg.get("max_output_tokens", 1024)),
-            ),
-        )
-        answer_text = response.text.strip() if hasattr(response, "text") and response.text else ""
-        if not answer_text:
+    # 1. Try OpenAI client (gpt-6-luna)
+    if hasattr(client, "chat") and hasattr(client.chat, "completions"):
+        try:
+            o_cfg = cfg.get("openai", {})
+            model_name = o_cfg.get("model", "gpt-6-luna")
+            temperature = float(o_cfg.get("temperature", 0.1))
+            max_tokens = int(o_cfg.get("max_tokens", 1024))
+            prompt = build_prompt(query, chunks)
+
+            response = client.chat.completions.create(
+                model=model_name,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            answer_text = response.choices[0].message.content.strip() if response.choices else ""
+            if not answer_text:
+                return _generate_mock_answer(query, chunks)
+
+            citations = parse_citations(answer_text, chunks)
+            cited_ids = [c["chunk_id"] for c in citations]
+            return {
+                "answer": answer_text,
+                "cited_chunk_ids": cited_ids,
+            }
+        except Exception as e:
+            logger.error("Error invoking OpenAI API (%s). Falling back to mock answer.", e)
             return _generate_mock_answer(query, chunks)
 
-        citations = parse_citations(answer_text, chunks)
-        cited_ids = [c["chunk_id"] for c in citations]
+    # 2. Try Gemini client
+    if hasattr(client, "generate_content"):
+        try:
+            g_cfg = cfg.get("gemini", {})
+            prompt = build_prompt(query, chunks)
+            response = client.generate_content(
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=float(g_cfg.get("temperature", 0.1)),
+                    max_output_tokens=int(g_cfg.get("max_output_tokens", 1024)),
+                ),
+            )
+            answer_text = response.text.strip() if hasattr(response, "text") and response.text else ""
+            if not answer_text:
+                return _generate_mock_answer(query, chunks)
 
-        return {
-            "answer": answer_text,
-            "cited_chunk_ids": cited_ids,
-        }
-    except Exception as e:
-        logger.error("Error invoking Gemini API: %s. Falling back to mock answer.", e)
-        return _generate_mock_answer(query, chunks)
+            citations = parse_citations(answer_text, chunks)
+            cited_ids = [c["chunk_id"] for c in citations]
+            return {
+                "answer": answer_text,
+                "cited_chunk_ids": cited_ids,
+            }
+        except Exception as e:
+            logger.error("Error invoking Gemini API (%s). Falling back to mock answer.", e)
+            return _generate_mock_answer(query, chunks)
+
+    return _generate_mock_answer(query, chunks)

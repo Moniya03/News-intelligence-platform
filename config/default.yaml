@@ -23,6 +23,11 @@ clustering:
   hdbscan_min_cluster_size: 15
   random_seed: 42
 
+openai:
+  model: "gpt-6-luna"
+  max_tokens: 1024
+  temperature: 0.1
+
 gemini:
   model: "gemini-1.5-flash"
   max_output_tokens: 1024

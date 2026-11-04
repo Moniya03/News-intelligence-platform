@@ -1,7 +1,7 @@
 """Credibility and veracity assessment module for Multilingual News Intelligence Platform.
 
 Classifies article veracity (Likely reliable, Uncertain, Likely misleading),
-evaluates cross-source agreement via LLM entailment or heuristic analysis,
+evaluates cross-source agreement via LLM entailment (OpenAI / Gemini) or heuristic analysis,
 and augments citation metadata.
 """
 
@@ -11,9 +11,9 @@ import json
 import logging
 import re
 from typing import Any, Dict, List, Optional
-import google.generativeai as genai
 
-from core.rag import get_gemini_client
+from core.config import get_config
+from core.rag import get_llm_client, get_gemini_client
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -24,6 +24,7 @@ VALID_VERACITIES = ["Likely reliable", "Uncertain", "Likely misleading"]
 def label_article(
     article_text: str,
     article_title: str,
+    llm_client: Optional[Any] = None,
     gemini_client: Optional[Any] = None,
 ) -> Dict[str, str]:
     """Classify article veracity as Likely reliable, Uncertain, or Likely misleading with reason.
@@ -31,12 +32,13 @@ def label_article(
     Args:
         article_text: Content or snippet of the article.
         article_title: Title/headline of the article.
-        gemini_client: Optional Gemini GenerativeModel client.
+        llm_client: Optional OpenAI or Gemini client.
+        gemini_client: Alias for backward compatibility.
 
     Returns:
         Dict with keys: 'veracity' and 'reason'.
     """
-    client = gemini_client or get_gemini_client()
+    client = llm_client or gemini_client or get_llm_client()
 
     if client is not None:
         prompt = (
@@ -49,8 +51,22 @@ def label_article(
             "JSON:"
         )
         try:
-            resp = client.generate_content(prompt)
-            raw = resp.text.strip() if hasattr(resp, "text") and resp.text else ""
+            raw = ""
+            # OpenAI
+            if hasattr(client, "chat") and hasattr(client.chat, "completions"):
+                model_name = get_config().get("openai", {}).get("model", "gpt-6-luna")
+                resp = client.chat.completions.create(
+                    model=model_name,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.0,
+                    max_tokens=256,
+                )
+                raw = resp.choices[0].message.content.strip() if resp.choices else ""
+            # Gemini
+            elif hasattr(client, "generate_content"):
+                resp = client.generate_content(prompt)
+                raw = resp.text.strip() if hasattr(resp, "text") and resp.text else ""
+
             match = re.search(r"\{.*\}", raw, re.DOTALL)
             if match:
                 data = json.loads(match.group(0))
@@ -59,7 +75,7 @@ def label_article(
                 if veracity in VALID_VERACITIES and reason:
                     return {"veracity": veracity, "reason": reason}
         except Exception as e:
-            logger.warning("Gemini credibility labeling failed (%s). Using fallback.", e)
+            logger.warning("LLM credibility labeling failed (%s). Using fallback.", e)
 
     # Heuristic fallback for offline/demo operation
     lowered = f"{article_title} {article_text}".lower()
@@ -86,7 +102,8 @@ def label_article(
 def compute_agreement(
     query: str,
     chunks: List[Dict[str, Any]],
-    cited_chunks: List[Dict[str, Any]],
+    cited_chunks: Optional[List[Dict[str, Any]]] = None,
+    llm_client: Optional[Any] = None,
     gemini_client: Optional[Any] = None,
 ) -> Dict[str, Any]:
     """Compute cross-source agreement score and summary label.
@@ -95,7 +112,8 @@ def compute_agreement(
         query: User query or claim to verify.
         chunks: All retrieved candidate chunks.
         cited_chunks: Chunks actually cited in the generated answer.
-        gemini_client: Optional Gemini client.
+        llm_client: Optional OpenAI or Gemini client.
+        gemini_client: Alias for backward compatibility.
 
     Returns:
         Dict matching CredibilityResult: {"agreement_score": float, "agreement_label": str}.
@@ -107,7 +125,7 @@ def compute_agreement(
         }
 
     eval_set = cited_chunks if cited_chunks else chunks[:3]
-    client = gemini_client or get_gemini_client()
+    client = llm_client or gemini_client or get_llm_client()
 
     if client is not None and len(eval_set) > 1:
         passages_text = "\n".join(
@@ -124,8 +142,20 @@ def compute_agreement(
             "JSON:"
         )
         try:
-            resp = client.generate_content(prompt)
-            raw = resp.text.strip() if hasattr(resp, "text") and resp.text else ""
+            raw = ""
+            if hasattr(client, "chat") and hasattr(client.chat, "completions"):
+                model_name = get_config().get("openai", {}).get("model", "gpt-6-luna")
+                resp = client.chat.completions.create(
+                    model=model_name,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.0,
+                    max_tokens=256,
+                )
+                raw = resp.choices[0].message.content.strip() if resp.choices else ""
+            elif hasattr(client, "generate_content"):
+                resp = client.generate_content(prompt)
+                raw = resp.text.strip() if hasattr(resp, "text") and resp.text else ""
+
             match = re.search(r"\{.*\}", raw, re.DOTALL)
             if match:
                 data = json.loads(match.group(0))
@@ -134,7 +164,7 @@ def compute_agreement(
                 label = str(data.get("agreement_label", "Moderate agreement across sources"))
                 return {"agreement_score": round(score, 2), "agreement_label": label}
         except Exception as e:
-            logger.warning("Gemini agreement scoring failed (%s). Using fallback calculation.", e)
+            logger.warning("LLM agreement scoring failed (%s). Using fallback calculation.", e)
 
     # Deterministic fallback agreement computation
     n = len(eval_set)
@@ -167,28 +197,30 @@ def compute_agreement(
 
 def label_all_citations(
     citations: List[Dict[str, Any]],
+    llm_client: Optional[Any] = None,
     gemini_client: Optional[Any] = None,
 ) -> List[Dict[str, Any]]:
-    """Augment a list of Citation dictionaries with veracity assessment and reasons.
+    """Augment a list of citation dictionaries with veracity classifications.
 
     Args:
-        citations: List of Citation dicts.
-        gemini_client: Optional Gemini client.
+        citations: List of citation metadata dicts.
+        llm_client: Optional OpenAI or Gemini client.
+        gemini_client: Alias for backward compatibility.
 
     Returns:
-        Augmented list of Citation dicts.
+        List of augmented citation dicts with 'veracity' and 'reason'.
     """
-    client = gemini_client or get_gemini_client()
+    client = llm_client or gemini_client or get_llm_client()
     augmented: List[Dict[str, Any]] = []
 
     for cit in citations:
-        c = dict(cit)
-        text = c.get("snippet", "") or c.get("text", "")
-        title = c.get("title", "")
+        text = cit.get("snippet", "") or cit.get("text", "")
+        title = cit.get("title", "")
+        res = label_article(text, title, llm_client=client)
 
-        res = label_article(text, title, gemini_client=client)
-        c["veracity"] = res["veracity"]
-        c["reason"] = res["reason"]
-        augmented.append(c)
+        c_copy = dict(cit)
+        c_copy["veracity"] = res["veracity"]
+        c_copy["reason"] = res["reason"]
+        augmented.append(c_copy)
 
     return augmented

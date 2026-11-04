@@ -21,7 +21,8 @@ bertopic>=0.16.0
 umap-learn>=0.5.6
 hdbscan>=0.8.33
 
-# Google Gemini
+# LLM Generation (OpenAI / Gemini)
+openai>=1.0.0
 google-generativeai>=0.7.0
 
 # Data
