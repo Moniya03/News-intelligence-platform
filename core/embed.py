@@ -49,14 +49,22 @@ class EmbedModel:
     def _init_model(self) -> None:
         """Attempt to load FlagEmbedding BGEM3FlagModel, then SentenceTransformers, else fallback."""
         try:
+            import glob
+            import os
             import torch
             resolved_device = "cuda" if (self.device == "cuda" and torch.cuda.is_available()) else "cpu"
             use_fp16 = self.fp16 and (resolved_device == "cuda")
 
+            # Resolve local cached snapshot path if present to avoid remote network polling
+            target_path = self.model_name
+            snapshots = glob.glob(os.path.expanduser("~/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/*"))
+            if snapshots and os.path.isdir(snapshots[0]):
+                target_path = snapshots[0]
+
             from FlagEmbedding import BGEM3FlagModel  # type: ignore
-            logger.info("Loading FlagEmbedding '%s' on %s (fp16=%s)...", self.model_name, resolved_device, use_fp16)
+            logger.info("Loading FlagEmbedding '%s' on %s (fp16=%s)...", target_path, resolved_device, use_fp16)
             self._model = BGEM3FlagModel(
-                self.model_name,
+                target_path,
                 use_fp16=use_fp16,
                 device=resolved_device,
             )
@@ -108,10 +116,14 @@ class EmbedModel:
             return np.empty((0, EMBED_DIM), dtype=np.float32)
 
         if self.backend == "flagembedding":
+            import torch
+            if not torch.cuda.is_available():
+                torch.set_num_threads(torch.get_num_threads())
+
             output = self._model.encode(
                 texts,
                 batch_size=batch_size,
-                max_length=8192,
+                max_length=512,
                 return_dense=True,
                 return_sparse=False,
                 return_colbert_vecs=False,
@@ -186,15 +198,37 @@ def embed_corpus(
         raise ValueError(f"Missing 'text' column in {chunks_file}")
 
     texts = df["text"].fillna("").astype(str).tolist()
-    logger.info("Embedding %d chunks with batch_size=%d...", len(texts), batch_size)
+    total_chunks = len(texts)
+    logger.info("Embedding %d chunks with batch_size=%d...", total_chunks, batch_size)
 
     embedder = get_embed_model()
-    vectors = embedder.embed_texts(texts, batch_size=batch_size)
-
     out_path = Path(output_vectors)
     out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Process in blocks of 500 chunks to report progress and allow intermediate memory efficiency
+    block_size = max(batch_size, 500)
+    all_vectors: List[np.ndarray] = []
+    import time
+    start_time = time.time()
+
+    for start_idx in range(0, total_chunks, block_size):
+        end_idx = min(total_chunks, start_idx + block_size)
+        sub_texts = texts[start_idx:end_idx]
+        sub_vecs = embedder.embed_texts(sub_texts, batch_size=batch_size)
+        all_vectors.append(sub_vecs)
+
+        elapsed = time.time() - start_time
+        processed = end_idx
+        rate = processed / elapsed if elapsed > 0 else 0
+        remaining_sec = (total_chunks - processed) / rate if rate > 0 else 0
+        print(
+            f"[Embedding] {processed:,}/{total_chunks:,} chunks ({processed/total_chunks*100:.1f}%) "
+            f"- {rate:.1f} chunks/sec - ETA: {remaining_sec/60:.1f} min"
+        )
+
+    vectors = np.vstack(all_vectors)
     np.save(out_path, vectors)
-    logger.info("Saved %d vectors (shape %s) to %s", len(vectors), vectors.shape, out_path)
+    logger.info("Successfully saved %d vectors (shape %s) to %s", len(vectors), vectors.shape, out_path)
     return vectors
 
 

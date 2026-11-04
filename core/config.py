@@ -9,6 +9,10 @@ import re
 from pathlib import Path
 from typing import Any, Dict
 import yaml
+from dotenv import load_dotenv
+
+# Load .env file automatically from project root if present
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 CONFIG_PATH_DEFAULT = Path(__file__).resolve().parent.parent / "config" / "default.yaml"
 
