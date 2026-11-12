@@ -114,18 +114,23 @@ class TestSearchTruthfulness(unittest.TestCase):
 
 class TestClusterTruthfulness(unittest.TestCase):
     def test_empty_collection_is_empty_success(self):
-        db = _Database(clusters=_Collection())
-        self.assertEqual(asyncio.run(clusters.list_clusters(db)).clusters, [])
+        empty_snapshot = ({"snapshot_id": "snap"}, [], None, [])
+        with patch("api.routers.clusters._load_topics", return_value=empty_snapshot):
+            result = asyncio.run(clusters.list_clusters())
+        self.assertEqual(result.clusters, [])
+        self.assertEqual(result.snapshot_id, "snap")
 
     def test_unknown_cluster_is_404(self):
-        db = _Database(clusters=_Collection(detail=None), articles=_Collection())
-        with self.assertRaises(HTTPException) as caught:
-            asyncio.run(clusters.get_cluster_details(99, page=1, limit=20, mongo_db=db))
+        no_run = ({"snapshot_id": "snap"}, [], None, [])
+        with patch("api.routers.clusters._load_topics", return_value=no_run):
+            with self.assertRaises(HTTPException) as caught:
+                asyncio.run(clusters.get_cluster_details(99, page=1, limit=20))
         self.assertEqual(caught.exception.status_code, 404)
 
     def test_unavailable_store_is_503(self):
-        with self.assertRaises(HTTPException) as caught:
-            asyncio.run(clusters.list_clusters(None))
+        with patch("api.routers.clusters.load_active_snapshot", side_effect=RuntimeError("snapshot unavailable")):
+            with self.assertRaises(HTTPException) as caught:
+                asyncio.run(clusters.list_clusters())
         self.assertEqual(caught.exception.status_code, 503)
 
 

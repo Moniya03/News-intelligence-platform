@@ -1,32 +1,27 @@
-"""Topic cluster API backed by the MongoDB corpus."""
+"""Snapshot-scoped topic API backed only by verified immutable artifacts."""
 
 from __future__ import annotations
 
-import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
-from api.dependencies import get_mongo_db
+from api.snapshot_evidence import load_active_snapshot
+from core.config import get_config
+from core.snapshot_topics import load_active_topic_run
 
-logger = logging.getLogger(__name__)
 router = APIRouter(tags=["clusters"])
-
-
-class LangCounts(BaseModel):
-    en: int = 0
-    hi: int = 0
-    bn: int = 0
-    mr: int = 0
 
 
 class Cluster(BaseModel):
     id: int
     label: str
     size: int
-    lang_counts: LangCounts
-    top_terms: List[str]
+    lang_counts: dict[str, int]
+    source_counts: dict[str, int]
+    top_terms: list[str]
+    representative_article_ids: list[str]
 
 
 class Article(BaseModel):
@@ -35,40 +30,64 @@ class Article(BaseModel):
     lang: str
     source: str
     category: str
-    url: Optional[str] = None
+    url: str | None = None
+    published_at: str
 
 
 class ClustersListResponse(BaseModel):
-    clusters: List[Cluster]
+    snapshot_id: str
+    run_id: str | None
+    settings_hash: str | None
+    algorithm: str | None
+    topic_count: int
+    outlier_count: int
+    clusters: list[Cluster]
 
 
 class ClusterDetailResponse(BaseModel):
-    articles: List[Article]
+    snapshot_id: str
+    run_id: str
+    settings_hash: str
+    articles: list[Article]
     total: int
     cluster: Cluster
 
 
-def _cluster(document: Dict[str, Any], fallback_id: int = 0) -> Cluster:
+def _load_topics() -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any] | None, list[dict[str, Any]]]:
+    try:
+        manifest, articles = load_active_snapshot()
+        result = load_active_topic_run(
+            manifest["snapshot_id"], [article["article_id"] for article in articles], get_config(),
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail="Verified snapshot topic data is unavailable") from exc
+    if result is None:
+        return manifest, articles, None, []
+    run, topics = result
+    return manifest, articles, run, topics
+
+
+def _cluster(document: dict[str, Any]) -> Cluster:
     return Cluster(
-        id=int(document.get("id", document.get("_id", fallback_id))),
-        label=str(document.get("label", "General Topic")),
-        size=int(document.get("size", 0)),
-        lang_counts=LangCounts(**document.get("lang_counts", {})),
-        top_terms=document.get("top_terms", []),
+        id=int(document["id"]), label=str(document["label"]), size=int(document["size"]),
+        lang_counts=document["lang_counts"], source_counts=document["source_counts"],
+        top_terms=document["top_terms"], representative_article_ids=document["representative_article_ids"],
     )
 
 
 @router.get("/clusters", response_model=ClustersListResponse)
-async def list_clusters(mongo_db: Any = Depends(get_mongo_db)) -> ClustersListResponse:
-    """List clusters; an empty collection is a valid empty result."""
-    if mongo_db is None:
-        raise HTTPException(status_code=503, detail="Topic store is unavailable")
-    try:
-        clusters = [_cluster(d) for d in mongo_db["clusters"].find({})]
-    except Exception as e:
-        logger.exception("MongoDB cluster query failed")
-        raise HTTPException(status_code=503, detail="Topic store is unavailable") from e
-    return ClustersListResponse(clusters=clusters)
+async def list_clusters() -> ClustersListResponse:
+    """List topics for the active snapshot; a missing run is a valid empty result."""
+    manifest, _, run, topics = _load_topics()
+    return ClustersListResponse(
+        snapshot_id=manifest["snapshot_id"],
+        run_id=run["run_id"] if run else None,
+        settings_hash=run["settings_hash"] if run else None,
+        algorithm=run["algorithm"] if run else None,
+        topic_count=run["topic_count"] if run else 0,
+        outlier_count=run["outlier_count"] if run else 0,
+        clusters=[_cluster(topic) for topic in topics],
+    )
 
 
 @router.get("/clusters/{cluster_id}", response_model=ClusterDetailResponse)
@@ -76,34 +95,31 @@ async def get_cluster_details(
     cluster_id: int,
     page: int = Query(1, ge=1, description="Page number"),
     limit: int = Query(20, ge=1, le=100, description="Page size limit"),
-    mongo_db: Any = Depends(get_mongo_db),
 ) -> ClusterDetailResponse:
-    """Retrieve detailed metadata and paginated articles for a cluster."""
-    if mongo_db is None:
-        raise HTTPException(status_code=503, detail="Topic store is unavailable")
-    try:
-        document = mongo_db["clusters"].find_one({"$or": [{"_id": cluster_id}, {"id": cluster_id}]})
-        if document is None:
-            raise HTTPException(status_code=404, detail="Topic not found")
-
-        cluster = _cluster(document, cluster_id)
-        query = {"cluster_id": cluster_id}
-        total = mongo_db["articles"].count_documents(query)
-        cursor = mongo_db["articles"].find(query).skip((page - 1) * limit).limit(limit)
-        articles = [
+    """Return real frozen articles assigned to a topic, including the -1 noise group."""
+    manifest, articles, run, topics = _load_topics()
+    if run is None:
+        raise HTTPException(status_code=404, detail="Topic not found")
+    topic = next((item for item in topics if int(item["id"]) == cluster_id), None)
+    if topic is None:
+        raise HTTPException(status_code=404, detail="Topic not found")
+    article_by_id = {article["article_id"]: article for article in articles}
+    member_ids = topic["article_ids"]
+    selected = member_ids[(page - 1) * limit:page * limit]
+    return ClusterDetailResponse(
+        snapshot_id=manifest["snapshot_id"], run_id=run["run_id"], settings_hash=run["settings_hash"],
+        articles=[
             Article(
-                article_id=str(doc.get("_id", doc.get("article_id", ""))),
-                title=str(doc.get("title", "")),
-                lang=str(doc.get("lang", "en")),
-                source=str(doc.get("source", "news")),
-                category=str(doc.get("category", "general")),
-                url=doc.get("url"),
+                article_id=article_id,
+                title=article_by_id[article_id]["title"],
+                lang=article_by_id[article_id]["lang"],
+                source=article_by_id[article_id]["source_family"],
+                category=article_by_id[article_id].get("category", ""),
+                url=article_by_id[article_id].get("original_url") or article_by_id[article_id].get("canonical_url"),
+                published_at=str(article_by_id[article_id]["published_at"]),
             )
-            for doc in cursor
-        ]
-        return ClusterDetailResponse(articles=articles, total=total, cluster=cluster)
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.exception("MongoDB cluster detail query failed")
-        raise HTTPException(status_code=503, detail="Topic store is unavailable") from e
+            for article_id in selected
+        ],
+        total=len(member_ids),
+        cluster=_cluster(topic),
+    )

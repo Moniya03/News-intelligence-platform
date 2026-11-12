@@ -76,6 +76,18 @@ def corpus_summary(manifest: dict[str, Any], articles: list[dict[str, Any]], con
             published = published.replace(tzinfo=timezone.utc)
         dates.append(published.astimezone(timezone.utc))
     collection_name = (cfg.get("active_snapshot") or {}).get("index_collection")
+    topic_counts: dict[str, int] | None = None
+    topic_status = "not_generated"
+    try:
+        from core.snapshot_topics import load_active_topic_run
+
+        topic_run = load_active_topic_run(manifest["snapshot_id"], [article["article_id"] for article in articles], cfg)
+        if topic_run is not None:
+            run, topics = topic_run
+            topic_counts = {str(topic["id"]): int(topic["size"]) for topic in topics}
+            topic_status = "generated"
+    except Exception:
+        topic_status = "unavailable"
     return {
         "snapshot_id": manifest["snapshot_id"],
         "article_count": len(articles),
@@ -90,8 +102,8 @@ def corpus_summary(manifest: dict[str, Any], articles: list[dict[str, Any]], con
         "last_successful_crawl_at": None,
         "collection_status": "configured" if collection_name else "unavailable",
         "collection_name": collection_name,
-        "topic_counts": None,
-        "topic_status": "not_generated",
+        "topic_counts": topic_counts,
+        "topic_status": topic_status,
         "rejected_count": None,
         "crawl_status": "unavailable",
         "duplicate_count": counts.get("duplicate_articles"),

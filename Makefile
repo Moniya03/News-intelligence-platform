@@ -1,4 +1,4 @@
-.PHONY: up down api eval ingest index index-snapshot cluster infra-smoke
+.PHONY: up down api eval ingest index index-snapshot cluster cluster-snapshot infra-smoke
 
 PYTHON ?= .venv/bin/python
 
@@ -28,3 +28,6 @@ index-snapshot:
 
 cluster:
 	$(PYTHON) -m core.cluster
+
+cluster-snapshot:
+	$(PYTHON) -m core.snapshot_topics --snapshot-id $(SNAPSHOT_ID)

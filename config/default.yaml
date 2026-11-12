@@ -29,6 +29,13 @@ clustering:
   hdbscan_min_cluster_size: 15
   random_seed: 42
 
+topic_runs:
+  root: data/topic_runs
+  active_pointer: data/topic_runs/active.json
+  umap_n_neighbors: 15
+  umap_min_dist: 0.0
+  hdbscan_min_samples: 5
+
 openai:
   model: "gpt-6-luna"
   max_tokens: 1024

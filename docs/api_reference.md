@@ -57,9 +57,9 @@ Results are unique articles, retaining each article's best-ranked chunk as its s
 
 ## `GET /api/corpus`
 
-Returns verified facts from the active immutable snapshot and explicitly labels unavailable operations. For snapshot `corpus-59b2b589fe3bbdbffdc3`, the response reports 516 articles, 2,135 chunks, and language counts `en: 123`, `hi: 116`, `bn: 156`, `mr: 121`, alongside source, adapter, weak category, and adapter/category counts and publication date bounds.
+Returns verified facts from the active immutable snapshot and explicitly labels unavailable operations. For snapshot `corpus-59b2b589fe3bbdbffdc3`, the response reports 516 articles, 2,135 chunks, and language counts `en: 123`, `hi: 116`, `bn: 156`, `mr: 121`, alongside source, adapter, weak category, and adapter/category counts and publication date bounds. With the verified Slice 07 run active, `topic_status` is `"generated"` and `topic_counts` maps topic IDs to article counts, including `"-1": 17` for outliers; the 11 discovered topics plus outliers account for all 516 articles.
 
-`collection_status: "configured"` reports the configured index collection; it is not a live index-health check. `topic_counts` is `null` while `topic_status` is `"not_generated"`. `rejected_count` and `last_successful_crawl_at` are `null`, and `crawl_status` is `"unavailable"`: campaign rejection/crawl-run records cannot be linked rigorously to this frozen snapshot. Snapshot load, identity, or checksum failure returns `503`.
+`collection_status: "configured"` reports the configured index collection; it is not a live index-health check. When no verified topic run exists for the active snapshot, `topic_counts` is `null` and `topic_status` is `"not_generated"`; invalid/unavailable topic artifacts set `topic_status` to `"unavailable"`. `rejected_count` and `last_successful_crawl_at` are `null`, and `crawl_status` is `"unavailable"`: campaign rejection/crawl-run records cannot be linked rigorously to this frozen snapshot. Snapshot load, identity, or checksum failure returns `503`.
 
 ## `POST /api/search/summary`
 
@@ -83,8 +83,12 @@ Accepts `query` and optional `lang_filter` (same language codes). The response c
 
 ## `GET /api/clusters` and `GET /api/clusters/{cluster_id}`
 
-`/api/clusters` returns `{ "clusters": [...] }`; an empty stored collection is a valid `200`. The detail route returns stored topic metadata and paginated members (`page` defaults to 1; `limit` defaults to 20 and must be 1–100). Unknown topic IDs return `404`; unavailable MongoDB storage returns `503`. Topics are not generated yet for the current snapshot.
+Both routes read verified local topic artifacts for the active immutable snapshot; they do not query or write generic MongoDB cluster records. The list response contains `snapshot_id`, nullable `run_id`, nullable `settings_hash`, nullable `algorithm`, `topic_count` (discovered non-outlier topics), `outlier_count`, and `clusters`. With no active run, it returns `200` with null run provenance, zero counts and an empty `clusters` list.
+
+Each cluster has `id`, `label`, `size`, `lang_counts`, `source_counts`, `top_terms` and `representative_article_ids`. HDBSCAN outliers use ID `-1` and are exposed as an ordinary cluster with label `"Unassigned"`; `outlier_count` is the article count in that group. For the active run on `corpus-59b2b589fe3bbdbffdc3`, `algorithm` is `"bertopic"`, there are 11 discovered topics and 17 outliers.
+
+The detail response contains `snapshot_id`, `run_id`, `settings_hash`, the requested `cluster`, its full `total`, and the paginated `articles` (`page` defaults to 1; `limit` defaults to 20 and must be 1–100). Article entries expose `article_id`, `title`, `lang`, `source`, `category`, nullable `url`, and `published_at`. Unknown topic IDs (including any ID when no run exists) return `404`; invalid, missing, or checksum-mismatched snapshot/topic artifacts return `503`.
 
 ## Scope and status
 
-These contracts describe current API behavior, not an end-to-end research result. Search relevance, summary quality, clustering, and UI acceptance have not been evaluated. See [verification evidence](VERIFICATION_REPORT.md) and [the phased plan](OVERHAUL_PLAN.md).
+These contracts describe current API behavior, not an end-to-end research result. Search relevance, summary quality, and UI acceptance have not been evaluated. Topic comparison is measured only against weak publisher-section labels; agreement is not evidence of event coherence or factual truth. See [verification evidence](VERIFICATION_REPORT.md) and [the phased plan](OVERHAUL_PLAN.md).

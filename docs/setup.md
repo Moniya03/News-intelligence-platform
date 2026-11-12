@@ -308,6 +308,51 @@ Current artifacts are local and ignored by Git. Keep the snapshot files and
 their checksums together for replay. This index gate verifies construction and
 provenance, not retrieval quality. Do not share raw article text or images.
 
+### 6.2 Generate and compare snapshot topics
+
+The topic runner accepts only the configured active snapshot. It verifies the
+snapshot and cached chunk-embedding metadata/checksum, averages each article's
+chunk embeddings and L2-normalizes the result, then fits BERTopic on title plus
+body text. It does not re-embed articles. A successful run writes immutable
+artifacts under
+`data/topic_runs/<snapshot-id>/<settings-hash>/<run-id>/` and atomically updates
+`data/topic_runs/active.json` only after both artifacts are written. A failure
+before activation leaves the prior pointer in place. Keep the snapshot,
+embedding files, run artifacts and active pointer together to inspect or serve
+the same results.
+
+To create a new real topic run:
+
+```bash
+.venv/bin/python -m core.snapshot_topics --snapshot-id corpus-59b2b589fe3bbdbffdc3
+```
+
+This performs BERTopic/UMAP/HDBSCAN computation; it is not a cached result
+lookup. The recorded run was CPU-only and took 10.37 seconds with BERTopic
+0.17.4, UMAP 0.5.12, HDBSCAN 0.8.44, NumPy 2.5.4 and scikit-learn 1.9.1.
+Its fixed settings include seed 42, UMAP cosine distance with 15 neighbors and
+5 components, and HDBSCAN minimum cluster size 15 and minimum samples 5.
+
+The comparison baseline uses character TF-IDF (2–5 grams, at most 200,000
+features) and six-cluster KMeans (seed 42, ten initializations) on the same
+article title/body text. `--baseline-only` writes its immutable saved artifact;
+`--compare` reads that artifact plus the checksum-verified active BERTopic run
+and writes their comparison alongside the baseline. The comparison verifies
+snapshot manifest, article ordering, chunks, embedding and active run checksums
+before calculating metrics. It scores the single primary publisher-section
+category as a weak label, not verified topic truth.
+
+```bash
+.venv/bin/python -m eval.snapshot_topics --self-check
+.venv/bin/python -m eval.snapshot_topics --baseline-only --snapshot-id corpus-59b2b589fe3bbdbffdc3
+.venv/bin/python -m eval.snapshot_topics --compare --snapshot-id corpus-59b2b589fe3bbdbffdc3
+```
+
+The saved run has 11 non-outlier topics and 17 outliers among 516 articles.
+See [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) for saved run IDs,
+metrics, denominators, per-language values and limitations. Topic artifact
+generation does not write generic article/cluster records to MongoDB.
+
 ---
 
 ## 7. Starting the FastAPI Backend
@@ -411,10 +456,13 @@ acceptance gates in the plan.
 The old evaluation entrypoints, including `make eval`, are intentionally
 disabled because their generated outputs are not valid evidence for this
 project. Do not run them or use the existing ignored result files in a report.
+For clustering, use the snapshot-scoped `eval.snapshot_topics` commands in
+section 6.2 and cite its saved artifacts. Those results compare clustering to
+publisher-section weak labels; they do not establish factual topic truth.
 BM25, dense and hybrid have passed API behavior smoke checks against the active
-frozen snapshot, but retrieval relevance and topic quality have not been
-evaluated on a judged dataset. The plan specifies minimal, risk-targeted checks
-for each implementation slice; broad duplicate test runs are not required.
+frozen snapshot, but retrieval relevance has not been evaluated on a judged
+dataset. The plan specifies minimal, risk-targeted checks for each
+implementation slice; broad duplicate test runs are not required.
 
 ---
 
