@@ -263,9 +263,50 @@ database. Review its source and dataset terms first. Existing ignored local
 datasets and generated evaluation result files are preserved in place; they
 are not current corpus or evaluation evidence. Legacy generated evaluation
 entrypoints are disabled. Follow [OVERHAUL_PLAN.md](OVERHAUL_PLAN.md) for the
-supported collection, snapshot, indexing and evaluation workflow as each
-slice is completed. Do not run `make index`, `make cluster` or `make eval` as
-if they produced validated research results.
+supported workflow below. Do not run `make index`, `make cluster` or `make eval`
+as if they produced validated research results.
+
+### 6.1 Freeze and index the approved corpus
+
+The snapshot builder reads only `news_intel_corpus_v1`; it writes immutable
+JSONL/manifest files under `data/snapshots/<snapshot-id>/` and inserts an
+insert-only manifest in that database's `corpus_snapshots` collection. It
+does not modify campaign article/raw records, legacy database `news_intel`, or
+old local artifacts. It inserts the snapshot manifest into the campaign
+database. The current snapshot contains 516 articles and 2,135 chunks.
+
+```bash
+.venv/bin/python -m core.snapshot --self-check
+.venv/bin/python -m core.snapshot
+```
+
+The second command prints the deterministic snapshot ID, counts and manifest
+hash. Rebuilding identical inputs verifies the existing files and manifest;
+different content under the same ID is refused. For current data the ID is
+`corpus-59b2b589fe3bbdbffdc3`. To build and verify its dedicated Weaviate
+collection without changing the active config, run:
+
+```bash
+.venv/bin/python -m core.snapshot_index --snapshot-id corpus-59b2b589fe3bbdbffdc3
+```
+
+Only after the command succeeds, activate the verified index:
+
+```bash
+.venv/bin/python -m core.snapshot_index --snapshot-id corpus-59b2b589fe3bbdbffdc3 --activate
+```
+
+The indexer verifies chunk count, provenance and each stored vector before
+activation. It uses a snapshot-specific collection and does not drop the
+previous collection. If a build or verification fails, leave the current
+active configuration in place; rerun the same command after resolving the
+failure. To deliberately make a verified snapshot active, rerun with
+`--activate`. The Make shortcut `make index-snapshot
+SNAPSHOT_ID=corpus-59b2b589fe3bbdbffdc3` also builds, verifies and activates.
+
+Current artifacts are local and ignored by Git. Keep the snapshot files and
+their checksums together for replay. This index gate verifies construction and
+provenance, not retrieval quality. Do not share raw article text or images.
 
 ---
 

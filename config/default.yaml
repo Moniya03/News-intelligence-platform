@@ -1,6 +1,12 @@
 mongo:
   uri: "${MONGO_URI:-mongodb://localhost:27017}"
-  db: "news_intel"
+  db: news_intel_corpus_v1
+
+active_snapshot:
+  snapshot_id: corpus-59b2b589fe3bbdbffdc3
+  manifest: data/snapshots/corpus-59b2b589fe3bbdbffdc3/manifest.json
+  index_collection: NewsChunkSnapshotdcc85b7d4a2e9122136846f3874bca65af0ce6d0
+  corpus_db: news_intel_corpus_v1
 
 weaviate:
   host: "${WEAVIATE_HOST:-localhost}"

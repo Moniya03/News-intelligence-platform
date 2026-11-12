@@ -17,6 +17,63 @@ Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier 
 
 The model checks establish execution and output validity only. They do not measure retrieval relevance, ranking quality, summary quality, or API account entitlement.
 
+## Slice 05 frozen snapshot and index gate (13 November 2026)
+
+Snapshot `corpus-59b2b589fe3bbdbffdc3` was built from the isolated
+`news_intel_corpus_v1` database. It contains 516 articles and 2,135 chunks:
+English 123, Hindi 116, Bengali 156 and Marathi 121. The canonical manifest
+SHA-256 is
+`0c56de1aafcbd32d19e68f8c0b99f2f31f1f5c5e89a49cbeae20acf416bb5eb2`; the
+chunks SHA-256 is
+`db3f0a1727b264f5c73df330e407ea3468f34c812d3b36d94b76e3fd7b303c16`. A
+prior snapshot `corpus-d269b8db17b1f3b0812e` remains intact and was not
+activated; it has a different schema/identity after the required
+`source_adapter` provenance correction.
+
+Reproduction and activation commands from the repository root:
+
+```bash
+.venv/bin/python -m core.snapshot --self-check
+.venv/bin/python -m core.snapshot
+.venv/bin/python -m core.snapshot_index --snapshot-id corpus-59b2b589fe3bbdbffdc3
+.venv/bin/python -m core.snapshot_index --snapshot-id corpus-59b2b589fe3bbdbffdc3 --activate
+```
+
+The snapshot builder deterministically writes local `articles.jsonl`,
+`chunks.jsonl`, and `manifest.json`, then inserts an immutable manifest into
+`news_intel_corpus_v1.corpus_snapshots`. Existing data under an ID is verified
+and never replaced. Article/chunk/full-text artifacts remain local and
+ignored; legacy database `news_intel` and prior local artifacts were untouched.
+Snapshot IDs pin the selected article versions, raw-version references,
+chunking and checksums. The eight adapters yielded language counts above and
+category counts from the campaign; categories remain section-derived weak
+labels, with zero environment articles.
+
+The dedicated Weaviate collection is
+`NewsChunkSnapshotdcc85b7d4a2e9122136846f3874bca65af0ce6d0`. The cached
+BGE-M3 revision was `5617a9f61b028005a4858fdac845db406aefb181`, using CUDA
+fp16 on an RTX 3050 Ti with batch size 4. Initial inference and indexing took
+about 1 minute 27 seconds; no peak-memory measurement was taken. Full count
+and provenance readback passed. The later required 200-object paged readback
+matched all 2,135 chunk IDs and vectors exactly to the cached embeddings
+(maximum absolute error 0). A cache-reuse verification/re-activation run took
+about 7 seconds.
+
+The initial implementation activated the collection before completing the
+required stored-vector readback. The corrected implementation added that
+verification; a cache-reuse run completed full ID/provenance/vector readback,
+then reactivated. The current implementation verifies readback before
+activation; the initial sequence is a process deviation, not gated evidence.
+Older pointers and collections were preserved; no destructive drops occurred.
+
+Independent final checks passed: eight focused snapshot-index/retrieval tests,
+Python compilation of three modules, snapshot self-check, `git diff --check`,
+and full vector readback. No full suite, lint, or model re-inference was run.
+The active config points to this snapshot, database and collection. This gate
+proves reproducible artifacts and index provenance, not ranking quality,
+representativeness, publisher permission, editorial truth, or Slice 06 API
+response extensions.
+
 ## Truthfulness and preservation gates (13 November 2026)
 
 Independent Slice 00 reviews passed the focused backend/retrieval and evaluation-safety checks, plus frontend checks (15 Node tests, lint, production build and production dependency audit with zero findings). The development dependency audit reported seven moderate findings. The reviewers also checked readiness behavior with dependency stubs: missing embedding/index dependencies report degraded readiness; configured usable dependencies report ready. This is bounded implementation verification, not a populated-index or end-to-end research acceptance result. These gates were run by the independent implementation reviewers; this report update does not claim they were rerun here.

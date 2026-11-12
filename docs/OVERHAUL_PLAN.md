@@ -79,7 +79,7 @@ The model smokes prove real inference and valid output shapes, not retrieval rel
 
 ### Verified implementation gates — 12–13 November 2026 UTC
 
-Slices 02–03 passed their bounded independent gates. Slice 04's isolated collection and read-only quality audit passed; docs review and commit are pending. The final 90-day campaign contains 516 accepted current articles, 586 raw versions, and 66 rejected raw versions in `news_intel_corpus_v1`. These are the qualifying records actually collected, not a minimum quota or a claim that aspirational targets were met. There are no observed environment-category articles; category labels are section-derived weak labels, and near-duplicate/syndication detection remains deferred. See [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) for exact commands, counts, preserved pilot attempts, access caveats, and limitations.
+Slices 02–04 passed their bounded independent gates; Slice 04 was committed as `5325dcf`. The final 90-day campaign contains 516 accepted current articles, 586 raw versions, and 66 rejected raw versions in `news_intel_corpus_v1`. These are the qualifying records actually collected, not a minimum quota or a claim that aspirational targets were met. There are no observed environment-category articles; category labels are section-derived weak labels, and near-duplicate/syndication detection remains deferred. See [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) for exact commands, counts, preserved pilot attempts, access caveats, and limitations.
 
 ### Source roster and validation policy
 
@@ -253,7 +253,7 @@ Annotation workload is explicit: the three mandatory systems produce at most 720
 * **Docs:** docs agent updates source register, runbook, actual coverage and rejection reasons, window expansion, known gaps, and rerun commands. Reviewer verifies counts against the collected data.
 * **Commit:** `feat: collect four-language news with approved Scrapy spiders`. Commit code and manifests only, not full copyrighted HTML or bulky corpus exports.
 
-**Current status:** Collection and independent read-only audit passed for campaign `corpus-20261112T194939Z` in isolated database `news_intel_corpus_v1`: 516 accepted current articles, 586 raw versions, 66 rejected raw versions. Slice 04 documentation review and commit remain pending. The former numeric floors were relaxed to soft targets; the actual corpus is reported without padding. See [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) for adapter/category counts, reproduction commands, attempt history, access caveats, and quality limits.
+**Current status:** Collection and independent read-only audit passed for campaign `corpus-20261112T194939Z` in isolated database `news_intel_corpus_v1`: 516 accepted current articles, 586 raw versions, 66 rejected raw versions. Slice 04 was committed as `5325dcf`. The former numeric floors were relaxed to soft targets; the actual corpus is reported without padding. See [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) for adapter/category counts, reproduction commands, attempt history, access caveats, and quality limits.
 
 ### Phase C — Freeze data and deliver honest NLP behavior
 
@@ -264,6 +264,8 @@ Annotation workload is explicit: the three mandatory systems produce at most 720
 * **Review/fix:** reviewer rebuilds a small snapshot twice and checks stable IDs/checksums, chunk/vector cardinality and order, original URLs through index readback, repeated-story handling, source/language counts, and crash-before-switch behavior. Changing a live article must not alter a frozen snapshot. Confirm no fake/review/poem/title-only records enter the new corpus.
 * **Docs:** docs agent updates data dictionary, snapshot/rebuild/recovery commands, provenance path and actual corpus statistics; reviewer reproduces the small replay.
 * **Commit:** `feat: freeze reproducible corpus snapshots and indexed provenance`.
+
+**Current status:** Code and independent verification passed; docs review and commit are pending. Snapshot `corpus-59b2b589fe3bbdbffdc3` freezes 516 articles and 2,135 chunks in `data/snapshots/<snapshot-id>/` with manifest SHA-256 `0c56de1aafcbd32d19e68f8c0b99f2f31f1f5c5e89a49cbeae20acf416bb5eb2` and chunks SHA-256 `db3f0a1727b264f5c73df330e407ea3468f34c812d3b36d94b76e3fd7b303c16`. Counts by language are English 123, Hindi 116, Bengali 156, Marathi 121. Its dedicated Weaviate collection is `NewsChunkSnapshotdcc85b7d4a2e9122136846f3874bca65af0ce6d0`; all 2,135 stored IDs, provenance fields and vectors matched the cached embeddings on paged readback. The active config points to this snapshot, collection and `news_intel_corpus_v1`; legacy databases and artifacts were retained. The first activation preceded the later vector-readback requirement; a corrected cache-reuse build completed full readback before reactivating. Slice 06 API response extensions and subsequent slices remain pending. Exact commands and gate scope are in [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) and [setup.md](setup.md).
 
 #### Slice 06 — Search, evidence summaries, and corpus API (~1 day)
 

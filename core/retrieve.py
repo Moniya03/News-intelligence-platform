@@ -10,10 +10,48 @@ import logging
 from typing import Any, Dict, List, Optional
 import numpy as np
 
+from core.config import get_config
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 CLASS_NAME = "NewsChunk"
+
+
+def _collection_name() -> str:
+    active = get_config().get("active_snapshot") or {}
+    return active.get("index_collection") or CLASS_NAME
+
+
+def _query_properties() -> List[str]:
+    if _collection_name() == CLASS_NAME:
+        return ["article_id", "chunk_index", "text", "title", "lang", "category", "source"]
+    return ["article_id", "chunk_id", "chunk_index", "text", "title", "lang", "category", "categories",
+            "source", "source_family", "source_adapter", "snapshot_id", "content_hash", "chunk_position",
+            "original_url", "canonical_url", "published_at"]
+
+
+def _result(properties: Dict[str, Any], score: float) -> Dict[str, Any]:
+    return {
+        "chunk_id": str(properties.get("chunk_id") or properties.get("chunk_index") or f"{properties.get('article_id', 'art')}_c000"),
+        "article_id": str(properties.get("article_id", "")),
+        "text": str(properties.get("text", "")),
+        "title": str(properties.get("title", "")),
+        "lang": str(properties.get("lang", "")),
+        "category": str(properties.get("category", "")),
+        "categories": properties.get("categories", []),
+        "source": str(properties.get("source") or properties.get("source_family", "")),
+        "source_family": str(properties.get("source_family") or properties.get("source", "")),
+        "source_adapter": str(properties.get("source_adapter", "")),
+        "url": properties.get("original_url") or properties.get("canonical_url"),
+        "original_url": properties.get("original_url"),
+        "canonical_url": properties.get("canonical_url"),
+        "published_at": properties.get("published_at"),
+        "snapshot_id": properties.get("snapshot_id"),
+        "content_hash": properties.get("content_hash"),
+        "chunk_position": properties.get("chunk_position"),
+        "score": float(score),
+    }
 
 
 def _format_v4_object(obj: Any, rank: int) -> Dict[str, Any]:
@@ -30,18 +68,7 @@ def _format_v4_object(obj: Any, rank: int) -> Dict[str, Any]:
         elif getattr(metadata, "distance", None) is not None:
             score = 1.0 - float(metadata.distance)
 
-    chunk_id = str(props.get("chunk_index") or props.get("chunk_id") or f"{props.get('article_id', 'art')}_c000")
-
-    return {
-        "chunk_id": chunk_id,
-        "article_id": str(props.get("article_id", "")),
-        "text": str(props.get("text", "")),
-        "title": str(props.get("title", "")),
-        "lang": str(props.get("lang", "")),
-        "category": str(props.get("category", "")),
-        "source": str(props.get("source", "")),
-        "score": float(score),
-    }
+    return _result(props, score)
 
 
 def _build_v4_filter(lang_filter: Optional[List[str]]) -> Any:
@@ -91,7 +118,7 @@ def retrieve_hybrid(
         try:
             from weaviate.classes.query import MetadataQuery
 
-            collection = client.collections.get(CLASS_NAME)
+            collection = client.collections.get(_collection_name())
             filters = _build_v4_filter(lang_filter)
 
             res = collection.query.hybrid(
@@ -112,8 +139,8 @@ def retrieve_hybrid(
     if hasattr(client, "query"):
         try:
             q = client.query.get(
-                CLASS_NAME,
-                ["article_id", "chunk_index", "text", "title", "lang", "category", "source"],
+                _collection_name(),
+                _query_properties(),
             ).with_additional(["score"])
 
             hybrid_dict = {"query": query_text, "vector": vec_list, "alpha": alpha}
@@ -129,7 +156,7 @@ def retrieve_hybrid(
                 q = q.with_where(where_filter)
 
             response = q.do()
-            raw_items = response.get("data", {}).get("Get", {}).get(CLASS_NAME, []) or []
+            raw_items = response.get("data", {}).get("Get", {}).get(_collection_name(), []) or []
             results = []
             for i, item in enumerate(raw_items):
                 score = 1.0 / (1.0 + i)
@@ -139,16 +166,7 @@ def retrieve_hybrid(
                         score = float(add["score"])
                     except Exception:
                         pass
-                results.append({
-                    "chunk_id": item.get("chunk_index", f"{item.get('article_id', 'art')}_c000"),
-                    "article_id": str(item.get("article_id", "")),
-                    "text": str(item.get("text", "")),
-                    "title": str(item.get("title", "")),
-                    "lang": str(item.get("lang", "")),
-                    "category": str(item.get("category", "")),
-                    "source": str(item.get("source", "")),
-                    "score": score,
-                })
+                results.append(_result(item, score))
             return results
         except Exception as e:
             logger.warning("Weaviate v3 hybrid search failed")
@@ -187,7 +205,7 @@ def retrieve_dense(
         try:
             from weaviate.classes.query import MetadataQuery
 
-            collection = client.collections.get(CLASS_NAME)
+            collection = client.collections.get(_collection_name())
             filters = _build_v4_filter(lang_filter)
 
             res = collection.query.near_vector(
@@ -205,8 +223,8 @@ def retrieve_dense(
     if hasattr(client, "query"):
         try:
             q = client.query.get(
-                CLASS_NAME,
-                ["article_id", "chunk_index", "text", "title", "lang", "category", "source"],
+                _collection_name(),
+                _query_properties(),
             ).with_additional(["distance", "certainty"]).with_near_vector({"vector": vec_list}).with_limit(top_k)
 
             if lang_filter:
@@ -215,7 +233,7 @@ def retrieve_dense(
                 q = q.with_where(where_filter)
 
             response = q.do()
-            raw_items = response.get("data", {}).get("Get", {}).get(CLASS_NAME, []) or []
+            raw_items = response.get("data", {}).get("Get", {}).get(_collection_name(), []) or []
             results = []
             for i, item in enumerate(raw_items):
                 score = 1.0 / (1.0 + i)
@@ -224,16 +242,7 @@ def retrieve_dense(
                     score = float(add["certainty"])
                 elif "distance" in add and add["distance"] is not None:
                     score = 1.0 - float(add["distance"])
-                results.append({
-                    "chunk_id": item.get("chunk_index", f"{item.get('article_id', 'art')}_c000"),
-                    "article_id": str(item.get("article_id", "")),
-                    "text": str(item.get("text", "")),
-                    "title": str(item.get("title", "")),
-                    "lang": str(item.get("lang", "")),
-                    "category": str(item.get("category", "")),
-                    "source": str(item.get("source", "")),
-                    "score": score,
-                })
+                results.append(_result(item, score))
             return results
         except Exception as e:
             logger.warning("Weaviate v3 dense search failed")
@@ -271,7 +280,7 @@ def retrieve_bm25(
         try:
             from weaviate.classes.query import MetadataQuery
 
-            collection = client.collections.get(CLASS_NAME)
+            collection = client.collections.get(_collection_name())
             filters = _build_v4_filter(lang_filter)
 
             res = collection.query.bm25(
@@ -289,8 +298,8 @@ def retrieve_bm25(
     if hasattr(client, "query"):
         try:
             q = client.query.get(
-                CLASS_NAME,
-                ["article_id", "chunk_index", "text", "title", "lang", "category", "source"],
+                _collection_name(),
+                _query_properties(),
             ).with_additional(["score"]).with_bm25(query=query_text).with_limit(top_k)
 
             if lang_filter:
@@ -299,23 +308,14 @@ def retrieve_bm25(
                 q = q.with_where(where_filter)
 
             response = q.do()
-            raw_items = response.get("data", {}).get("Get", {}).get(CLASS_NAME, []) or []
+            raw_items = response.get("data", {}).get("Get", {}).get(_collection_name(), []) or []
             results = []
             for i, item in enumerate(raw_items):
                 score = 1.0 / (1.0 + i)
                 add = item.get("_additional", {})
                 if "score" in add and add["score"] is not None:
                     score = float(add["score"])
-                results.append({
-                    "chunk_id": item.get("chunk_index", f"{item.get('article_id', 'art')}_c000"),
-                    "article_id": str(item.get("article_id", "")),
-                    "text": str(item.get("text", "")),
-                    "title": str(item.get("title", "")),
-                    "lang": str(item.get("lang", "")),
-                    "category": str(item.get("category", "")),
-                    "source": str(item.get("source", "")),
-                    "score": score,
-                })
+                results.append(_result(item, score))
             return results
         except Exception as e:
             logger.warning("Weaviate v3 BM25 search failed")

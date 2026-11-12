@@ -2,7 +2,7 @@
 
 An NLP course project exploring whether multilingual retrieval can help readers find Indian news across English, Hindi, Bengali and Marathi, and whether topic clustering can make a collected corpus easier to explore.
 
-**Status: active rebuild; not yet a complete research demonstration.** An isolated 90-day campaign collected 516 accepted articles across English, Hindi, Bengali and Marathi, with 586 raw versions and 66 rejected raw versions. This is the actual qualifying count, not a quota-complete or representative corpus. Retrieval-quality and clustering claims, and a complete indexed end-to-end demo, have not been verified. See the [overhaul roadmap](docs/OVERHAUL_PLAN.md) and [verification record](docs/VERIFICATION_REPORT.md) for coverage, access caveats and limitations.
+**Status: active rebuild; not yet a complete research demonstration.** An isolated 90-day campaign collected 516 accepted articles across English, Hindi, Bengali and Marathi, with 586 raw versions and 66 rejected raw versions. A frozen snapshot and provenance-checked Weaviate index are built, but retrieval quality, clustering claims and the complete indexed end-to-end demo have not been verified. This is the actual qualifying count, not a quota-complete or representative corpus. See the [overhaul roadmap](docs/OVERHAUL_PLAN.md) and [verification record](docs/VERIFICATION_REPORT.md) for snapshot identity, commands, coverage, access caveats and limitations.
 
 ## Research focus
 
@@ -13,6 +13,7 @@ Compare lexical BM25, multilingual dense retrieval and hybrid retrieval on a doc
 - Eight selected source-language Scrapy adapters completed bounded live runs. The final isolated campaign contains 516 accepted records; publisher-section categories are weak labels, environment coverage is absent, and near-duplicate/syndication checks remain incomplete.
 - MongoDB and Weaviate containers passed their bounded readiness checks.
 - BGE-M3 embedding and cross-encoder reranker ran on the available CUDA GPU and returned finite outputs. This verifies inference only, not ranking quality.
+- Frozen snapshot `corpus-59b2b589fe3bbdbffdc3` contains 516 articles and 2,135 chunks; its dedicated Weaviate index passed full provenance and vector readback. This verifies index construction, not retrieval quality.
 - The API now distinguishes valid empty results from unavailable dependencies; it does not return demo search/chat content when a provider or index is unavailable.
 
 Detailed counts, commands and limitations are in [docs/VERIFICATION_REPORT.md](docs/VERIFICATION_REPORT.md). Current implementation and remaining work are tracked in [docs/OVERHAUL_PLAN.md](docs/OVERHAUL_PLAN.md).
