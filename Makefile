@@ -1,25 +1,27 @@
 .PHONY: up down api eval ingest index cluster infra-smoke
 
+PYTHON ?= .venv/bin/python
+
 up:
 	docker compose -f infra/docker-compose.yml up -d
 
 infra-smoke:
-	python infra/smoke_test.py
+	$(PYTHON) infra/smoke_test.py
 
 down:
 	docker compose -f infra/docker-compose.yml down
 
 api:
-	uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+	$(PYTHON) -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
 
 eval:
-	python -m eval.run_all
+	$(PYTHON) -m eval.run_all
 
 ingest:
-	python -m core.ingest
+	$(PYTHON) -m core.ingest
 
 index:
-	python -m core.index
+	$(PYTHON) -m core.index
 
 cluster:
-	python -m core.cluster
+	$(PYTHON) -m core.cluster

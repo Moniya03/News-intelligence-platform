@@ -7,8 +7,8 @@ Scope: local MongoDB/Weaviate readiness, real local model inference, and a bound
 
 | Area | Result | Evidence |
 | --- | --- | --- |
-| MongoDB | PASS | Compose service started. Isolated read-after-write succeeded in `news_intel_verification.smoke_checks`; the unique smoke record was removed. |
-| Weaviate | PASS | Compose service started; readiness endpoint returned HTTP 200 (version 1.27.3). |
+| MongoDB | PASS | Compose service `mongo:7` (observed MongoDB 7.0.45) started. Isolated read-after-write succeeded in `news_intel_verification.smoke_checks`; the unique smoke record was removed. |
+| Weaviate | PASS | Compose service started; readiness returned HTTP 200 (version 1.27.3). A uniquely named collection passed vector write/read and was deleted. |
 | BGE-M3 embedder | PASS | Real FlagEmbedding backend on RTX 3050 Ti CUDA, fp16. Two multilingual vectors were finite and 1,024-dimensional; approximately 4.4 seconds. |
 | BGE cross-encoder reranker | PASS | Real CrossEncoder backend on RTX 3050 Ti CUDA, fp16. Two finite scores; approximately 7.9 seconds and 1,083 MiB allocated. |
 | Scrapy-to-Mongo pilot | PASS (bounded gate) | Independent review passed the eight latest live runs, Mongo raw/current references, quarantine audit, and lifecycle test. This verifies the bounded ingestion path, not production-wide coverage or corpus quality. See details below. |
@@ -21,6 +21,16 @@ The model checks establish execution and output validity only. They do not measu
 Independent Slice 00 reviews passed the focused backend/retrieval and evaluation-safety checks, plus frontend checks (15 Node tests, lint, production build and production dependency audit with zero findings). The development dependency audit reported seven moderate findings. The reviewers also checked readiness behavior with dependency stubs: missing embedding/index dependencies report degraded readiness; configured usable dependencies report ready. This is bounded implementation verification, not a populated-index or end-to-end research acceptance result. These gates were run by the independent implementation reviewers; this report update does not claim they were rerun here.
 
 The updated API returns valid empty search/topic results as empty responses, reports unavailable dependencies as errors, and does not fabricate article, topic or chat fallback content. Legacy generated evaluation entrypoints are disabled, and the legacy loader refuses the configured application database. Existing ignored datasets and result artifacts were preserved; they are not certified as the new corpus or valid experimental results. The full corpus, indexed search quality, topic evaluation and UI acceptance remain incomplete. See [OVERHAUL_PLAN.md](OVERHAUL_PLAN.md) for slice status and remaining acceptance criteria.
+
+## Slice 01 runtime gate (13 November 2026)
+
+The clean CPU dependency environment used mise Python 3.12.15 and uv 0.8.23 (observed versions, not pinned). `requirements.lock.txt` contains 154 exact package pins and resolves Torch `2.15.0+cpu` from the public PyPI and PyTorch CPU indexes. In `/tmp/news-intel-cpu-verification`, dependency sync, `uv pip check --python /tmp/news-intel-cpu-verification/bin/python`, and FastAPI, Scrapy and Torch imports passed. The active CUDA `.venv` was left unchanged; it uses Python 3.12.11 and Torch `2.15.0+cu132`. The CPU lock does not recreate CUDA Torch, and CPU model inference was not run.
+
+In the existing CUDA environment, independent verification passed real BGE-M3 embedding inference and reranker inference on an RTX 3050 Ti. The embedding check returned two finite 1,024-dimensional vectors; the reranker returned two finite scores in 7.63 seconds using approximately 1,085 MiB. This verifies runtime execution only.
+
+`make infra-smoke` passed MongoDB read-after-write with cleanup and Weaviate readiness plus an isolated collection vector write/read/delete round trip. Compose services used local ports and retained their volumes. `make api` started through `.venv/bin/python` and bound uvicorn to `127.0.0.1:8000`; root readiness returned HTTP 200 `ready` and `/api/health` returned HTTP 200 with both database services true. Retrieval/index quality, browser UI behavior, CPU inference and full application acceptance remain unverified. The shutdown emitted a Python resource-tracker semaphore warning after successful checks; it did not change their outcomes.
+
+Independent review passed fresh-CPU dependency/import checks and lock consistency. No full test suite or browser run was performed for this gate. The commands and environment caveats are in [setup.md](setup.md).
 
 ## Bounded Scrapy-to-Mongo pilot (12 November 2026 UTC)
 

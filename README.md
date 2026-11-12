@@ -28,7 +28,7 @@ See [API reference](docs/api_reference.md) for request and response shapes.
 
 ## Local development
 
-Requirements: Python 3.11/3.12, Node.js supported by the installed Next.js version, Docker Compose, and model access for local inference. GPU is optional; CPU inference may be slower.
+Requirements: Python 3.12.15 for the checked CPU lock, Node.js supported by the installed Next.js version, Docker Compose, and model weights for local inference. `uv 0.8.23` was observed during verification; it is not pinned. The checked lock installs CPU Torch. The existing CUDA environment is separate and should not be overwritten by syncing that lock.
 
 ```bash
 cp .env.example .env
@@ -36,11 +36,16 @@ make up
 make infra-smoke
 ```
 
-Install Python dependencies from `requirements.txt`, then start the API from the repository root:
+For a fresh CPU environment, sync the exact lock before starting services:
 
 ```bash
-uvicorn api.main:app --reload
+uv venv --python 3.12.15 .venv
+uv pip sync --python .venv/bin/python requirements.lock.txt
+make api
 ```
+
+For a verified fresh-install command and the preserved CUDA setup, see
+[docs/setup.md](docs/setup.md). The CPU lock does not recreate CUDA Torch.
 
 In another terminal:
 

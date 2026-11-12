@@ -27,12 +27,12 @@ Before setting up the project, ensure your host development machine has the foll
 |---|---|---|---|
 | **Operating System** | Ubuntu 22.04 LTS, macOS 13+, or Windows WSL2 | Linux (x86_64 or arm64) | Native Linux environment recommended |
 | **Docker & Docker Compose** | Docker 24.0+ & Compose v2.20+ | Latest Docker Desktop / Engine | Required for Weaviate and MongoDB containers |
-| **Python** | Python `3.11` or `3.12` | Python `3.12.x` | Managed via `uv`, `mise`, or `pyenv` |
+| **Python** | Python `3.12` | Python `3.12.15` | CPU lock verification used mise Python 3.12.15 and uv 0.8.23 (observed, not pinned) |
 | **Node.js & npm** | Node.js `20.x` (LTS) | Node.js `20.14+` or `22.x` | Required for Next.js 16 frontend (package currently pins Next.js 16.4.6) |
 | **CUDA (Optional)** | CUDA 12.1+ | NVIDIA GPU (4 GB+ VRAM) | Enables fast FP16 inference for `bge-m3` and reranker |
 
 > [!NOTE]
-> An NVIDIA GPU is **optional**; CPU execution is available. The model smoke checks below require the real configured backend and fail if a deterministic or lexical fallback is used, so a fallback must not be reported as verified inference.
+> CUDA is optional. The lock resolves CPU Torch (`2.15.0+cpu`); fresh CPU dependency and import checks passed, but CPU model inference was not verified. The existing working CUDA environment was preserved. Do not sync the CPU lock into it.
 
 ---
 
@@ -132,16 +132,18 @@ curl -i http://localhost:8080/v1/.well-known/ready
 # Expected HTTP/1.1 200 OK
 ```
 
-Run the project smoke check to test MongoDB read-after-write in a separate
-`news_intel_verification` database and Weaviate readiness:
+Run the project smoke check to test MongoDB read-after-write in the isolated
+`news_intel_verification` database and a temporary Weaviate vector
+write/read/delete round trip:
 
 ```bash
 make infra-smoke
 ```
 
-It inserts a uniquely named temporary MongoDB record and removes that record
-after the check. It does not touch the project corpus. Start the services with
-`make up` first; this check does not start or stop containers.
+It inserts and removes a uniquely named MongoDB record and creates, verifies,
+and deletes a uniquely named Weaviate collection. It does not touch the
+project corpus or retained Compose volumes. Start services with `make up`
+first; this check does not start or stop containers.
 
 To stop the containers at any time, run:
 ```bash
@@ -153,28 +155,44 @@ make down
 
 ## 5. Python Environment Setup
 
-Create an isolated Python virtual environment using standard `venv` or `uv`:
+### Fresh CPU environment
 
-### Option A: Standard `venv`
+The checked `requirements.lock.txt` lists 154 exact packages and selects CPU
+Torch `2.15.0+cpu` from public PyPI/PyTorch CPU indexes. On a new clone with
+no existing `.venv`, create and sync it with:
+
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip setuptools wheel
-pip install -r requirements.txt
+uv venv --python 3.12.15 .venv
+uv pip sync --python .venv/bin/python requirements.lock.txt
+uv pip check --python .venv/bin/python
 ```
 
-### Option B: High-Speed `uv` (Recommended)
+For verification, the same commands used a temporary path to protect the
+existing CUDA environment:
+
 ```bash
-# If uv is installed (curl -LsSf https://astral.sh/uv/install.sh | sh)
-uv venv --python 3.12 .venv
-source .venv/bin/activate
-uv pip install -r requirements.txt
+uv venv --python 3.12.15 /tmp/news-intel-cpu-verification
+uv pip sync --python /tmp/news-intel-cpu-verification/bin/python requirements.lock.txt
+uv pip check --python /tmp/news-intel-cpu-verification/bin/python
 ```
 
-Verify key package installations:
-```bash
-python -c "import fastapi, weaviate, pymongo, torch; print('Environment initialized successfully!')"
-```
+The fresh environment passed dependency consistency and FastAPI, Scrapy and
+CPU Torch imports. CPU model inference and the full test suite were not run.
+The observed uv version was `0.8.23`; it is not pinned by the repository.
+
+### Existing CUDA environment
+
+The active `.venv` was preserved and uses Python `3.12.11` with Torch
+`2.15.0+cu132`. The CPU lock does not recreate this CUDA installation. Do not
+sync the CPU lock or install CPU Torch into the working CUDA environment. A
+fresh CUDA setup needs a separately verified compatible Torch build; the
+committed lock does not provide one.
+
+`models.device` in `config/default.yaml` selects API inference (`cuda` by
+default; code supports `cpu`). `scripts/verify_models.py` also accepts
+`--device cpu` or `--device cuda` for an explicit model smoke. To run the API
+on CPU, set `models.device: cpu` in the local config before startup, then
+restore the previous value when returning to the CUDA setup.
 
 ### 5.1 Verify real local model inference
 
@@ -192,10 +210,12 @@ and output shape or score count. A `PASS` requires real FlagEmbedding or
 CrossEncoder execution; the wrapper's mock or lexical fallback fails the
 check. To test CPU execution explicitly, append `--device cpu`. To require
 CUDA, append `--device cuda`; it exits with an error when CUDA is unavailable.
-On the development machine used for this report, both commands passed on an
-RTX 3050 Ti with CUDA fp16: BGE-M3 returned two finite 1,024-dimensional
-vectors and the cross-encoder returned two finite scores. This verifies model
-execution and output validity, not retrieval relevance or ranking quality.
+On the development machine, real inference passed on an RTX 3050 Ti with CUDA
+fp16: BGE-M3 returned two finite 1,024-dimensional vectors and the
+cross-encoder returned two finite scores in 7.63 seconds using about 1,085
+MiB. This verifies model execution and output validity, not retrieval
+relevance or ranking quality. Run models in separate processes to keep their
+memory use sequential.
 
 The cross-encoder requests fp16 weights as it loads on CUDA to fit the 4 GB
 GPU. CPU execution does not request fp16. Keep the two smoke commands separate
@@ -255,21 +275,28 @@ Launch the asynchronous FastAPI application using Uvicorn:
 
 ```bash
 make api
-# Equivalent to: uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+# Runs .venv/bin/python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-API startup, endpoint behavior, and the end-to-end UI were not included in
-these runtime checks. The previous setup guide contained a dated startup log;
-it is removed here because it does not establish the current runtime or
-summary-provider status. A passing health response alone would not certify
-search, topic, or summary behavior.
+The end-to-end UI, retrieval quality, and summary-provider behavior were not
+included in these runtime checks.
 
-### Health Check Verification
-In another terminal, test the `/api/health` endpoint:
+### API readiness and health
+
+`make api` starts uvicorn through `.venv/bin/python`, bound to
+`127.0.0.1:8000`. Check root readiness and database health:
+
 ```bash
-curl -s http://localhost:8000/api/health | jq .
+curl -i http://localhost:8000/
+curl -i http://localhost:8000/api/health
 ```
-Expected response:
+
+The verified startup returned HTTP 200 with root status `ready` and health
+status `ok` (`mongodb: true`, `weaviate: true`). The root route checks
+embedding/index readiness; `/api/health` checks MongoDB and Weaviate. These
+responses do not certify retrieval quality or end-to-end UI behavior.
+
+Example health body:
 ```json
 {
   "status": "ok",

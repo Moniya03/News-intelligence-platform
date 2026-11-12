@@ -12,7 +12,10 @@ scrapy>=2.13.0,<3.0
 weaviate-client>=4.5.0
 
 # ML / NLP
-torch>=2.2.0
+# The reproducible default targets CPU. For CUDA, replace Torch after syncing
+# requirements.lock.txt with the matching wheel from the PyTorch CUDA index.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.15.0+cpu
 transformers>=4.40.0
 sentence-transformers>=3.0.0
 FlagEmbedding>=1.2.0

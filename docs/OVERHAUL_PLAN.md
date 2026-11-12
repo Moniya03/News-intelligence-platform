@@ -209,7 +209,7 @@ Annotation workload is explicit: the three mandatory systems produce at most 720
 
 ### Phase A — Make the foundation truthful and runnable
 
-#### Slice 00 — Remove fabricated success and protect existing data (~0.5 day) — Code accepted; docs review and commit pending
+#### Slice 00 — Remove fabricated success and protect existing data (~0.5 day) — COMPLETE (commit `0e23cfa`)
 
 * **Scouts:** one API/core scout maps every fake article/model/credibility/evaluation fallback and its callers; one UI/docs scout maps frontend mocks and unsupported claims. Inventory ignored local data without deleting it.
 * **Workers:** backend worker owns API/core fallbacks and truthful statuses; frontend worker owns API-client mock catches and unsupported badges; one worker owns any shared contract changes. Disable misleading experiment paths until replaced, retaining only explicit test fixtures.
@@ -217,9 +217,9 @@ Annotation workload is explicit: the three mandatory systems produce at most 720
 * **Docs:** docs agent removes misleading metrics, fake verification claims, misinformation scope, and stale no-scraping claims; records current honest limitations and preservation policy. Reviewer verifies the wording.
 * **Commit:** commit agent creates `fix: remove fabricated news and evaluation fallbacks` only after both gates pass.
 
-**Completion evidence:** Independent frontend review passed 15 focused Node checks, lint, production build and production dependency audit (0 findings); development dependencies still have 7 moderate audit findings. Independent backend/retrieval and evaluation-safety reviews passed their focused checks and compile/diff checks. Manual readiness stubs confirmed degraded status for unavailable embedding/index dependencies and ready status when configured dependencies were usable. These checks do not establish a populated index, retrieval quality, provider access or end-to-end UI acceptance. The existing ignored datasets and result artifacts remain untouched; the legacy loader refuses the configured application database, and legacy generated evaluation entrypoints are disabled. No paid provider or corpus write was used for these gates.
+**Completion evidence:** Independent frontend review passed 15 focused Node checks, lint, production build and production dependency audit (0 findings); development dependencies still have 7 moderate audit findings. Independent backend/retrieval and evaluation-safety reviews passed their focused checks and compile/diff checks. Manual readiness stubs confirmed degraded status for unavailable embedding/index dependencies and ready status when configured dependencies were usable. These checks do not establish a populated index, retrieval quality, provider access or end-to-end UI acceptance. The existing ignored datasets and result artifacts remain untouched; the legacy loader refuses the configured application database, and legacy generated evaluation entrypoints are disabled. No paid provider or corpus write was used for these gates. Slice 00 was committed as `0e23cfa`.
 
-#### Slice 01 — Reproducible local runtime and hardware gate (~0.5 day) — PARTIALLY VERIFIED
+#### Slice 01 — Reproducible local runtime and hardware gate (~0.5 day) — CODE ACCEPTED; docs/commit pending
 
 * **Scouts:** runtime scout checks actual Python environment/lock conventions, Docker endpoints and existing volumes, model configuration, GPU access, frontend scripts, and applicable setup instructions. No destructive reset or system permission changes.
 * **Workers:** runtime worker owns reproducible Python/Scrapy dependencies and Makefile/configuration; infra worker owns existing Compose health checks and local service configuration, with no overlap. Preserve database volumes, avoid public unauthenticated exposure, and keep secrets in local environment files.
@@ -227,7 +227,7 @@ Annotation workload is explicit: the three mandatory systems produce at most 720
 * **Docs:** docs agent writes the exact tested setup/start/health commands, dependency installation, CPU setting, GPU prerequisites, resource budget, and recovery steps; reviewer verifies them on this environment as far as access permits.
 * **Commit:** `build: make local NLP and database setup reproducible`.
 
-**Current status:** MongoDB and Weaviate readiness, real local CUDA embedding/reranker inference, and bounded spider-to-Mongo persistence passed the dated checks in [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md). A dedicated index write/read round-trip and full application acceptance remain outstanding; therefore Slice 01 is not complete.
+**Current status:** A 154-package CPU lock install/import gate, MongoDB read/write, isolated Weaviate vector write/read/delete, real local CUDA embedding/reranker inference, and API readiness/health startup passed independent review. The active CUDA environment was preserved; CPU inference was not run. These checks do not validate a populated application index, retrieval quality, browser workflows or full application acceptance. See [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) for exact environments and results. Slice 01 remains incomplete until its reviewed documentation is committed; later corpus/index and UI acceptance slices remain outstanding.
 
 ### Phase B — Acquire a traceable four-language news corpus
 
