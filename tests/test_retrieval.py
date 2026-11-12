@@ -125,6 +125,13 @@ class TestRetrieval(unittest.TestCase):
         client = SimpleNamespace(collections=SimpleNamespace(get=lambda _: collection))
         self.assertEqual(retrieve_bm25(self.query_text, client, top_k=5), [])
 
+    def test_missing_score_metadata_does_not_create_a_rank_score(self):
+        response = SimpleNamespace(objects=[SimpleNamespace(properties={"article_id": "a"}, metadata=None)])
+        query = SimpleNamespace(bm25=MagicMock(return_value=response))
+        client = SimpleNamespace(collections=SimpleNamespace(get=lambda _: SimpleNamespace(query=query)))
+        with self.assertRaisesRegex(RuntimeError, "retrieval failed"):
+            retrieve_bm25(self.query_text, client, top_k=5)
+
 
 if __name__ == "__main__":
     unittest.main()

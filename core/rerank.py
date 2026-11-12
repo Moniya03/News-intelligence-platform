@@ -64,6 +64,20 @@ class RerankModel:
         top_k: int = 8,
         dedup_threshold: float = 0.95,
     ) -> List[Dict[str, Any]]:
+        results, status = self.rerank_with_status(query, candidates, top_k, dedup_threshold)
+        if status == "applied":
+            results = [{**item, "score": item["rerank_score"]} for item in results]
+            for item in results:
+                item.pop("rerank_score", None)
+        return results
+
+    def rerank_with_status(
+        self,
+        query: str,
+        candidates: List[Dict[str, Any]],
+        top_k: int = 8,
+        dedup_threshold: float = 0.95,
+    ) -> tuple[List[Dict[str, Any]], str]:
         """Rerank candidates using cross-encoder and deduplicate citations.
 
         Args:
@@ -73,13 +87,10 @@ class RerankModel:
             dedup_threshold: Similarity cutoff for near-duplicate removal.
 
         Returns:
-            List of top reranked and deduplicated chunks.
+            Top reranked and deduplicated chunks and whether inference was applied.
         """
         if not candidates:
-            return []
-
-        if len(candidates) <= 1:
-            return candidates[:top_k]
+            return [], "disabled"
 
         rescored_candidates: List[Dict[str, Any]] = []
 
@@ -95,7 +106,7 @@ class RerankModel:
                 else:
                     for cand, score in zip(candidates, scores):
                         item = dict(cand)
-                        item["score"] = float(score)
+                        item["rerank_score"] = float(score)
                         rescored_candidates.append(item)
             except Exception as e:
                 logger.warning("Cross-encoder prediction failed; preserving retrieval order: %s", e)
@@ -105,12 +116,12 @@ class RerankModel:
             rescored_candidates = [dict(candidate) for candidate in candidates]
 
         if did_rerank:
-            rescored_candidates.sort(key=lambda x: x.get("score", 0.0), reverse=True)
+            rescored_candidates.sort(key=lambda x: x.get("rerank_score", 0.0), reverse=True)
 
         # Apply deduplication (one chunk per article_id + text similarity filter)
         deduped = dedup_citations(rescored_candidates, sim_threshold=dedup_threshold)
 
-        return deduped[:top_k]
+        return deduped[:top_k], "applied" if did_rerank else "unavailable"
 
 
 _GLOBAL_RERANK_MODEL: Optional[RerankModel] = None

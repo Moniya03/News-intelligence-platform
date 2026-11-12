@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import logging
+import time
 from typing import Any, List, Literal, Optional
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from api.dependencies import get_embed_model, get_weaviate_client
-from core.dedupe import dedup_citations
-from core.embed import EmbedModel
+from core.config import get_config
 from core.retrieve import retrieve_bm25, retrieve_dense, retrieve_hybrid
 
 logger = logging.getLogger(__name__)
@@ -33,30 +33,50 @@ class SearchResult(BaseModel):
     snippet: str
     score: float
     url: Optional[str] = None
+    published_at: Optional[str] = None
+    snapshot_id: str
+
+
+class SearchMetadata(BaseModel):
+    snapshot_id: str
+    requested_mode: Literal["hybrid", "dense", "bm25"]
+    executed_mode: Literal["hybrid", "dense", "bm25"]
+    reranker_status: Literal["disabled", "applied", "unavailable"]
+    elapsed_ms: float
 
 
 class SearchResponse(BaseModel):
     results: List[SearchResult]
+    metadata: SearchMetadata
 
 
 @router.post("/search", response_model=SearchResponse)
 async def search_articles(
     payload: SearchRequest,
-    embed_model: EmbedModel = Depends(get_embed_model),
-    weaviate_client: Any = Depends(get_weaviate_client),
+    request: Request,
 ) -> SearchResponse:
     """Execute multilingual news retrieval across hybrid, dense, or BM25 modes."""
+    started = time.perf_counter()
     query = payload.query.strip()
+    if not query:
+        raise HTTPException(status_code=422, detail="query must not be empty")
     lang_filter = [l.lower() for l in payload.lang_filter] if payload.lang_filter else None
     top_k = payload.top_k
     mode = payload.mode
+    active_snapshot_id = (get_config().get("active_snapshot") or {}).get("snapshot_id")
+    if not active_snapshot_id:
+        raise HTTPException(status_code=503, detail="Active corpus snapshot is unavailable")
 
-    raw_candidates: List[Dict[str, Any]] = []
+    # Fetch enough ranked chunks to keep duplicate chunks from filling an article page.
+    candidate_limit = min(top_k * 10, 500)
+    raw_candidates: List[dict[str, Any]] = []
+    weaviate_client = getattr(request.app.state, "weaviate_client", None) or get_weaviate_client(request)
 
     if weaviate_client is None:
         raise HTTPException(status_code=503, detail="Search index is unavailable")
     try:
         if mode in ["hybrid", "dense"]:
+            embed_model = getattr(request.app.state, "embed_model", None) or get_embed_model(request)
             if embed_model is None:
                 raise RuntimeError("Embedding model is unavailable")
             query_vec = embed_model.embed_query(query)
@@ -64,34 +84,50 @@ async def search_articles(
             query_vec = None
 
         if mode == "hybrid":
-            raw_candidates = retrieve_hybrid(query_vec=query_vec, query_text=query, client=weaviate_client, top_k=top_k * 2, lang_filter=lang_filter)
+            raw_candidates = retrieve_hybrid(query_vec=query_vec, query_text=query, client=weaviate_client, top_k=candidate_limit, lang_filter=lang_filter)
         elif mode == "dense":
-            raw_candidates = retrieve_dense(query_vec=query_vec, client=weaviate_client, top_k=top_k * 2, lang_filter=lang_filter)
+            raw_candidates = retrieve_dense(query_vec=query_vec, client=weaviate_client, top_k=candidate_limit, lang_filter=lang_filter)
         else:
-            raw_candidates = retrieve_bm25(query_text=query, client=weaviate_client, top_k=top_k * 2, lang_filter=lang_filter)
+            raw_candidates = retrieve_bm25(query_text=query, client=weaviate_client, top_k=candidate_limit, lang_filter=lang_filter)
+
+        if any(candidate.get("snapshot_id") != active_snapshot_id for candidate in raw_candidates):
+            raise RuntimeError("Search result snapshot does not match the active snapshot")
     except Exception as e:
         logger.exception("Search retrieval failed")
         raise HTTPException(status_code=503, detail="Search retrieval is unavailable") from e
 
-    # Deduplicate citations / articles
-    if raw_candidates:
-        deduped = dedup_citations(raw_candidates)
-        results: List[SearchResult] = []
-        for c in deduped[:top_k]:
-            text = c.get("text", "")
-            snippet = text[:250] + "..." if len(text) > 250 else text
-            results.append(
-                SearchResult(
-                    article_id=str(c.get("article_id", "")),
-                    title=str(c.get("title", "")),
-                    lang=str(c.get("lang", "en")),
-                    source=str(c.get("source", "news")),
-                    category=str(c.get("category", "general")),
-                    snippet=snippet,
-                    score=float(c.get("score", 0.0)),
-                    url=c.get("url"),
-                )
-            )
-        return SearchResponse(results=results)
+    reranker = getattr(request.app.state, "rerank_model", None)
+    reranker_status = "disabled" if reranker is None else "unavailable"
+    if reranker is not None:
+        raw_candidates, reranker_status = reranker.rerank_with_status(query, raw_candidates, top_k=candidate_limit)
 
-    return SearchResponse(results=[])
+    # Keep the first (best-ranked) chunk for each article.
+    articles: dict[str, dict[str, Any]] = {}
+    for candidate in raw_candidates:
+        article_id = str(candidate.get("article_id", ""))
+        if article_id:
+            articles.setdefault(article_id, candidate)
+
+    results: List[SearchResult] = []
+    for c in list(articles.values())[:top_k]:
+        text = c.get("text", "")
+        published_at = c.get("published_at")
+        results.append(SearchResult(
+            article_id=str(c["article_id"]),
+            title=str(c.get("title", "")),
+            lang=str(c.get("lang", "en")),
+            source=str(c.get("source", "news")),
+            category=str(c.get("category", "general")),
+            snippet=text[:250] + ("..." if len(text) > 250 else ""),
+            score=float(c.get("score", 0.0)),
+            url=c.get("url"),
+            published_at=published_at.isoformat() if hasattr(published_at, "isoformat") else published_at,
+            snapshot_id=active_snapshot_id,
+        ))
+    return SearchResponse(results=results, metadata=SearchMetadata(
+        snapshot_id=active_snapshot_id,
+        requested_mode=mode,
+        executed_mode=mode,
+        reranker_status=reranker_status,
+        elapsed_ms=(time.perf_counter() - started) * 1000,
+    ))

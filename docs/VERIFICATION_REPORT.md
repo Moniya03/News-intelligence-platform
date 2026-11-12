@@ -1,7 +1,7 @@
 # Runtime verification report
 
 Date: 13 November 2026
-Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, and the later isolated 90-day corpus campaign. This does not certify the full overhaul, retrieval quality, publisher permission, or production-wide source coverage.
+Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, the isolated 90-day corpus campaign, and Slice 06 search/API behavior. This does not certify the full overhaul, retrieval quality, publisher permission, or production-wide source coverage.
 
 ## Results
 
@@ -13,7 +13,7 @@ Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier 
 | BGE cross-encoder reranker | PASS | Real CrossEncoder backend on RTX 3050 Ti CUDA, fp16. Two finite scores; approximately 7.9 seconds and 1,083 MiB allocated. |
 | Scrapy-to-Mongo pilot | PASS (bounded gate) | Independent review passed the eight latest live runs, Mongo raw/current references, quarantine audit, and lifecycle test. This verifies the bounded ingestion path, not production-wide coverage or corpus quality. See details below. |
 | Isolated corpus campaign | PASS (collection and read-only audit) | Campaign `corpus-20261112T194939Z` contains 516 accepted current records, 586 raw versions and 66 rejected raw versions in `news_intel_corpus_v1`; details and limitations below. |
-| OpenAI summary provider | NOT TESTED | No account-access request was made. Rotate/revoke any active key that appeared in tool output before use. |
+| Summary generation/provider access | NOT TESTED | The Slice 06 route returned its unavailable state; no model call or account-access request was made. Rotate/revoke any active key that appeared in tool output before use. |
 
 The model checks establish execution and output validity only. They do not measure retrieval relevance, ranking quality, summary quality, or API account entitlement.
 
@@ -73,6 +73,16 @@ The active config points to this snapshot, database and collection. This gate
 proves reproducible artifacts and index provenance, not ranking quality,
 representativeness, publisher permission, editorial truth, or Slice 06 API
 response extensions.
+
+## Slice 06 search, summary, and corpus API gate (13 November 2026)
+
+Independent review passed the search, corpus, and summary route changes. Focused checks passed 22 backend/retrieval tests and 3 API tests; Python compilation and `git diff --check` also passed. A sequential API smoke returned HTTP 200 for BM25, dense, and hybrid searches with two results each, the active snapshot ID, and matching requested/executed modes. Dense and hybrid used real cached BGE-M3 query embeddings. The reviewer separately verified BM25 filtering and serialization with `lang_filter: ["en"]`: three unique articles included HTTPS URLs, publication dates and the active snapshot; metadata reported `requested_mode` and `executed_mode` as `bm25`, numeric elapsed time, and `reranker_status: "disabled"`. No GPU/model was loaded for this independent check.
+
+The same API smoke checked `/api/corpus` (`200`), `/api/search/summary` (`200`, provider unavailable), a stale summary snapshot (`409`), and a blank search query (`422`). Search results are unique articles with snapshot provenance and top-level metadata. The configured local reranker was not exercised in this API run; actual reranker inference was verified separately in Slice 01, while Slice 06 checked the truthful disabled/unavailable and failure-preserves-base-order behavior. No additional model inference was run for this slice.
+
+`GET /api/corpus` reads and verifies local immutable snapshot files. For `corpus-59b2b589fe3bbdbffdc3` it reports 516 articles, 2,135 chunks, languages English 123, Hindi 116, Bengali 156 and Marathi 121, with eight source adapters and snapshot coverage. Index `collection_status: "configured"` describes configuration, not live health. `topic_counts` remains null and `topic_status` is `not_generated`. Crawl timestamp and rejection count remain null because the frozen manifest/raw references do not contain immutable crawl-run links; the separate campaign report still records 66 rejected raw versions.
+
+`POST /api/search/summary` validates distinct article IDs and active snapshot provenance. Usable evidence returns citations but `status: "unavailable"` with `reason: "provider_access_unverified"`; article bodies shorter than 200 characters are not cited, and no usable bodies yield `insufficient_evidence`. The threshold checks text sufficiency, not factual or relevance support. No summary credentials/account access or summary-model call was tested. Search remains independent of optional summary generation.
 
 ## Truthfulness and preservation gates (13 November 2026)
 

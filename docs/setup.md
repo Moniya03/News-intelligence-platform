@@ -319,8 +319,10 @@ make api
 # Runs .venv/bin/python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-The end-to-end UI, retrieval quality, and summary-provider behavior were not
-included in these runtime checks.
+The browser UI and retrieval quality were not evaluated. Slice 06 smoke checks
+covered all three search modes and the summary route's explicitly unavailable
+provider response; no summary generation or account access was tested. See the
+[API reference](api_reference.md) for response fields and failure states.
 
 ### API readiness and health
 
@@ -409,10 +411,10 @@ acceptance gates in the plan.
 The old evaluation entrypoints, including `make eval`, are intentionally
 disabled because their generated outputs are not valid evidence for this
 project. Do not run them or use the existing ignored result files in a report.
-The revised BM25/dense/hybrid retrieval and topic evaluation has not yet been
-run on a frozen, validated news corpus. The plan specifies minimal,
-risk-targeted checks for each implementation slice; broad duplicate test runs
-are not required.
+BM25, dense and hybrid have passed API behavior smoke checks against the active
+frozen snapshot, but retrieval relevance and topic quality have not been
+evaluated on a judged dataset. The plan specifies minimal, risk-targeted checks
+for each implementation slice; broad duplicate test runs are not required.
 
 ---
 

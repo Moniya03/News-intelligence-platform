@@ -54,19 +54,18 @@ def _result(properties: Dict[str, Any], score: float) -> Dict[str, Any]:
     }
 
 
-def _format_v4_object(obj: Any, rank: int) -> Dict[str, Any]:
+def _format_v4_object(obj: Any) -> Dict[str, Any]:
     """Extract standard chunk dict from Weaviate v4 query result object."""
     props = getattr(obj, "properties", {}) or {}
     metadata = getattr(obj, "metadata", None)
-
-    score = 1.0 / (1.0 + rank)
-    if metadata:
-        if getattr(metadata, "score", None) is not None:
-            score = float(metadata.score)
-        elif getattr(metadata, "certainty", None) is not None:
-            score = float(metadata.certainty)
-        elif getattr(metadata, "distance", None) is not None:
-            score = 1.0 - float(metadata.distance)
+    if metadata and getattr(metadata, "score", None) is not None:
+        score = float(metadata.score)
+    elif metadata and getattr(metadata, "certainty", None) is not None:
+        score = float(metadata.certainty)
+    elif metadata and getattr(metadata, "distance", None) is not None:
+        score = 1.0 - float(metadata.distance)
+    else:
+        raise RuntimeError("Weaviate did not return a retrieval score")
 
     return _result(props, score)
 
@@ -75,15 +74,10 @@ def _build_v4_filter(lang_filter: Optional[List[str]]) -> Any:
     """Build Weaviate v4 Filter for language selection."""
     if not lang_filter:
         return None
-    try:
-        from weaviate.classes.query import Filter
-        if len(lang_filter) == 1:
-            return Filter.by_property("lang").equal(lang_filter[0].lower())
-        else:
-            return Filter.by_property("lang").contains_any([l.lower() for l in lang_filter])
-    except Exception as e:
-        logger.warning("Could not construct v4 Filter: %s", e)
-        return None
+    from weaviate.classes.query import Filter
+    if len(lang_filter) == 1:
+        return Filter.by_property("lang").equal(lang_filter[0].lower())
+    return Filter.by_property("lang").contains_any([l.lower() for l in lang_filter])
 
 
 def retrieve_hybrid(
@@ -129,7 +123,7 @@ def retrieve_hybrid(
                 filters=filters,
                 return_metadata=MetadataQuery(score=True),
             )
-            results = [_format_v4_object(o, rank=i) for i, o in enumerate(res.objects)]
+            results = [_format_v4_object(o) for o in res.objects]
             return results
         except Exception as e:
             last_error = e
@@ -158,15 +152,11 @@ def retrieve_hybrid(
             response = q.do()
             raw_items = response.get("data", {}).get("Get", {}).get(_collection_name(), []) or []
             results = []
-            for i, item in enumerate(raw_items):
-                score = 1.0 / (1.0 + i)
+            for item in raw_items:
                 add = item.get("_additional", {})
-                if "score" in add:
-                    try:
-                        score = float(add["score"])
-                    except Exception:
-                        pass
-                results.append(_result(item, score))
+                if add.get("score") is None:
+                    raise RuntimeError("Weaviate did not return a hybrid retrieval score")
+                results.append(_result(item, float(add["score"])))
             return results
         except Exception as e:
             logger.warning("Weaviate v3 hybrid search failed")
@@ -214,7 +204,7 @@ def retrieve_dense(
                 filters=filters,
                 return_metadata=MetadataQuery(distance=True, certainty=True),
             )
-            return [_format_v4_object(o, rank=i) for i, o in enumerate(res.objects)]
+            return [_format_v4_object(o) for o in res.objects]
         except Exception as e:
             last_error = e
             logger.warning("Weaviate v4 dense search failed")
@@ -235,13 +225,14 @@ def retrieve_dense(
             response = q.do()
             raw_items = response.get("data", {}).get("Get", {}).get(_collection_name(), []) or []
             results = []
-            for i, item in enumerate(raw_items):
-                score = 1.0 / (1.0 + i)
+            for item in raw_items:
                 add = item.get("_additional", {})
                 if "certainty" in add and add["certainty"] is not None:
                     score = float(add["certainty"])
                 elif "distance" in add and add["distance"] is not None:
                     score = 1.0 - float(add["distance"])
+                else:
+                    raise RuntimeError("Weaviate did not return a dense retrieval score")
                 results.append(_result(item, score))
             return results
         except Exception as e:
@@ -289,7 +280,7 @@ def retrieve_bm25(
                 filters=filters,
                 return_metadata=MetadataQuery(score=True),
             )
-            return [_format_v4_object(o, rank=i) for i, o in enumerate(res.objects)]
+            return [_format_v4_object(o) for o in res.objects]
         except Exception as e:
             last_error = e
             logger.warning("Weaviate v4 BM25 search failed")
@@ -310,12 +301,11 @@ def retrieve_bm25(
             response = q.do()
             raw_items = response.get("data", {}).get("Get", {}).get(_collection_name(), []) or []
             results = []
-            for i, item in enumerate(raw_items):
-                score = 1.0 / (1.0 + i)
+            for item in raw_items:
                 add = item.get("_additional", {})
-                if "score" in add and add["score"] is not None:
-                    score = float(add["score"])
-                results.append(_result(item, score))
+                if add.get("score") is None:
+                    raise RuntimeError("Weaviate did not return a BM25 retrieval score")
+                results.append(_result(item, float(add["score"])))
             return results
         except Exception as e:
             logger.warning("Weaviate v3 BM25 search failed")

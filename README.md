@@ -2,7 +2,7 @@
 
 An NLP course project exploring whether multilingual retrieval can help readers find Indian news across English, Hindi, Bengali and Marathi, and whether topic clustering can make a collected corpus easier to explore.
 
-**Status: active rebuild; not yet a complete research demonstration.** An isolated 90-day campaign collected 516 accepted articles across English, Hindi, Bengali and Marathi, with 586 raw versions and 66 rejected raw versions. A frozen snapshot and provenance-checked Weaviate index are built, but retrieval quality, clustering claims and the complete indexed end-to-end demo have not been verified. This is the actual qualifying count, not a quota-complete or representative corpus. See the [overhaul roadmap](docs/OVERHAUL_PLAN.md) and [verification record](docs/VERIFICATION_REPORT.md) for snapshot identity, commands, coverage, access caveats and limitations.
+**Status: active rebuild; not yet a complete research demonstration.** An isolated 90-day campaign collected 516 accepted articles across English, Hindi, Bengali and Marathi, with 586 raw versions and 66 rejected raw versions. A frozen snapshot and provenance-checked Weaviate index are built. Slice 06 search, corpus, and evidence-summary API checks passed; retrieval quality, clustering claims and the complete indexed end-to-end demo have not been verified. This is the actual qualifying count, not a quota-complete or representative corpus. See the [overhaul roadmap](docs/OVERHAUL_PLAN.md) and [verification record](docs/VERIFICATION_REPORT.md) for snapshot identity, commands, coverage, access caveats and limitations.
 
 ## Research focus
 
@@ -21,11 +21,13 @@ Detailed counts, commands and limitations are in [docs/VERIFICATION_REPORT.md](d
 ## Current API behavior
 
 - `POST /api/search`: supports `hybrid`, `dense` or `bm25`; valid searches with no matches return `200` and an empty `results` list. Missing retrieval dependencies return `503`.
+- `GET /api/corpus`: reports snapshot-backed corpus coverage. Topic counts and crawl/rejection metadata remain explicitly unavailable where they cannot be linked to the immutable snapshot.
+- `POST /api/search/summary`: validates supplied article IDs against the active snapshot and returns citations only for articles with usable text. Generation remains unavailable until provider access is verified.
 - `POST /api/chat`: answers only from retrieved evidence with explicit citations. No matches return a no-evidence response; unavailable retrieval or answer generation returns an error instead of invented content.
 - `GET /api/clusters`: returns stored topics, including an empty list when none exist. Unknown topic IDs return `404`; unavailable topic storage returns `503`.
 - `GET /api/health`: reports `ok` only when MongoDB and Weaviate are reachable; otherwise it reports `degraded`.
 
-See [API reference](docs/api_reference.md) for request and response shapes.
+Search responses include ranked unique articles and top-level execution metadata. See the [API reference](docs/api_reference.md) for request/response shapes and failure states.
 
 ## Local development
 

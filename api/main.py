@@ -14,7 +14,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 
-from api.routers import chat, clusters, health, search
+from api.routers import chat, clusters, corpus, health, search, summary
 from core.config import get_config
 from core.embed import get_embed_model
 from core.index import get_weaviate_client
@@ -117,6 +117,8 @@ app.add_middleware(
 # Register routers under /api
 app.include_router(chat.router, prefix="/api")
 app.include_router(search.router, prefix="/api")
+app.include_router(summary.router, prefix="/api")
+app.include_router(corpus.router, prefix="/api")
 app.include_router(clusters.router, prefix="/api")
 app.include_router(health.router, prefix="/api")
 
