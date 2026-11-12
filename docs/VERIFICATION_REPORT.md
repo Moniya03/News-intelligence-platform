@@ -1,7 +1,7 @@
 # Runtime verification report
 
 Date: 13 November 2026
-Scope: local MongoDB/Weaviate readiness, real local model inference, and a bounded live spider-to-Mongo pilot. This does not certify the full overhaul, a research corpus, retrieval quality, or production-wide source coverage.
+Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, and the later isolated 90-day corpus campaign. This does not certify the full overhaul, retrieval quality, publisher permission, or production-wide source coverage.
 
 ## Results
 
@@ -12,6 +12,7 @@ Scope: local MongoDB/Weaviate readiness, real local model inference, and a bound
 | BGE-M3 embedder | PASS | Real FlagEmbedding backend on RTX 3050 Ti CUDA, fp16. Two multilingual vectors were finite and 1,024-dimensional; approximately 4.4 seconds. |
 | BGE cross-encoder reranker | PASS | Real CrossEncoder backend on RTX 3050 Ti CUDA, fp16. Two finite scores; approximately 7.9 seconds and 1,083 MiB allocated. |
 | Scrapy-to-Mongo pilot | PASS (bounded gate) | Independent review passed the eight latest live runs, Mongo raw/current references, quarantine audit, and lifecycle test. This verifies the bounded ingestion path, not production-wide coverage or corpus quality. See details below. |
+| Isolated corpus campaign | PASS (collection and read-only audit) | Campaign `corpus-20261112T194939Z` contains 516 accepted current records, 586 raw versions and 66 rejected raw versions in `news_intel_corpus_v1`; details and limitations below. |
 | OpenAI summary provider | NOT TESTED | No account-access request was made. Rotate/revoke any active key that appeared in tool output before use. |
 
 The model checks establish execution and output validity only. They do not measure retrieval relevance, ranking quality, summary quality, or API account entitlement.
@@ -53,6 +54,42 @@ Category abbreviations: P politics, F finance, H health, ST science/technology, 
 OneIndia's single spider error was a candidate under `/partner-content/`; the source's robots.txt explicitly disallows that path for the exact crawler user agent, so it was not fetched or bypassed. Loksatta sports included an editorial item that may be sports-section noise. Some ABP science/technology pages republished DW reporting; canonical source attribution and syndication deduplication remain future corpus-quality work. These checks establish a bounded ingestion path, not editorial accuracy or source independence.
 
 The database snapshot contained 94 current adapter articles, 242 raw-version records across this campaign's history, and 18 quarantined adapter records. Quarantined records retain raw references and are excluded from the current adapter article set. The bounded pilot had no validated live article with multiple mapped categories; multi-section merge behavior was covered only by synthetic lifecycle data. Do not claim real multi-topic article coverage from this pilot.
+
+## Isolated 90-day corpus campaign (12–13 November 2026 UTC)
+
+The earlier 94-article adapter pilot above is historical and separate. The final bounded campaign, `corpus-20261112T194939Z`, wrote to isolated database `news_intel_corpus_v1`; it did not alter legacy database `news_intel`. Its UTC window was inclusive, 2026-08-16 through 2026-11-13. Each adapter run was capped at 150 article requests, 20 listing pages and 360 seconds. At most two runs ran concurrently, only for distinct publisher families; ABP adapters were serialized. No wider date window was needed or run.
+
+The read-only quality audit found 516 accepted current articles, 586 raw versions, 66 rejected raw versions, no structural flags and no exact normalized-body duplicate groups. Rejections were 24 bodies under 200 characters, 12 missing publication dates, and 30 outside the inclusive date window. Near-duplicate and syndication detection is deferred, so zero exact duplicates does not mean zero related or republished stories. Unicode script ratios are plausibility checks, not language certification.
+
+| Language | Accepted | Publisher-family counts |
+| --- | ---: | --- |
+| English | 123 | ABP 93; OneIndia 30 |
+| Hindi | 116 | ABP 91; Amar Ujala 25 |
+| Bengali | 156 | ABP 83; News18 73 |
+| Marathi | 121 | ABP 85; Loksatta 36 |
+| **Total** | **516** | **Eight configured adapters** |
+
+| Category | Accepted articles |
+| --- | ---: |
+| politics | 63 |
+| finance | 129 |
+| health | 76 |
+| science_technology | 80 |
+| environment | 0 |
+| sports | 168 |
+
+These category counts reflect publisher section mappings, which are weak labels rather than verified article topics. No environment article was observed, and counts do not establish balanced or representative coverage. The aspirational corpus targets are 2,000 total, 500 per language and 250 per adapter. The former 1,000 total, 200 per language and 50 per publisher-family-per-language floors were explicitly relaxed to soft targets; the actual qualifying count is reported without quotas, padding, or a completeness claim.
+
+The campaign and quality metadata are in [`artifacts/corpus_campaign/campaign.json`](../artifacts/corpus_campaign/campaign.json) and [`artifacts/corpus_campaign/quality_report.json`](../artifacts/corpus_campaign/quality_report.json). The audit is read-only and emits metadata only; it does not export raw article bodies. Reproduce with the project environment and MongoDB available:
+
+```bash
+SCRAPY_SETTINGS_MODULE=scrapers.settings .venv/bin/python scripts/collect_corpus.py --anchor 2026-11-13 --database news_intel_corpus_v1 --max-articles 150 --max-listing-pages 20 --timeout-seconds 360
+SCRAPY_SETTINGS_MODULE=scrapers.settings .venv/bin/python scripts/audit_corpus.py --campaign artifacts/corpus_campaign/campaign.json --report artifacts/corpus_campaign/quality_report.json --sample-per-adapter 5
+```
+
+The interrupted first attempt stopped after an ABP family lock blocked one worker; its 42 accepted records and 50 raw versions were preserved. A separate settings-correction pilot accepted 33 records and was not mixed into the final campaign. The final metadata records only the completed campaign runs. Campaign limits are bounded crawl controls, not assurances that every publisher section or eligible article was discovered.
+
+Collection success does not establish permission to automate collection, retain content indefinitely, or use it for ML. Policy URLs and unresolved terms/robots questions are recorded in [`source_access_notes.json`](../artifacts/corpus_campaign/source_access_notes.json). In particular, the recorded notes state that OneIndia terms restrict scraping and its configured transparent user-agent is not an allowed named search crawler; Amar Ujala terms restrict scraping and ML without written consent; and News18 policy/robots details could not be verified by the policy scout. ABP and Loksatta also have copying/automated-use restrictions described in the notes. Do not spoof, bypass, or redistribute raw article text or images. These source notes are not legal clearance.
 
 Run a bounded adapter crawl from the repository root with the project's environment:
 

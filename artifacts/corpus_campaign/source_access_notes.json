@@ -1,0 +1,42 @@
+{
+  "checked_at_utc": "2026-11-13",
+  "scope": "Policy and robots.txt provenance for the eight configured adapters. These notes describe source statements; they do not establish a research license.",
+  "families": {
+    "abp": {
+      "adapters": ["abp_en", "abp_hi", "abp_bn", "abp_mr"],
+      "robots_url": "https://news.abplive.com/robots.txt",
+      "policy_url": "https://news.abplive.com/disclaimer",
+      "observed": "Robots allows general paths and disallows utility/advertising paths. Disclaimer identifies ABP News Network, notes partner/news-agency material, and restricts copying or redistribution absent authorization.",
+      "uncertainty": "robots policy observed on the English host; language subdomains should be rechecked before future runs."
+    },
+    "oneindia": {
+      "adapters": ["oneindia_en"],
+      "robots_url": "https://www.oneindia.com/robots.txt",
+      "policy_url": "https://www.oneindia.com/terms-service.html",
+      "observed": "Terms prohibit scraping/automated access and limit content use; robots disallows the general user-agent while allowing named search crawlers with exceptions.",
+      "uncertainty": "Configured transparent project user-agent is not an allowed named search crawler. Collection status must follow Scrapy robots enforcement; do not spoof a search crawler."
+    },
+    "amarujala": {
+      "adapters": ["amarujala_hi"],
+      "robots_url": "https://www.amarujala.com/robots.txt",
+      "policy_url": "https://www.amarujala.com/terms-and-conditions",
+      "observed": "Terms restrict automated scraping and ML/AI development without prior written consent; robots lists sitemap routes and disallows selected paths.",
+      "uncertainty": "No permission for automated collection or ML use established."
+    },
+    "news18": {
+      "adapters": ["news18_bn"],
+      "robots_url": "https://bengali.news18.com/robots.txt",
+      "policy_url": "https://www.news18.com/disclaimer/",
+      "observed": "Publisher robots and policy pages could not be inspected by the policy scout; a Network18 disclaimer URL was located but not verified directly.",
+      "uncertainty": "Access rules and retention terms remain unresolved; do not treat this source as cleared."
+    },
+    "loksatta": {
+      "adapters": ["loksatta_mr"],
+      "robots_url": "https://www.loksatta.com/robots.txt",
+      "policy_url": "https://www.loksatta.com/terms-and-conditions/",
+      "observed": "Terms identify IE Online Media Services and restrict third-party content exploitation; excerpts prohibit automated tools and AI training without written consent. Robots allows general paths with exceptions.",
+      "uncertainty": "No permission for automated collection or ML use established."
+    }
+  },
+  "handling": "Research use is not blanket permission. Preserve attribution and source URLs in the local corpus. Do not redistribute raw article text or images. Respect configured transparent user-agent and robots enforcement; do not bypass restrictions."
+}

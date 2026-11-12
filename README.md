@@ -2,7 +2,7 @@
 
 An NLP course project exploring whether multilingual retrieval can help readers find Indian news across English, Hindi, Bengali and Marathi, and whether topic clustering can make a collected corpus easier to explore.
 
-**Status: active rebuild; not yet a complete research demonstration.** The project has a bounded live Scrapy-to-Mongo pilot and verified local model execution. The current corpus is too small and uneven to support retrieval-quality or clustering claims, and a complete indexed end-to-end demo has not been verified. See the [overhaul roadmap](docs/OVERHAUL_PLAN.md) and [verification record](docs/VERIFICATION_REPORT.md).
+**Status: active rebuild; not yet a complete research demonstration.** An isolated 90-day campaign collected 516 accepted articles across English, Hindi, Bengali and Marathi, with 586 raw versions and 66 rejected raw versions. This is the actual qualifying count, not a quota-complete or representative corpus. Retrieval-quality and clustering claims, and a complete indexed end-to-end demo, have not been verified. See the [overhaul roadmap](docs/OVERHAUL_PLAN.md) and [verification record](docs/VERIFICATION_REPORT.md) for coverage, access caveats and limitations.
 
 ## Research focus
 
@@ -10,7 +10,7 @@ Compare lexical BM25, multilingual dense retrieval and hybrid retrieval on a doc
 
 ## Verified so far
 
-- Eight selected source-language Scrapy adapters completed bounded live runs and stored raw and normalized records in MongoDB. This is a pilot, not representative coverage or a validated research corpus.
+- Eight selected source-language Scrapy adapters completed bounded live runs. The final isolated campaign contains 516 accepted records; publisher-section categories are weak labels, environment coverage is absent, and near-duplicate/syndication checks remain incomplete.
 - MongoDB and Weaviate containers passed their bounded readiness checks.
 - BGE-M3 embedding and cross-encoder reranker ran on the available CUDA GPU and returned finite outputs. This verifies inference only, not ranking quality.
 - The API now distinguishes valid empty results from unavailable dependencies; it does not return demo search/chat content when a provider or index is unavailable.

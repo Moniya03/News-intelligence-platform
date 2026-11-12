@@ -1,0 +1,39 @@
+{
+  "attempt_id": "corpus-20261112T1945Z-interrupted",
+  "initial_campaign_id": "corpus-20261112T194524Z",
+  "database": "news_intel_corpus_v1",
+  "anchor_utc": "2026-11-13",
+  "date_from_inclusive_utc": "2026-08-16",
+  "date_to_inclusive_utc": "2026-11-13",
+  "max_articles_per_run": 150,
+  "max_listing_pages_requested": 20,
+  "timeout_seconds_per_run": 360,
+  "max_parallel_runs": 2,
+  "command_template": [
+    ".venv/bin/python", "-m", "scrapy", "crawl", "<adapter>",
+    "-a", "max_articles=150", "-a", "max_listing_pages=20",
+    "-a", "date_from=2026-08-16", "-a", "date_to=2026-11-13",
+    "-s", "MONGO_DATABASE=news_intel_corpus_v1", "-s", "LOG_LEVEL=INFO"
+  ],
+  "environment": {"SCRAPY_SETTINGS_MODULE": "scrapers.settings"},
+  "stop_reason": "Stopped after confirming the initial all-at-once queue blocked one worker on the ABP family lock; rerunning as explicit distinct-family pairs. No data was deleted.",
+  "runs": [
+    {
+      "adapter_id": "abp_en",
+      "run_id": "118711d6695fd1bedfa5a643",
+      "status": "stopped",
+      "started_at_utc": "2026-11-12T19:45:24.818Z",
+      "ended_at_utc": "2026-11-12T19:47:43.371Z",
+      "counts": {"discovered": 101, "fetched": 47, "accepted": 39, "rejected": 8, "unchanged": 0, "errors": 0}
+    },
+    {
+      "adapter_id": "abp_hi",
+      "run_id": "c29adfb21c2bdcc8cae882b2",
+      "status": "stopped",
+      "started_at_utc": "2026-11-12T19:47:44.396Z",
+      "ended_at_utc": "2026-11-12T19:48:05.175Z",
+      "counts": {"discovered": 92, "fetched": 3, "accepted": 3, "rejected": 0, "unchanged": 0, "errors": 0}
+    }
+  ],
+  "preserved_database_counts_after_stop": {"accepted_current_articles": 42, "raw_article_versions": 50}
+}

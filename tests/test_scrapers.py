@@ -3,7 +3,7 @@ import unittest
 from scrapy.http import HtmlResponse, Request
 
 from scrapers.sources import AMARUJA_MAPPING_VERSION, MAPPING_VERSION, SOURCES
-from scrapers.spiders.news import article_matches_section, canonical_url, extract_article, listing_hrefs, valid_article, validate_response_article
+from scrapers.spiders.news import NewsSpider, article_matches_section, canonical_url, extract_article, listing_hrefs, valid_article, validate_response_article
 
 
 class TestScrapers(unittest.TestCase):
@@ -106,6 +106,14 @@ class TestScrapers(unittest.TestCase):
     def test_non_200_response_cannot_be_accepted_even_with_stale_jsonld(self):
         article = {"title": "Old article", "body": "A" * 250, "published_at": "2026-11-12T10:00:00+05:30"}
         self.assertEqual(validate_response_article(404, article), (False, "http_status_404"))
+
+    def test_date_window_is_inclusive_utc_across_publisher_offsets(self):
+        spider = NewsSpider(name="abp_en", adapter_id="abp_en", date_from="2026-11-12", date_to="2026-11-12")
+        self.assertIsNone(spider._date_rejection("2026-11-13T05:29:59+05:30"))
+        self.assertEqual(
+            spider._date_rejection("2026-11-13T05:30:00+05:30"),
+            "outside_date_window_utc:2026-11-12..2026-11-12",
+        )
 
 
 if __name__ == "__main__":

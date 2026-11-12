@@ -1,0 +1,475 @@
+{
+  "campaign_id": "corpus-20261112T194939Z",
+  "anchor_utc": "2026-11-13",
+  "database": "news_intel_corpus_v1",
+  "max_articles_per_run": 150,
+  "max_listing_pages": 20,
+  "timeout_seconds_per_run": 360,
+  "max_parallel_runs": 2,
+  "families_permitted_concurrently": "distinct only",
+  "targets_aspirational": {
+    "total": 2000,
+    "per_language": 500,
+    "per_adapter": 250
+  },
+  "former_floors_user_relaxed_to_aspirations": {
+    "total": 1000,
+    "per_language": 200,
+    "per_family_per_language": 50,
+    "families_per_language": 2
+  },
+  "date_window": {
+    "days": 90,
+    "date_from_inclusive_utc": "2026-08-16",
+    "date_to_inclusive_utc": "2026-11-13"
+  },
+  "adapters": [
+    "abp_en",
+    "abp_hi",
+    "abp_bn",
+    "abp_mr",
+    "oneindia_en",
+    "amarujala_hi",
+    "news18_bn",
+    "loksatta_mr"
+  ],
+  "access_notes_file": "artifacts/corpus_campaign/source_access_notes.json",
+  "prior_interrupted_attempt_file": "artifacts/corpus_campaign/interrupted_attempt.json",
+  "runs": [
+    {
+      "adapter_id": "oneindia_en",
+      "source_family": "oneindia",
+      "lang": "en",
+      "window_days": 90,
+      "date_from": "2026-08-16",
+      "date_to": "2026-11-13",
+      "extractor_version": "oneindia-jsonld-v1",
+      "mapping_version": "global-category-v2",
+      "command": [
+        "/home/vasu/personal/News-Intelligence-Platform/.venv/bin/python",
+        "-m",
+        "scrapy",
+        "crawl",
+        "oneindia_en",
+        "-a",
+        "max_articles=150",
+        "-a",
+        "max_listing_pages=20",
+        "-a",
+        "date_from=2026-08-16",
+        "-a",
+        "date_to=2026-11-13",
+        "-s",
+        "MONGO_DATABASE=news_intel_corpus_v1",
+        "-s",
+        "LOG_LEVEL=INFO"
+      ],
+      "environment": {
+        "SCRAPY_SETTINGS_MODULE": "scrapers.settings"
+      },
+      "started_at": "2026-11-12T19:49:39.582779+00:00",
+      "status": "finished",
+      "return_code": 0,
+      "listing_page_limit_reached_sections": 0,
+      "log_tail": ":20:29 [oneindia_en] WARNING: request failed type=IgnoreRequest url=https://www.oneindia.com/partner-content/can-a-kidney-dialysis-patient-travel-treatment-planning-and-practical-tips-012-8249883.html\n2026-11-13 01:20:40 [scrapy.extensions.logstats] INFO: Crawled 26 pages (at 26 pages/min), scraped 21 items (at 21 items/min)\n2026-11-13 01:21:27 [scrapy.core.engine] INFO: Closing spider (finished)\n2026-11-13 01:21:27 [scrapy.statscollectors] INFO: Dumping Scrapy stats:\n{'downloader/exception_count': 4,\n 'downloader/exception_type_count/scrapy.exceptions.IgnoreRequest': 4,\n 'downloader/request_bytes': 29078,\n 'downloader/request_count': 45,\n 'downloader/request_method_count/GET': 45,\n 'downloader/response_bytes': 5555668,\n 'downloader/response_count': 45,\n 'downloader/response_status_count/200': 45,\n 'elapsed_time_seconds': 107.55372765999891,\n 'finish_reason': 'finished',\n 'finish_reason_error': False,\n 'finish_time': datetime.datetime(2026, 11, 12, 19, 51, 27, 822621, tzinfo=datetime.timezone.utc),\n 'httpcompression/response_bytes': 24253283,\n 'httpcompression/response_count': 45,\n 'item_scraped_count': 40,\n 'items_per_minute': 22.429906542056074,\n 'log_count/INFO': 5,\n 'log_count/WARNING': 4,\n 'memusage/max': 111521792,\n 'memusage/startup': 94404608,\n 'request_backout_seconds/concurrency': 87.01932053300334,\n 'request_backout_seconds/total': 87.01932053300334,\n 'request_depth_max': 1,\n 'response_received_count': 45,\n 'responses_per_minute': 25.233644859813083,\n 'robotstxt/forbidden': 4,\n 'robotstxt/request_count': 1,\n 'robotstxt/response_count': 1,\n 'robotstxt/response_status_count/200': 1,\n 'scheduler/dequeued': 48,\n 'scheduler/dequeued/memory': 48,\n 'scheduler/enqueued': 48,\n 'scheduler/enqueued/memory': 48,\n 'scraper/date_from_utc': '2026-08-16T00:00:00+00:00',\n 'scraper/date_to_utc': '2026-11-13T00:00:00+00:00',\n 'scraper/discovered': 44,\n 'scraper/error_urls': [{'error_type': 'IgnoreRequest',\n                         'url': 'https://www.oneindia.com/partner-content/gen-z-fertility-awareness-india-why-young-adults-are-testing-reproductive-health-012-8096239.html'},\n                        {'error_type': 'IgnoreRequest',\n                         'url': 'https://www.oneindia.com/partner-content/artificial-intelligence-precision-oncology-latha-kiran-krishna-rajendran-012-8155605.html'},\n                        {'error_type': 'IgnoreRequest',\n                         'url': 'https://www.oneindia.com/partner-content/traya-hair-loss-indian-men-sleep-problems-awareness-month-connection-012-8182487.html'},\n                        {'error_type': 'IgnoreRequest',\n                         'url': 'https://www.oneindia.com/partner-content/can-a-kidney-dialysis-patient-travel-treatment-planning-and-practical-tips-012-8249883.html'}],\n 'scraper/errors': 4,\n 'scraper/max_listing_pages': 1,\n 'start_time': datetime.datetime(2026, 11, 12, 19, 49, 40, 268893, tzinfo=datetime.timezone.utc)}\n2026-11-13 01:21:27 [scrapy.core.engine] INFO: Spider closed (finished)\n",
+      "elapsed_seconds": 108.8,
+      "ended_at": "2026-11-12T19:51:28.430333+00:00",
+      "run_id": "66cb1658a6af803cf0bc9931",
+      "run_counts": {
+        "discovered": 44,
+        "fetched": 40,
+        "accepted": 30,
+        "rejected": 10,
+        "unchanged": 0,
+        "errors": 4
+      },
+      "run_status": "finished"
+    },
+    {
+      "adapter_id": "abp_en",
+      "source_family": "abp",
+      "lang": "en",
+      "window_days": 90,
+      "date_from": "2026-08-16",
+      "date_to": "2026-11-13",
+      "extractor_version": "abp-jsonld-v1",
+      "mapping_version": "global-category-v2",
+      "command": [
+        "/home/vasu/personal/News-Intelligence-Platform/.venv/bin/python",
+        "-m",
+        "scrapy",
+        "crawl",
+        "abp_en",
+        "-a",
+        "max_articles=150",
+        "-a",
+        "max_listing_pages=20",
+        "-a",
+        "date_from=2026-08-16",
+        "-a",
+        "date_to=2026-11-13",
+        "-s",
+        "MONGO_DATABASE=news_intel_corpus_v1",
+        "-s",
+        "LOG_LEVEL=INFO"
+      ],
+      "environment": {
+        "SCRAPY_SETTINGS_MODULE": "scrapers.settings"
+      },
+      "started_at": "2026-11-12T19:49:39.581551+00:00",
+      "status": "finished",
+      "return_code": 0,
+      "listing_page_limit_reached_sections": 0,
+      "log_tail": ".spidermiddlewares.start.StartSpiderMiddleware',\n 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',\n 'scrapy.spidermiddlewares.referer.RefererMiddleware',\n 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',\n 'scrapy.spidermiddlewares.depth.DepthMiddleware',\n 'scrapy.spidermiddlewares.metacopy.MetaCopyDetectionMiddleware']\n2026-11-13 01:19:40 [scrapy.middleware] INFO: Enabled item pipelines:\n['scrapers.pipelines.MongoArticlePipeline']\n2026-11-13 01:19:40 [scrapy.core.engine] INFO: Spider opened\n2026-11-13 01:19:40 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)\n2026-11-13 01:19:40 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023\n2026-11-13 01:19:40 [scrapy.extensions.remote_control] INFO: Remote control HTTP server listening on port 35831 (job 406640-f623a7afa5864205a663c86ff3df7e4a)\n2026-11-13 01:20:40 [scrapy.extensions.logstats] INFO: Crawled 25 pages (at 25 pages/min), scraped 19 items (at 19 items/min)\n2026-11-13 01:21:40 [scrapy.extensions.logstats] INFO: Crawled 50 pages (at 25 pages/min), scraped 44 items (at 25 items/min)\n2026-11-13 01:22:40 [scrapy.extensions.logstats] INFO: Crawled 73 pages (at 23 pages/min), scraped 67 items (at 23 items/min)\n2026-11-13 01:23:40 [scrapy.extensions.logstats] INFO: Crawled 97 pages (at 24 pages/min), scraped 91 items (at 24 items/min)\n2026-11-13 01:24:02 [scrapy.core.engine] INFO: Closing spider (finished)\n2026-11-13 01:24:03 [scrapy.statscollectors] INFO: Dumping Scrapy stats:\n{'downloader/request_bytes': 40930,\n 'downloader/request_count': 107,\n 'downloader/request_method_count/GET': 107,\n 'downloader/response_bytes': 7212985,\n 'downloader/response_count': 107,\n 'downloader/response_status_count/200': 107,\n 'elapsed_time_seconds': 262.8030661779994,\n 'finish_reason': 'finished',\n 'finish_reason_error': False,\n 'finish_time': datetime.datetime(2026, 11, 12, 19, 54, 3, 41269, tzinfo=datetime.timezone.utc),\n 'httpcompression/response_bytes': 33925691,\n 'httpcompression/response_count': 107,\n 'item_scraped_count': 101,\n 'items_per_minute': 23.129770992366414,\n 'log_count/INFO': 8,\n 'memusage/max': 103866368,\n 'memusage/startup': 94855168,\n 'request_backout_seconds/concurrency': 242.86432469899955,\n 'request_backout_seconds/total': 242.86432469899955,\n 'request_depth_max': 1,\n 'response_received_count': 107,\n 'responses_per_minute': 24.503816793893133,\n 'robotstxt/request_count': 1,\n 'robotstxt/response_count': 1,\n 'robotstxt/response_status_count/200': 1,\n 'scheduler/dequeued': 106,\n 'scheduler/dequeued/memory': 106,\n 'scheduler/enqueued': 106,\n 'scheduler/enqueued/memory': 106,\n 'scraper/date_from_utc': '2026-08-16T00:00:00+00:00',\n 'scraper/date_to_utc': '2026-11-13T00:00:00+00:00',\n 'scraper/discovered': 101,\n 'scraper/max_listing_pages': 1,\n 'start_time': datetime.datetime(2026, 11, 12, 19, 49, 40, 238203, tzinfo=datetime.timezone.utc)}\n2026-11-13 01:24:03 [scrapy.core.engine] INFO: Spider closed (finished)\n",
+      "elapsed_seconds": 264.0,
+      "ended_at": "2026-11-12T19:54:03.605450+00:00",
+      "run_id": "15e7c11ceded2c79b18c3d79",
+      "run_counts": {
+        "discovered": 101,
+        "fetched": 101,
+        "accepted": 93,
+        "rejected": 8,
+        "unchanged": 46,
+        "errors": 0
+      },
+      "run_status": "finished"
+    },
+    {
+      "adapter_id": "amarujala_hi",
+      "source_family": "amarujala",
+      "lang": "hi",
+      "window_days": 90,
+      "date_from": "2026-08-16",
+      "date_to": "2026-11-13",
+      "extractor_version": "amarujala-jsonld-v1",
+      "mapping_version": "global-category-v3",
+      "command": [
+        "/home/vasu/personal/News-Intelligence-Platform/.venv/bin/python",
+        "-m",
+        "scrapy",
+        "crawl",
+        "amarujala_hi",
+        "-a",
+        "max_articles=150",
+        "-a",
+        "max_listing_pages=20",
+        "-a",
+        "date_from=2026-08-16",
+        "-a",
+        "date_to=2026-11-13",
+        "-s",
+        "MONGO_DATABASE=news_intel_corpus_v1",
+        "-s",
+        "LOG_LEVEL=INFO"
+      ],
+      "environment": {
+        "SCRAPY_SETTINGS_MODULE": "scrapers.settings"
+      },
+      "started_at": "2026-11-12T19:54:03.613122+00:00",
+      "status": "finished",
+      "return_code": 0,
+      "listing_page_limit_reached_sections": 0,
+      "log_tail": "py.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',\n 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',\n 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',\n 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',\n 'scrapy.downloadermiddlewares.stats.DownloaderStats']\n2026-11-13 01:24:04 [scrapy.middleware] INFO: Enabled spider middlewares:\n['scrapy.spidermiddlewares.start.StartSpiderMiddleware',\n 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',\n 'scrapy.spidermiddlewares.referer.RefererMiddleware',\n 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',\n 'scrapy.spidermiddlewares.depth.DepthMiddleware',\n 'scrapy.spidermiddlewares.metacopy.MetaCopyDetectionMiddleware']\n2026-11-13 01:24:04 [scrapy.middleware] INFO: Enabled item pipelines:\n['scrapers.pipelines.MongoArticlePipeline']\n2026-11-13 01:24:04 [scrapy.core.engine] INFO: Spider opened\n2026-11-13 01:24:04 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)\n2026-11-13 01:24:04 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6024\n2026-11-13 01:24:04 [scrapy.extensions.remote_control] INFO: Remote control HTTP server listening on port 46437 (job 417806-5055abbf327946fdaf18d17223b6a093)\n2026-11-13 01:25:04 [scrapy.extensions.logstats] INFO: Crawled 24 pages (at 24 pages/min), scraped 18 items (at 18 items/min)\n2026-11-13 01:25:58 [scrapy.core.engine] INFO: Closing spider (finished)\n2026-11-13 01:25:58 [scrapy.statscollectors] INFO: Dumping Scrapy stats:\n{'downloader/request_bytes': 21769,\n 'downloader/request_count': 47,\n 'downloader/request_method_count/GET': 47,\n 'downloader/response_bytes': 10878707,\n 'downloader/response_count': 47,\n 'downloader/response_status_count/200': 47,\n 'elapsed_time_seconds': 114.03125171200008,\n 'finish_reason': 'finished',\n 'finish_reason_error': False,\n 'finish_time': datetime.datetime(2026, 11, 12, 19, 55, 58, 304316, tzinfo=datetime.timezone.utc),\n 'httpcompression/response_bytes': 41884945,\n 'httpcompression/response_count': 47,\n 'item_scraped_count': 41,\n 'items_per_minute': 21.578947368421055,\n 'log_count/INFO': 5,\n 'memusage/max': 113106944,\n 'memusage/startup': 94449664,\n 'request_backout_seconds/concurrency': 93.99000400500336,\n 'request_backout_seconds/total': 93.99000400500336,\n 'request_depth_max': 1,\n 'response_received_count': 47,\n 'responses_per_minute': 24.736842105263158,\n 'robotstxt/request_count': 1,\n 'robotstxt/response_count': 1,\n 'robotstxt/response_status_count/200': 1,\n 'scheduler/dequeued': 46,\n 'scheduler/dequeued/memory': 46,\n 'scheduler/enqueued': 46,\n 'scheduler/enqueued/memory': 46,\n 'scraper/date_from_utc': '2026-08-16T00:00:00+00:00',\n 'scraper/date_to_utc': '2026-11-13T00:00:00+00:00',\n 'scraper/discovered': 41,\n 'scraper/max_listing_pages': 1,\n 'start_time': datetime.datetime(2026, 11, 12, 19, 54, 4, 273064, tzinfo=datetime.timezone.utc)}\n2026-11-13 01:25:58 [scrapy.core.engine] INFO: Spider closed (finished)\n",
+      "elapsed_seconds": 115.3,
+      "ended_at": "2026-11-12T19:55:58.954433+00:00",
+      "run_id": "4432dc5c891649bf59035afe",
+      "run_counts": {
+        "discovered": 41,
+        "fetched": 41,
+        "accepted": 25,
+        "rejected": 16,
+        "unchanged": 0,
+        "errors": 0
+      },
+      "run_status": "finished"
+    },
+    {
+      "adapter_id": "abp_hi",
+      "source_family": "abp",
+      "lang": "hi",
+      "window_days": 90,
+      "date_from": "2026-08-16",
+      "date_to": "2026-11-13",
+      "extractor_version": "abp-jsonld-v1",
+      "mapping_version": "global-category-v2",
+      "command": [
+        "/home/vasu/personal/News-Intelligence-Platform/.venv/bin/python",
+        "-m",
+        "scrapy",
+        "crawl",
+        "abp_hi",
+        "-a",
+        "max_articles=150",
+        "-a",
+        "max_listing_pages=20",
+        "-a",
+        "date_from=2026-08-16",
+        "-a",
+        "date_to=2026-11-13",
+        "-s",
+        "MONGO_DATABASE=news_intel_corpus_v1",
+        "-s",
+        "LOG_LEVEL=INFO"
+      ],
+      "environment": {
+        "SCRAPY_SETTINGS_MODULE": "scrapers.settings"
+      },
+      "started_at": "2026-11-12T19:54:03.612589+00:00",
+      "status": "finished",
+      "return_code": 0,
+      "listing_page_limit_reached_sections": 0,
+      "log_tail": "'scrapy.downloadermiddlewares.stats.DownloaderStats']\n2026-11-13 01:24:04 [scrapy.middleware] INFO: Enabled spider middlewares:\n['scrapy.spidermiddlewares.start.StartSpiderMiddleware',\n 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',\n 'scrapy.spidermiddlewares.referer.RefererMiddleware',\n 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',\n 'scrapy.spidermiddlewares.depth.DepthMiddleware',\n 'scrapy.spidermiddlewares.metacopy.MetaCopyDetectionMiddleware']\n2026-11-13 01:24:04 [scrapy.middleware] INFO: Enabled item pipelines:\n['scrapers.pipelines.MongoArticlePipeline']\n2026-11-13 01:24:04 [scrapy.core.engine] INFO: Spider opened\n2026-11-13 01:24:04 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)\n2026-11-13 01:24:04 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023\n2026-11-13 01:24:04 [scrapy.extensions.remote_control] INFO: Remote control HTTP server listening on port 38543 (job 417807-a30de171337a4d4e9bdc8c1bd9efd22c)\n2026-11-13 01:25:04 [scrapy.extensions.logstats] INFO: Crawled 24 pages (at 24 pages/min), scraped 19 items (at 19 items/min)\n2026-11-13 01:26:04 [scrapy.extensions.logstats] INFO: Crawled 48 pages (at 24 pages/min), scraped 43 items (at 24 items/min)\n2026-11-13 01:27:04 [scrapy.extensions.logstats] INFO: Crawled 74 pages (at 26 pages/min), scraped 69 items (at 26 items/min)\n2026-11-13 01:27:55 [scrapy.core.engine] INFO: Closing spider (finished)\n2026-11-13 01:27:55 [scrapy.statscollectors] INFO: Dumping Scrapy stats:\n{'downloader/request_bytes': 37652,\n 'downloader/request_count': 97,\n 'downloader/request_method_count/GET': 97,\n 'downloader/response_bytes': 6448591,\n 'downloader/response_count': 97,\n 'downloader/response_status_count/200': 97,\n 'elapsed_time_seconds': 231.72684640999978,\n 'finish_reason': 'finished',\n 'finish_reason_error': False,\n 'finish_time': datetime.datetime(2026, 11, 12, 19, 57, 55, 977991, tzinfo=datetime.timezone.utc),\n 'httpcompression/response_bytes': 32113758,\n 'httpcompression/response_count': 97,\n 'item_scraped_count': 92,\n 'items_per_minute': 23.896103896103895,\n 'log_count/INFO': 7,\n 'memusage/max': 104685568,\n 'memusage/startup': 94752768,\n 'request_backout_seconds/concurrency': 212.02377779400376,\n 'request_backout_seconds/total': 212.02377779400376,\n 'request_depth_max': 1,\n 'response_received_count': 97,\n 'responses_per_minute': 25.194805194805195,\n 'robotstxt/request_count': 1,\n 'robotstxt/response_count': 1,\n 'robotstxt/response_status_count/200': 1,\n 'scheduler/dequeued': 96,\n 'scheduler/dequeued/memory': 96,\n 'scheduler/enqueued': 96,\n 'scheduler/enqueued/memory': 96,\n 'scraper/date_from_utc': '2026-08-16T00:00:00+00:00',\n 'scraper/date_to_utc': '2026-11-13T00:00:00+00:00',\n 'scraper/discovered': 92,\n 'scraper/max_listing_pages': 1,\n 'start_time': datetime.datetime(2026, 11, 12, 19, 54, 4, 251144, tzinfo=datetime.timezone.utc)}\n2026-11-13 01:27:55 [scrapy.core.engine] INFO: Spider closed (finished)\n",
+      "elapsed_seconds": 233.0,
+      "ended_at": "2026-11-12T19:57:56.584735+00:00",
+      "run_id": "c5b42a0c844b0e3397ae8432",
+      "run_counts": {
+        "discovered": 92,
+        "fetched": 92,
+        "accepted": 91,
+        "rejected": 1,
+        "unchanged": 0,
+        "errors": 0
+      },
+      "run_status": "finished"
+    },
+    {
+      "adapter_id": "news18_bn",
+      "source_family": "news18",
+      "lang": "bn",
+      "window_days": 90,
+      "date_from": "2026-08-16",
+      "date_to": "2026-11-13",
+      "extractor_version": "news18-jsonld-v1",
+      "mapping_version": "global-category-v2",
+      "command": [
+        "/home/vasu/personal/News-Intelligence-Platform/.venv/bin/python",
+        "-m",
+        "scrapy",
+        "crawl",
+        "news18_bn",
+        "-a",
+        "max_articles=150",
+        "-a",
+        "max_listing_pages=20",
+        "-a",
+        "date_from=2026-08-16",
+        "-a",
+        "date_to=2026-11-13",
+        "-s",
+        "MONGO_DATABASE=news_intel_corpus_v1",
+        "-s",
+        "LOG_LEVEL=INFO"
+      ],
+      "environment": {
+        "SCRAPY_SETTINGS_MODULE": "scrapers.settings"
+      },
+      "started_at": "2026-11-12T19:57:56.591603+00:00",
+      "status": "finished",
+      "return_code": 0,
+      "listing_page_limit_reached_sections": 2,
+      "log_tail": "ddleware] INFO: Enabled spider middlewares:\n['scrapy.spidermiddlewares.start.StartSpiderMiddleware',\n 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',\n 'scrapy.spidermiddlewares.referer.RefererMiddleware',\n 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',\n 'scrapy.spidermiddlewares.depth.DepthMiddleware',\n 'scrapy.spidermiddlewares.metacopy.MetaCopyDetectionMiddleware']\n2026-11-13 01:27:57 [scrapy.middleware] INFO: Enabled item pipelines:\n['scrapers.pipelines.MongoArticlePipeline']\n2026-11-13 01:27:57 [scrapy.core.engine] INFO: Spider opened\n2026-11-13 01:27:57 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)\n2026-11-13 01:27:57 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6024\n2026-11-13 01:27:57 [scrapy.extensions.remote_control] INFO: Remote control HTTP server listening on port 40985 (job 427412-8b54afe01c70433c93e5b820b2c6cab7)\n2026-11-13 01:28:57 [scrapy.extensions.logstats] INFO: Crawled 22 pages (at 22 pages/min), scraped 14 items (at 14 items/min)\n2026-11-13 01:29:57 [scrapy.extensions.logstats] INFO: Crawled 48 pages (at 26 pages/min), scraped 37 items (at 23 items/min)\n2026-11-13 01:30:57 [scrapy.extensions.logstats] INFO: Crawled 73 pages (at 25 pages/min), scraped 62 items (at 25 items/min)\n2026-11-13 01:31:23 [scrapy.core.engine] INFO: Closing spider (finished)\n2026-11-13 01:31:23 [scrapy.statscollectors] INFO: Dumping Scrapy stats:\n{'downloader/request_bytes': 35173,\n 'downloader/request_count': 86,\n 'downloader/request_method_count/GET': 86,\n 'downloader/response_bytes': 9817646,\n 'downloader/response_count': 86,\n 'downloader/response_status_count/200': 84,\n 'downloader/response_status_count/308': 2,\n 'elapsed_time_seconds': 206.14133297300032,\n 'finish_reason': 'finished',\n 'finish_reason_error': False,\n 'finish_time': datetime.datetime(2026, 11, 12, 20, 1, 23, 270344, tzinfo=datetime.timezone.utc),\n 'httpcompression/response_bytes': 56648212,\n 'httpcompression/response_count': 84,\n 'item_scraped_count': 73,\n 'items_per_minute': 21.2621359223301,\n 'log_count/INFO': 7,\n 'memusage/max': 106950656,\n 'memusage/startup': 94658560,\n 'request_backout_seconds/concurrency': 179.64652411799943,\n 'request_backout_seconds/total': 179.64652411799943,\n 'request_depth_max': 5,\n 'response_received_count': 84,\n 'responses_per_minute': 24.466019417475728,\n 'robotstxt/request_count': 1,\n 'robotstxt/response_count': 1,\n 'robotstxt/response_status_count/200': 1,\n 'scheduler/dequeued': 85,\n 'scheduler/dequeued/memory': 85,\n 'scheduler/enqueued': 85,\n 'scheduler/enqueued/memory': 85,\n 'scraper/date_from_utc': '2026-08-16T00:00:00+00:00',\n 'scraper/date_to_utc': '2026-11-13T00:00:00+00:00',\n 'scraper/discovered': 73,\n 'scraper/listing_page_limit_reached': 2,\n 'scraper/max_listing_pages': 5,\n 'start_time': datetime.datetime(2026, 11, 12, 19, 57, 57, 129012, tzinfo=datetime.timezone.utc)}\n2026-11-13 01:31:23 [scrapy.core.engine] INFO: Spider closed (finished)\n",
+      "elapsed_seconds": 207.2,
+      "ended_at": "2026-11-12T20:01:23.804219+00:00",
+      "run_id": "61704586c5fbe4735c566d75",
+      "run_counts": {
+        "discovered": 73,
+        "fetched": 73,
+        "accepted": 73,
+        "rejected": 0,
+        "unchanged": 0,
+        "errors": 0
+      },
+      "run_status": "finished"
+    },
+    {
+      "adapter_id": "abp_bn",
+      "source_family": "abp",
+      "lang": "bn",
+      "window_days": 90,
+      "date_from": "2026-08-16",
+      "date_to": "2026-11-13",
+      "extractor_version": "abp-jsonld-v1",
+      "mapping_version": "global-category-v2",
+      "command": [
+        "/home/vasu/personal/News-Intelligence-Platform/.venv/bin/python",
+        "-m",
+        "scrapy",
+        "crawl",
+        "abp_bn",
+        "-a",
+        "max_articles=150",
+        "-a",
+        "max_listing_pages=20",
+        "-a",
+        "date_from=2026-08-16",
+        "-a",
+        "date_to=2026-11-13",
+        "-s",
+        "MONGO_DATABASE=news_intel_corpus_v1",
+        "-s",
+        "LOG_LEVEL=INFO"
+      ],
+      "environment": {
+        "SCRAPY_SETTINGS_MODULE": "scrapers.settings"
+      },
+      "started_at": "2026-11-12T19:57:56.591170+00:00",
+      "status": "finished",
+      "return_code": 0,
+      "listing_page_limit_reached_sections": 0,
+      "log_tail": "apy.spidermiddlewares.start.StartSpiderMiddleware',\n 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',\n 'scrapy.spidermiddlewares.referer.RefererMiddleware',\n 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',\n 'scrapy.spidermiddlewares.depth.DepthMiddleware',\n 'scrapy.spidermiddlewares.metacopy.MetaCopyDetectionMiddleware']\n2026-11-13 01:27:57 [scrapy.middleware] INFO: Enabled item pipelines:\n['scrapers.pipelines.MongoArticlePipeline']\n2026-11-13 01:27:57 [scrapy.core.engine] INFO: Spider opened\n2026-11-13 01:27:57 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)\n2026-11-13 01:27:57 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023\n2026-11-13 01:27:57 [scrapy.extensions.remote_control] INFO: Remote control HTTP server listening on port 33911 (job 427411-01c354236a564c67a3af29be6c067d72)\n2026-11-13 01:28:57 [scrapy.extensions.logstats] INFO: Crawled 23 pages (at 23 pages/min), scraped 17 items (at 17 items/min)\n2026-11-13 01:29:57 [scrapy.extensions.logstats] INFO: Crawled 47 pages (at 24 pages/min), scraped 41 items (at 24 items/min)\n2026-11-13 01:30:57 [scrapy.extensions.logstats] INFO: Crawled 71 pages (at 24 pages/min), scraped 65 items (at 24 items/min)\n2026-11-13 01:31:57 [scrapy.extensions.logstats] INFO: Crawled 96 pages (at 25 pages/min), scraped 90 items (at 25 items/min)\n2026-11-13 01:32:14 [scrapy.core.engine] INFO: Closing spider (finished)\n2026-11-13 01:32:14 [scrapy.statscollectors] INFO: Dumping Scrapy stats:\n{'downloader/request_bytes': 41056,\n 'downloader/request_count': 103,\n 'downloader/request_method_count/GET': 103,\n 'downloader/response_bytes': 6868075,\n 'downloader/response_count': 103,\n 'downloader/response_status_count/200': 103,\n 'elapsed_time_seconds': 257.5750229509995,\n 'finish_reason': 'finished',\n 'finish_reason_error': False,\n 'finish_time': datetime.datetime(2026, 11, 12, 20, 2, 14, 703995, tzinfo=datetime.timezone.utc),\n 'httpcompression/response_bytes': 35627438,\n 'httpcompression/response_count': 103,\n 'item_scraped_count': 97,\n 'items_per_minute': 22.64591439688716,\n 'log_count/INFO': 8,\n 'memusage/max': 104345600,\n 'memusage/startup': 95232000,\n 'request_backout_seconds/concurrency': 237.18210912399627,\n 'request_backout_seconds/total': 237.18210912399627,\n 'request_depth_max': 1,\n 'response_received_count': 103,\n 'responses_per_minute': 24.04669260700389,\n 'robotstxt/request_count': 1,\n 'robotstxt/response_count': 1,\n 'robotstxt/response_status_count/200': 1,\n 'scheduler/dequeued': 102,\n 'scheduler/dequeued/memory': 102,\n 'scheduler/enqueued': 102,\n 'scheduler/enqueued/memory': 102,\n 'scraper/date_from_utc': '2026-08-16T00:00:00+00:00',\n 'scraper/date_to_utc': '2026-11-13T00:00:00+00:00',\n 'scraper/discovered': 97,\n 'scraper/max_listing_pages': 1,\n 'start_time': datetime.datetime(2026, 11, 12, 19, 57, 57, 128973, tzinfo=datetime.timezone.utc)}\n2026-11-13 01:32:14 [scrapy.core.engine] INFO: Spider closed (finished)\n",
+      "elapsed_seconds": 258.4,
+      "ended_at": "2026-11-12T20:02:14.966237+00:00",
+      "run_id": "6dec57ae5d446b8a084b17a2",
+      "run_counts": {
+        "discovered": 97,
+        "fetched": 97,
+        "accepted": 83,
+        "rejected": 14,
+        "unchanged": 0,
+        "errors": 0
+      },
+      "run_status": "finished"
+    },
+    {
+      "adapter_id": "loksatta_mr",
+      "source_family": "loksatta",
+      "lang": "mr",
+      "window_days": 90,
+      "date_from": "2026-08-16",
+      "date_to": "2026-11-13",
+      "extractor_version": "loksatta-html-v1",
+      "mapping_version": "global-category-v2",
+      "command": [
+        "/home/vasu/personal/News-Intelligence-Platform/.venv/bin/python",
+        "-m",
+        "scrapy",
+        "crawl",
+        "loksatta_mr",
+        "-a",
+        "max_articles=150",
+        "-a",
+        "max_listing_pages=20",
+        "-a",
+        "date_from=2026-08-16",
+        "-a",
+        "date_to=2026-11-13",
+        "-s",
+        "MONGO_DATABASE=news_intel_corpus_v1",
+        "-s",
+        "LOG_LEVEL=INFO"
+      ],
+      "environment": {
+        "SCRAPY_SETTINGS_MODULE": "scrapers.settings"
+      },
+      "started_at": "2026-11-12T20:02:14.973303+00:00",
+      "status": "finished",
+      "return_code": 0,
+      "listing_page_limit_reached_sections": 0,
+      "log_tail": "are',\n 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',\n 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',\n 'scrapy.downloadermiddlewares.stats.DownloaderStats']\n2026-11-13 01:32:15 [scrapy.middleware] INFO: Enabled spider middlewares:\n['scrapy.spidermiddlewares.start.StartSpiderMiddleware',\n 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',\n 'scrapy.spidermiddlewares.referer.RefererMiddleware',\n 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',\n 'scrapy.spidermiddlewares.depth.DepthMiddleware',\n 'scrapy.spidermiddlewares.metacopy.MetaCopyDetectionMiddleware']\n2026-11-13 01:32:15 [scrapy.middleware] INFO: Enabled item pipelines:\n['scrapers.pipelines.MongoArticlePipeline']\n2026-11-13 01:32:15 [scrapy.core.engine] INFO: Spider opened\n2026-11-13 01:32:15 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)\n2026-11-13 01:32:15 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6024\n2026-11-13 01:32:15 [scrapy.extensions.remote_control] INFO: Remote control HTTP server listening on port 40997 (job 441345-e0b030dd875c48fb81f00e4c19381877)\n2026-11-13 01:33:15 [scrapy.extensions.logstats] INFO: Crawled 24 pages (at 24 pages/min), scraped 18 items (at 18 items/min)\n2026-11-13 01:34:15 [scrapy.extensions.logstats] INFO: Crawled 50 pages (at 26 pages/min), scraped 44 items (at 26 items/min)\n2026-11-13 01:34:22 [scrapy.core.engine] INFO: Closing spider (finished)\n2026-11-13 01:34:22 [scrapy.statscollectors] INFO: Dumping Scrapy stats:\n{'downloader/request_bytes': 21212,\n 'downloader/request_count': 54,\n 'downloader/request_method_count/GET': 54,\n 'downloader/response_bytes': 5674832,\n 'downloader/response_count': 54,\n 'downloader/response_status_count/200': 54,\n 'elapsed_time_seconds': 127.60945262299902,\n 'finish_reason': 'finished',\n 'finish_reason_error': False,\n 'finish_time': datetime.datetime(2026, 11, 12, 20, 4, 22, 930777, tzinfo=datetime.timezone.utc),\n 'httpcompression/response_bytes': 24023181,\n 'httpcompression/response_count': 54,\n 'item_scraped_count': 48,\n 'items_per_minute': 22.677165354330707,\n 'log_count/INFO': 6,\n 'memusage/max': 103673856,\n 'memusage/startup': 93859840,\n 'request_backout_seconds/concurrency': 107.8998141440079,\n 'request_backout_seconds/total': 107.8998141440079,\n 'request_depth_max': 1,\n 'response_received_count': 54,\n 'responses_per_minute': 25.511811023622048,\n 'robotstxt/request_count': 1,\n 'robotstxt/response_count': 1,\n 'robotstxt/response_status_count/200': 1,\n 'scheduler/dequeued': 53,\n 'scheduler/dequeued/memory': 53,\n 'scheduler/enqueued': 53,\n 'scheduler/enqueued/memory': 53,\n 'scraper/date_from_utc': '2026-08-16T00:00:00+00:00',\n 'scraper/date_to_utc': '2026-11-13T00:00:00+00:00',\n 'scraper/discovered': 48,\n 'scraper/max_listing_pages': 1,\n 'start_time': datetime.datetime(2026, 11, 12, 20, 2, 15, 321324, tzinfo=datetime.timezone.utc)}\n2026-11-13 01:34:22 [scrapy.core.engine] INFO: Spider closed (finished)\n",
+      "elapsed_seconds": 128.5,
+      "ended_at": "2026-11-12T20:04:23.440217+00:00",
+      "run_id": "2183aa14709a8b6cc9f918cd",
+      "run_counts": {
+        "discovered": 48,
+        "fetched": 48,
+        "accepted": 36,
+        "rejected": 12,
+        "unchanged": 0,
+        "errors": 0
+      },
+      "run_status": "finished"
+    },
+    {
+      "adapter_id": "abp_mr",
+      "source_family": "abp",
+      "lang": "mr",
+      "window_days": 90,
+      "date_from": "2026-08-16",
+      "date_to": "2026-11-13",
+      "extractor_version": "abp-jsonld-v1",
+      "mapping_version": "global-category-v2",
+      "command": [
+        "/home/vasu/personal/News-Intelligence-Platform/.venv/bin/python",
+        "-m",
+        "scrapy",
+        "crawl",
+        "abp_mr",
+        "-a",
+        "max_articles=150",
+        "-a",
+        "max_listing_pages=20",
+        "-a",
+        "date_from=2026-08-16",
+        "-a",
+        "date_to=2026-11-13",
+        "-s",
+        "MONGO_DATABASE=news_intel_corpus_v1",
+        "-s",
+        "LOG_LEVEL=INFO"
+      ],
+      "environment": {
+        "SCRAPY_SETTINGS_MODULE": "scrapers.settings"
+      },
+      "started_at": "2026-11-12T20:02:14.972818+00:00",
+      "status": "finished",
+      "return_code": 0,
+      "listing_page_limit_reached_sections": 0,
+      "log_tail": "aderStats']\n2026-11-13 01:32:15 [scrapy.middleware] INFO: Enabled spider middlewares:\n['scrapy.spidermiddlewares.start.StartSpiderMiddleware',\n 'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',\n 'scrapy.spidermiddlewares.referer.RefererMiddleware',\n 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',\n 'scrapy.spidermiddlewares.depth.DepthMiddleware',\n 'scrapy.spidermiddlewares.metacopy.MetaCopyDetectionMiddleware']\n2026-11-13 01:32:15 [scrapy.middleware] INFO: Enabled item pipelines:\n['scrapers.pipelines.MongoArticlePipeline']\n2026-11-13 01:32:15 [scrapy.core.engine] INFO: Spider opened\n2026-11-13 01:32:15 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)\n2026-11-13 01:32:15 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023\n2026-11-13 01:32:15 [scrapy.extensions.remote_control] INFO: Remote control HTTP server listening on port 33093 (job 441346-2c0c886593494ef397ce570ccbc19431)\n2026-11-13 01:33:15 [scrapy.extensions.logstats] INFO: Crawled 22 pages (at 22 pages/min), scraped 17 items (at 17 items/min)\n2026-11-13 01:34:15 [scrapy.extensions.logstats] INFO: Crawled 47 pages (at 25 pages/min), scraped 42 items (at 25 items/min)\n2026-11-13 01:35:15 [scrapy.extensions.logstats] INFO: Crawled 71 pages (at 24 pages/min), scraped 66 items (at 24 items/min)\n2026-11-13 01:36:12 [scrapy.core.engine] INFO: Closing spider (finished)\n2026-11-13 01:36:12 [scrapy.statscollectors] INFO: Dumping Scrapy stats:\n{'downloader/request_bytes': 40758,\n 'downloader/request_count': 97,\n 'downloader/request_method_count/GET': 97,\n 'downloader/response_bytes': 6352247,\n 'downloader/response_count': 97,\n 'downloader/response_status_count/200': 95,\n 'downloader/response_status_count/301': 2,\n 'elapsed_time_seconds': 237.27476305100026,\n 'finish_reason': 'finished',\n 'finish_reason_error': False,\n 'finish_time': datetime.datetime(2026, 11, 12, 20, 6, 12, 595554, tzinfo=datetime.timezone.utc),\n 'httpcompression/response_bytes': 32264220,\n 'httpcompression/response_count': 95,\n 'item_scraped_count': 90,\n 'items_per_minute': 22.78481012658228,\n 'log_count/INFO': 7,\n 'memusage/max': 103301120,\n 'memusage/startup': 94441472,\n 'request_backout_seconds/concurrency': 219.34938373099249,\n 'request_backout_seconds/total': 219.34938373099249,\n 'request_depth_max': 1,\n 'response_received_count': 95,\n 'responses_per_minute': 24.050632911392405,\n 'robotstxt/request_count': 1,\n 'robotstxt/response_count': 1,\n 'robotstxt/response_status_count/200': 1,\n 'scheduler/dequeued': 96,\n 'scheduler/dequeued/memory': 96,\n 'scheduler/enqueued': 96,\n 'scheduler/enqueued/memory': 96,\n 'scraper/date_from_utc': '2026-08-16T00:00:00+00:00',\n 'scraper/date_to_utc': '2026-11-13T00:00:00+00:00',\n 'scraper/discovered': 90,\n 'scraper/max_listing_pages': 1,\n 'start_time': datetime.datetime(2026, 11, 12, 20, 2, 15, 320794, tzinfo=datetime.timezone.utc)}\n2026-11-13 01:36:12 [scrapy.core.engine] INFO: Spider closed (finished)\n",
+      "elapsed_seconds": 238.2,
+      "ended_at": "2026-11-12T20:06:13.130759+00:00",
+      "run_id": "a6b9f544337b44a2a50bfb7d",
+      "run_counts": {
+        "discovered": 90,
+        "fetched": 90,
+        "accepted": 85,
+        "rejected": 5,
+        "unchanged": 0,
+        "errors": 0
+      },
+      "run_status": "finished"
+    }
+  ],
+  "expansion": "not automatic; page-limit signals require review because they do not prove older eligible articles exist",
+  "final_summary": {
+    "accepted": 516,
+    "languages": {
+      "en": {
+        "accepted": 123,
+        "families": {
+          "abp": 93,
+          "oneindia": 30
+        }
+      },
+      "hi": {
+        "accepted": 116,
+        "families": {
+          "abp": 91,
+          "amarujala": 25
+        }
+      },
+      "bn": {
+        "accepted": 156,
+        "families": {
+          "news18": 73,
+          "abp": 83
+        }
+      },
+      "mr": {
+        "accepted": 121,
+        "families": {
+          "abp": 85,
+          "loksatta": 36
+        }
+      }
+    }
+  },
+  "coverage_gaps": [
+    "en",
+    "hi",
+    "bn",
+    "mr"
+  ],
+  "stop_reason": "one bounded 90-day pass completed; inspect page-limit signals before any wider-window run",
+  "legacy_database_untouched": true,
+  "completed_at_utc": "2026-11-12T20:06:13.161227+00:00"
+}

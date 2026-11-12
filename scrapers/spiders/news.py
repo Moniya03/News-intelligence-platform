@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from html import unescape
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
@@ -108,11 +108,47 @@ def article_matches_section(url, source, section):
 
 
 class NewsSpider(scrapy.Spider):
-    custom_settings = {"CLOSESPIDER_PAGECOUNT": 36}
+    custom_settings = {"CLOSESPIDER_PAGECOUNT": 540}
 
-    def __init__(self, max_articles=20, **kwargs):
+    def __init__(self, max_articles=20, date_from=None, date_to=None, max_listing_pages=None, **kwargs):
         super().__init__(**kwargs)
-        self.max_articles = max(1, min(int(max_articles), 50))
+        self.max_articles = max(1, min(int(max_articles), 500))
+        if (date_from is None) != (date_to is None):
+            raise ValueError("date_from and date_to must be supplied together")
+        self.date_from = self._parse_bound(date_from) if date_from is not None else None
+        self.date_to = self._parse_bound(date_to) if date_to is not None else None
+        if self.date_from and self.date_from > self.date_to:
+            raise ValueError("date_from must be on or before date_to")
+        self.date_to_exclusive = self.date_to + timedelta(days=1) if self.date_to else None
+        self.date_from_utc = self.date_from.isoformat() if self.date_from else None
+        self.date_to_utc = self.date_to.isoformat() if self.date_to else None
+        provider_page_limit = self.source.get("max_listing_pages", 1)
+        requested_page_limit = provider_page_limit if max_listing_pages is None else int(max_listing_pages)
+        self.max_listing_pages = max(1, min(requested_page_limit, provider_page_limit))
+
+    @staticmethod
+    def _parse_bound(value):
+        value = str(value)
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+            raise ValueError("date bounds must use YYYY-MM-DD")
+        try:
+            return datetime.strptime(value, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        except ValueError as exc:
+            raise ValueError("date bounds must use YYYY-MM-DD") from exc
+
+    def _date_rejection(self, published_at):
+        if not self.date_from:
+            return None
+        try:
+            published = datetime.fromisoformat(str(published_at).replace("Z", "+00:00"))
+        except (TypeError, ValueError):
+            return None  # valid_article records malformed dates separately
+        if published.tzinfo is None:
+            published = published.replace(tzinfo=timezone.utc)
+        published = published.astimezone(timezone.utc)
+        if published < self.date_from or published >= self.date_to_exclusive:
+            return f"outside_date_window_utc:{self.date_from.date()}..{self.date_to.date()}"
+        return None
 
     @property
     def source(self):
@@ -121,8 +157,12 @@ class NewsSpider(scrapy.Spider):
     async def start(self):
         self._seen = set()
         self._seen_listing_pages = set()
+        self._listing_limit_sections = set()
         self._article_count = 0
         self._section_article_counts = {}
+        self.crawler.stats.set_value("scraper/max_listing_pages", self.max_listing_pages)
+        self.crawler.stats.set_value("scraper/date_from_utc", self.date_from_utc)
+        self.crawler.stats.set_value("scraper/date_to_utc", self.date_to_utc)
         for section in self.source["sections"]:
             if section.get("category") not in GLOBAL_CATEGORIES:
                 self.logger.error("skip unmapped section url=%s", section.get("url"))
@@ -184,8 +224,9 @@ class NewsSpider(scrapy.Spider):
         if self._section_article_counts.get(section["url"], 0) >= per_section_limit:
             return
         current_page = response.meta.get("listing_page", 1)
-        maximum = self.source.get("max_listing_pages", 1)
+        maximum = self.max_listing_pages
         candidates = []
+        has_more_than_limit = False
         for anchor in response.css(selector):
             href = anchor.attrib.get("href")
             if not href:
@@ -197,8 +238,13 @@ class NewsSpider(scrapy.Spider):
                 continue
             page_number = int(match.group("page"))
             page_key = (section["url"], url)
+            if page_number > maximum and page_key not in self._seen_listing_pages:
+                has_more_than_limit = True
             if current_page < page_number <= maximum and page_key not in self._seen_listing_pages:
                 candidates.append((page_number, url, page_key))
+        if current_page >= maximum and has_more_than_limit and section["url"] not in self._listing_limit_sections:
+            self._listing_limit_sections.add(section["url"])
+            self.crawler.stats.inc_value("scraper/listing_page_limit_reached")
         if not candidates:
             return
         page_number, url, page_key = min(candidates)
@@ -213,6 +259,10 @@ class NewsSpider(scrapy.Spider):
     def parse_article(self, response):
         extracted = extract_article(response, self.source)
         accepted, reason = validate_response_article(response.status, extracted)
+        date_rejection = self._date_rejection(extracted["published_at"])
+        if accepted and date_rejection:
+            accepted = False
+            reason = date_rejection
         article_id = hashlib.sha256(f"{self.source['family']}\0{extracted['canonical_url']}".encode()).hexdigest()
         raw_html = response.body.decode(response.encoding or "utf-8", errors="replace")
         content_hash = hashlib.sha256(extracted["body"].encode()).hexdigest()

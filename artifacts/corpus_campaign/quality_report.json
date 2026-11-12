@@ -1,0 +1,1359 @@
+{
+  "campaign_id": "corpus-20261112T194939Z",
+  "database": "news_intel_corpus_v1",
+  "date_window_utc_inclusive": {
+    "from": "2026-08-16",
+    "to": "2026-11-13"
+  },
+  "read_only": true,
+  "accepted_current_article_records": 516,
+  "accepted_in_window": 516,
+  "by_adapter": {
+    "abp_en": 93,
+    "abp_hi": 91,
+    "abp_bn": 83,
+    "abp_mr": 85,
+    "oneindia_en": 30,
+    "amarujala_hi": 25,
+    "news18_bn": 73,
+    "loksatta_mr": 36
+  },
+  "by_language": {
+    "bn": 156,
+    "en": 123,
+    "hi": 116,
+    "mr": 121
+  },
+  "by_global_category": {
+    "politics": 63,
+    "finance": 129,
+    "health": 76,
+    "science_technology": 80,
+    "environment": 0,
+    "sports": 168
+  },
+  "adapter_category_coverage": {
+    "abp_bn": {
+      "politics": {
+        "accepted_articles_with_mapping": 5,
+        "configured_routes": [
+          {
+            "label": "politics",
+            "url": "https://bengali.abplive.com/news/politics"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "finance": {
+        "accepted_articles_with_mapping": 19,
+        "configured_routes": [
+          {
+            "label": "business",
+            "url": "https://bengali.abplive.com/business"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "health": {
+        "accepted_articles_with_mapping": 18,
+        "configured_routes": [
+          {
+            "label": "health",
+            "url": "https://bengali.abplive.com/lifestyle/health"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "science_technology": {
+        "accepted_articles_with_mapping": 21,
+        "configured_routes": [
+          {
+            "label": "science",
+            "url": "https://bengali.abplive.com/science"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "environment": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "sports": {
+        "accepted_articles_with_mapping": 20,
+        "configured_routes": [
+          {
+            "label": "sports",
+            "url": "https://bengali.abplive.com/sports"
+          }
+        ],
+        "status": "accepted_records"
+      }
+    },
+    "abp_en": {
+      "politics": {
+        "accepted_articles_with_mapping": 23,
+        "configured_routes": [
+          {
+            "label": "elections",
+            "url": "https://news.abplive.com/elections"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "finance": {
+        "accepted_articles_with_mapping": 18,
+        "configured_routes": [
+          {
+            "label": "business",
+            "url": "https://news.abplive.com/business"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "health": {
+        "accepted_articles_with_mapping": 14,
+        "configured_routes": [
+          {
+            "label": "health",
+            "url": "https://news.abplive.com/health"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "science_technology": {
+        "accepted_articles_with_mapping": 15,
+        "configured_routes": [
+          {
+            "label": "science",
+            "url": "https://news.abplive.com/science"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "environment": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "sports": {
+        "accepted_articles_with_mapping": 23,
+        "configured_routes": [
+          {
+            "label": "sports",
+            "url": "https://news.abplive.com/sports"
+          }
+        ],
+        "status": "accepted_records"
+      }
+    },
+    "abp_hi": {
+      "politics": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "finance": {
+        "accepted_articles_with_mapping": 23,
+        "configured_routes": [
+          {
+            "label": "business",
+            "url": "https://www.abplive.com/business"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "health": {
+        "accepted_articles_with_mapping": 23,
+        "configured_routes": [
+          {
+            "label": "health",
+            "url": "https://www.abplive.com/lifestyle/health"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "science_technology": {
+        "accepted_articles_with_mapping": 22,
+        "configured_routes": [
+          {
+            "label": "technology",
+            "url": "https://www.abplive.com/technology"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "environment": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "sports": {
+        "accepted_articles_with_mapping": 23,
+        "configured_routes": [
+          {
+            "label": "sports",
+            "url": "https://www.abplive.com/sports"
+          }
+        ],
+        "status": "accepted_records"
+      }
+    },
+    "abp_mr": {
+      "politics": {
+        "accepted_articles_with_mapping": 23,
+        "configured_routes": [
+          {
+            "label": "politics",
+            "url": "https://marathi.abplive.com/news/politics"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "finance": {
+        "accepted_articles_with_mapping": 18,
+        "configured_routes": [
+          {
+            "label": "business",
+            "url": "https://marathi.abplive.com/business"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "health": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "science_technology": {
+        "accepted_articles_with_mapping": 22,
+        "configured_routes": [
+          {
+            "label": "technology",
+            "url": "https://marathi.abplive.com/news/technology"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "environment": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "sports": {
+        "accepted_articles_with_mapping": 22,
+        "configured_routes": [
+          {
+            "label": "sports",
+            "url": "https://marathi.abplive.com/news/sports"
+          }
+        ],
+        "status": "accepted_records"
+      }
+    },
+    "amarujala_hi": {
+      "politics": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [
+          {
+            "label": "election",
+            "url": "https://www.amarujala.com/election"
+          }
+        ],
+        "status": "configured_route_no_accepted_records"
+      },
+      "finance": {
+        "accepted_articles_with_mapping": 7,
+        "configured_routes": [
+          {
+            "label": "business",
+            "url": "https://www.amarujala.com/business"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "health": {
+        "accepted_articles_with_mapping": 3,
+        "configured_routes": [
+          {
+            "label": "health",
+            "url": "https://www.amarujala.com/lifestyle/yoga-and-health"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "science_technology": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [
+          {
+            "label": "technology",
+            "url": "https://www.amarujala.com/technology"
+          }
+        ],
+        "status": "configured_route_no_accepted_records"
+      },
+      "environment": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "sports": {
+        "accepted_articles_with_mapping": 15,
+        "configured_routes": [
+          {
+            "label": "sports",
+            "url": "https://www.amarujala.com/sports"
+          }
+        ],
+        "status": "accepted_records"
+      }
+    },
+    "loksatta_mr": {
+      "politics": {
+        "accepted_articles_with_mapping": 12,
+        "configured_routes": [
+          {
+            "label": "politics",
+            "url": "https://www.loksatta.com/politics/"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "finance": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [
+          {
+            "label": "finance",
+            "url": "https://www.loksatta.com/business/finance/"
+          }
+        ],
+        "status": "configured_route_no_accepted_records"
+      },
+      "health": {
+        "accepted_articles_with_mapping": 12,
+        "configured_routes": [
+          {
+            "label": "health tips",
+            "url": "https://www.loksatta.com/lifestyle/health-tips/"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "science_technology": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "environment": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [
+          {
+            "label": "पर्यावरण",
+            "url": "https://www.loksatta.com/about/explained-environment/"
+          }
+        ],
+        "status": "configured_route_no_accepted_records"
+      },
+      "sports": {
+        "accepted_articles_with_mapping": 12,
+        "configured_routes": [
+          {
+            "label": "क्रीडा",
+            "url": "https://www.loksatta.com/krida/"
+          }
+        ],
+        "status": "accepted_records"
+      }
+    },
+    "news18_bn": {
+      "politics": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "finance": {
+        "accepted_articles_with_mapping": 32,
+        "configured_routes": [
+          {
+            "label": "business",
+            "url": "https://bengali.news18.com/news/business/"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "health": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "science_technology": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "environment": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "sports": {
+        "accepted_articles_with_mapping": 41,
+        "configured_routes": [
+          {
+            "label": "sports",
+            "url": "https://bengali.news18.com/news/sports/"
+          }
+        ],
+        "status": "accepted_records"
+      }
+    },
+    "oneindia_en": {
+      "politics": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [
+          {
+            "label": "elections",
+            "url": "https://www.oneindia.com/elections/"
+          }
+        ],
+        "status": "configured_route_no_accepted_records"
+      },
+      "finance": {
+        "accepted_articles_with_mapping": 12,
+        "configured_routes": [
+          {
+            "label": "business",
+            "url": "https://www.oneindia.com/business/"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "health": {
+        "accepted_articles_with_mapping": 6,
+        "configured_routes": [
+          {
+            "label": "health",
+            "url": "https://www.oneindia.com/topic/health/"
+          }
+        ],
+        "status": "accepted_records"
+      },
+      "science_technology": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "environment": {
+        "accepted_articles_with_mapping": 0,
+        "configured_routes": [],
+        "status": "no_configured_route"
+      },
+      "sports": {
+        "accepted_articles_with_mapping": 12,
+        "configured_routes": [
+          {
+            "label": "sports",
+            "url": "https://www.oneindia.com/sports/"
+          }
+        ],
+        "status": "accepted_records"
+      }
+    }
+  },
+  "rejections": {
+    "raw_rejected_versions": 66,
+    "by_adapter": {
+      "abp_en": 8,
+      "abp_hi": 1,
+      "abp_bn": 14,
+      "abp_mr": 5,
+      "oneindia_en": 10,
+      "amarujala_hi": 16,
+      "news18_bn": 0,
+      "loksatta_mr": 12
+    },
+    "by_reason": {
+      "body_under_200_chars": 24,
+      "missing_published_at": 12,
+      "outside_date_window_utc:2026-08-16..2026-11-13": 30
+    },
+    "by_adapter_and_reason": {
+      "abp_bn:body_under_200_chars": 14,
+      "abp_en:outside_date_window_utc:2026-08-16..2026-11-13": 8,
+      "abp_hi:body_under_200_chars": 1,
+      "abp_mr:body_under_200_chars": 5,
+      "amarujala_hi:body_under_200_chars": 4,
+      "amarujala_hi:missing_published_at": 12,
+      "loksatta_mr:outside_date_window_utc:2026-08-16..2026-11-13": 12,
+      "oneindia_en:outside_date_window_utc:2026-08-16..2026-11-13": 10
+    }
+  },
+  "flag_counts": {},
+  "flagged_records": [],
+  "exact_body_duplicate_group_count": 0,
+  "cross_publisher_exact_body_review_groups": [],
+  "samples_by_adapter": {
+    "abp_bn": [
+      {
+        "article_id": "0069d9876c7e2c5b7b7ad3990872e5b0008d86e04d8bffb17db1f2e1c832a159",
+        "canonical_url": "https://bengali.abplive.com/business/food-brands-withdraw-misleading-health-claims-after-fssai-flagged-it-cadbury-dairy-milk-bournvita-oreo-amway-coconut-oil-baby-food-1190419",
+        "date": "2026-08-26T13:59:22+05:30",
+        "title": "FSSAI News: মানুষকে ভুল বুঝিয়ে বিক্রি? পিছু হটল ক্যাডবেরি ডেয়ারি মিল্ক, বর্নভিটা, ওরিও, Amway…কী জানাল FSSAI?",
+        "body_chars": 3679,
+        "raw_version_id": "6ff58694b1bcaf032a66d94171b834b21b383efbf13199cc57ee1c81d1983026",
+        "categories": [
+          "health"
+        ],
+        "category_mappings": [
+          {
+            "category": "health",
+            "original_category": "health",
+            "section_url": "https://bengali.abplive.com/lifestyle/health",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.663,
+        "flags": []
+      },
+      {
+        "article_id": "08c26db21c427a40d7d5dcf5a573a97939e2ffd5c28901eeb3ae75c361fd9434",
+        "canonical_url": "https://bengali.abplive.com/business/hdfc-bank-has-raised-interest-rates-on-fds-senior-citizens-will-receive-more-than-7-percent-interest-1198727",
+        "date": "2026-11-08T14:28:48+05:30",
+        "title": "Fixed Deposit Interest Rate: FD-তে সুদের হার বাড়াল এই ব্যাঙ্ক, প্রবীণ নাগরিকরা পাবেন সর্বোচ্চ ৭.২০ শতাংশ সুদ",
+        "body_chars": 1614,
+        "raw_version_id": "8dc0399e59ab62b65101f05f5b713902460d46a1046329a552f79ad34cc433b2",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://bengali.abplive.com/business",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.906,
+        "flags": []
+      },
+      {
+        "article_id": "0d14c174f89536898ec96cfa8d7cd44dcedbb8f0acfbed439abe31f32237f152",
+        "canonical_url": "https://bengali.abplive.com/science/uk-water-saving-campaign-bats-for-rinsing-or-washing-rice-less-how-many-time-it-should-be-reveals-expert-1190441",
+        "date": "2026-08-26T16:14:53+05:30",
+        "title": "Water Crisis: ভাত রাঁধতে পাঁচ-সাতবার চাল ধুচ্ছেন? কমানোর আর্জি, জল বাঁচাতে জোর প্রচার ব্রিটেনে, কী বলছেন বিশেষজ্ঞরা?",
+        "body_chars": 2614,
+        "raw_version_id": "5e566696cfac151e16f47026e3ee8ded820636d26b118bef10be91d5edfd4742",
+        "categories": [
+          "health"
+        ],
+        "category_mappings": [
+          {
+            "category": "health",
+            "original_category": "health",
+            "section_url": "https://bengali.abplive.com/lifestyle/health",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.913,
+        "flags": []
+      },
+      {
+        "article_id": "0d5dbcc8afed926995447a24598c5fe5b77edf00a7c960d2e466c40c36560a86",
+        "canonical_url": "https://bengali.abplive.com/business/mother-dairy-milk-price-hike-november-12-2026-new-rates-1198981",
+        "date": "2026-11-11T12:40:34+05:30",
+        "title": "Mother Dairy: ফের দাম বাড়ল দুধের! বৃহস্পতিবার থেকে লিটার প্রতি কত বেশি দিতে হবে, Mother Dairy-র নতুন দাম কত?",
+        "body_chars": 2652,
+        "raw_version_id": "3dda2225faa6403ae092aae7da2f4ff178e00e7e75ea085e0f6f5ebad713c3ab",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://bengali.abplive.com/business",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.9,
+        "flags": []
+      },
+      {
+        "article_id": "0f77486f82449da9527a9b6dcf4e97c4efbff584c7ee5e8da78c691efe3349fe",
+        "canonical_url": "https://bengali.abplive.com/science/reincarnation-myster-scientific-research-found-bizarre-pattern-in-over-1000-cases-1196909",
+        "date": "2026-10-23T14:17:36+05:30",
+        "title": "Reincarnation Mystery: পুনর্জন্ম বলে কি কিছু হয়? পূর্বজন্মের কথা কি সত্যিই মনে থাকে? গবেষণায় চমকপ্রদ তথ্য, নতুন প্যাটার্ন",
+        "body_chars": 4550,
+        "raw_version_id": "67f44f4579b2c4b18b5db34c7f2d0bf4236f04898c9effda22e59ba7f8c84648",
+        "categories": [
+          "science_technology"
+        ],
+        "category_mappings": [
+          {
+            "category": "science_technology",
+            "original_category": "science",
+            "section_url": "https://bengali.abplive.com/science",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.938,
+        "flags": []
+      }
+    ],
+    "abp_en": [
+      {
+        "article_id": "040720bd5a70ae012c11c72bbbbd090e6239398c13df2f26719648fde1cf618f",
+        "canonical_url": "https://news.abplive.com/health/delhi-aqi-hits-421-near-aiims-how-breathing-toxic-air-can-put-your-heart-at-risk-1875191",
+        "date": "2026-11-08T16:02:46+05:30",
+        "title": "Delhi AQI Hits 421 Near AIIMS: How Breathing Toxic Air Can Put Your Heart At Risk",
+        "body_chars": 5310,
+        "raw_version_id": "710b98c2d33737d9725032154cb26c947161550da29e3a13ee5ae8722b8999df",
+        "categories": [
+          "health"
+        ],
+        "category_mappings": [
+          {
+            "category": "health",
+            "original_category": "health",
+            "section_url": "https://news.abplive.com/health",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "05dcdcd5cd5ce9f0b291085339dd192d29b857574416cf523c003581ce40adbe",
+        "canonical_url": "https://news.abplive.com/sports/cricket/india-vs-pakistan-u19-asia-cup-final-set-defeat-afghanistan-in-semi-final-by-8-wickets-1875669",
+        "date": "2026-11-12T16:59:43+05:30",
+        "title": "India vs Pakistan Final Set! Boys In Blue Storm Into U-19 Asia Cup Title Clash After Afghanistan Rout",
+        "body_chars": 2163,
+        "raw_version_id": "a02a3580e525f09fb82c8e853a6c2f1926b540eb86f5defddbfe42a3f6823106",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://news.abplive.com/sports",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "0e394a8615597e2fe8d9327bfdbab66924d2d081c17754872b07ce3fbbfdb51a",
+        "canonical_url": "https://news.abplive.com/elections/akhilesh-welcomes-owaisi-azad-s-social-change-front-says-bjp-could-lose-2-3-votes-1875681",
+        "date": "2026-11-12T19:20:42+05:30",
+        "title": "Akhilesh Welcomes Owaisi-Azad's 'Social Change Front', Says BJP Could Lose 2-3% Votes",
+        "body_chars": 2575,
+        "raw_version_id": "89fb25bac37c6feddb3629d8d8ba08ee96fc1b66690aa607b1d9a5ec1ffc5cd1",
+        "categories": [
+          "politics"
+        ],
+        "category_mappings": [
+          {
+            "category": "politics",
+            "original_category": "elections",
+            "section_url": "https://news.abplive.com/elections",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "0e5493081a3961b892948e31ff96119d81cb9125795799ea824a0c475bf3ebe4",
+        "canonical_url": "https://news.abplive.com/elections/mlc-results-bjp-nda-wins-16-seats-sp-emerges-strong-in-uttar-pradesh-1873654",
+        "date": "2026-10-28T22:25:46+05:30",
+        "title": "MLC Results: BJP-NDA Wins 16 Seats, SP Emerges Strong In UP With 2 Wins In Varanasi",
+        "body_chars": 6701,
+        "raw_version_id": "d543afd175d900659ecdef0cf514049dce0088f8bdd5588b15c913253c0b8bdd",
+        "categories": [
+          "politics"
+        ],
+        "category_mappings": [
+          {
+            "category": "politics",
+            "original_category": "elections",
+            "section_url": "https://news.abplive.com/elections",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "0fae40a8409917c28a1212dea3017647646d09af5d2bbe1b299f371fb953b799",
+        "canonical_url": "https://news.abplive.com/sports/ipl/trouble-for-psl-three-bangladesh-stars-eye-ipl-2027-auction-1875577",
+        "date": "2026-11-12T10:00:33+05:30",
+        "title": "Trouble For PSL? Three Bangladesh Stars Eye IPL 2027 Auction",
+        "body_chars": 2226,
+        "raw_version_id": "f3322eb70510c83ce2f1a45a3e6ac31746d4acfb5766412f7140b10a81d382f1",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://news.abplive.com/sports",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      }
+    ],
+    "abp_hi": [
+      {
+        "article_id": "01430d2fa95e11551488ebea2527432659ad49bf4625f39486b90f0ad730f710",
+        "canonical_url": "https://www.abplive.com/lifestyle/health/air-pollution-health-effects-pm2-5-heart-brain-diabetes-risk-increase-delhi-aqi-explained-3213571",
+        "date": "2026-11-11T14:46:11+05:30",
+        "title": "Explained: जहरीली हवा फेफड़ों से आगे हार्ट, ब्रेन और शुगर पेशेंट कैसे बनाती है? जानें बचने के उपाय",
+        "body_chars": 4954,
+        "raw_version_id": "b4b948085471d0cea38514ecd2217e98839bf4c0d9d2b69b2e3a1fd724840d3a",
+        "categories": [
+          "health"
+        ],
+        "category_mappings": [
+          {
+            "category": "health",
+            "original_category": "health",
+            "section_url": "https://www.abplive.com/lifestyle/health",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.969,
+        "flags": []
+      },
+      {
+        "article_id": "03b2b94c047617503ad31f66cc03f288c526e9c4e9aa08db959d93d5acb0379d",
+        "canonical_url": "https://www.abplive.com/sports/cricket/rohit-sharma-ruturaj-gaikwad-open-mohammed-siraj-comeback-india-probable-playing-11-vs-new-zealand-4th-odi-3214098",
+        "date": "2026-11-12T19:23:27+05:30",
+        "title": "रोहित-गायकवाड़ करेंगे ओपन, सिराज की वापसी...चौथे ODI में ऐसी हो सकती है भारत की प्लेइंग XI",
+        "body_chars": 2117,
+        "raw_version_id": "97f7ce5d17932b3104754c44dd953b901fb64e624066f6174a5d023806115aec",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://www.abplive.com/sports",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.967,
+        "flags": []
+      },
+      {
+        "article_id": "041d32d0a84df25cb02c732c7453338f8ed54893f4f864088279e8c62dce0d62",
+        "canonical_url": "https://www.abplive.com/business/restaurants-hike-menu-prices-by-5-10-amid-rising-food-and-dairy-costs-3213985",
+        "date": "2026-11-12T18:55:15+05:30",
+        "title": "कॉफी, डोसा और रोज का खाना सब महंगा, देश भर के रेस्टोरेंट्स ने 10% दाम बढ़ाए",
+        "body_chars": 3102,
+        "raw_version_id": "ebd453080c1f872c39be47af0dc670183de15faa3917ad5c9ab0bc326ebdc630",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://www.abplive.com/business",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.998,
+        "flags": []
+      },
+      {
+        "article_id": "05fb5eb5f7fee8bc0501ef39f54d10e51aa1ed358d5812c4a393f63286b57a1e",
+        "canonical_url": "https://www.abplive.com/business/nvidia-ceo-salary-net-worth-bonus-stock-and-other-perks-check-his-package-in-company-as-a-ceo-3213903",
+        "date": "2026-11-12T13:35:36+05:30",
+        "title": "कितनी बेसिक सैलरी और कितने अरब का पैकेज, Nvidia के हुआंग कितने मालदार?",
+        "body_chars": 2614,
+        "raw_version_id": "6cd39a2a8e70a28ff2ad4078e4d55c6a3a54f1cd22c650acaea568a41105733e",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://www.abplive.com/business",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.97,
+        "flags": []
+      },
+      {
+        "article_id": "068fafe9994d5191c5eb41ac17f13fe282333eb6f1128576405dee9c17b7018d",
+        "canonical_url": "https://www.abplive.com/business/after-jensen-huang-resignation-nvidia-shares-down-14-percent-3214141",
+        "date": "2026-11-12T20:46:27+05:30",
+        "title": "हुआंग के इस्तीफे से Nvidia में भूचाल, शेयर 14% टूटे, निवेशकों में हड़कंप",
+        "body_chars": 1958,
+        "raw_version_id": "49bcbbd0f4070552dbc768b3aaa5826eac019095e14266535257a29538e91ea0",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://www.abplive.com/business",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.843,
+        "flags": []
+      }
+    ],
+    "abp_mr": [
+      {
+        "article_id": "01dda5962677e4497c3c4a30a600850d8f76612818b7fe65abdbe912ed18bc5a",
+        "canonical_url": "https://marathi.abplive.com/sports/cricket/sport-news-west-indies-has-a-unique-cricket-record-under-former-cricketer-gus-logie-west-indies-1445038",
+        "date": "2026-11-10T21:44:33+05:30",
+        "title": "ना गोलंदाजी, ना फलंदाजी, तरीही 'सामनावीर'चा पुरस्कार मिळाला, 'या' खेळाडूच्या नावावर अनोखा विक्रम",
+        "body_chars": 2279,
+        "raw_version_id": "11ef9cd702afcce0f7642c588324796c06e2e7035d452b7b2edbe3aac1817560",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://marathi.abplive.com/news/sports",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.964,
+        "flags": []
+      },
+      {
+        "article_id": "034c3e5030e7ea6e295e549951916a5989cd45fd051ef738dfe67b2f4b4abec0",
+        "canonical_url": "https://marathi.abplive.com/news/politics/hitnedra-thakur-said-bva-will-give-all-support-and-help-to-victim-of-naigaon-railway-station-marathi-news-1445181",
+        "date": "2026-11-12T21:53:28+05:30",
+        "title": "Naigaon : नायगाव रेल्वे स्थानक प्रकरणातील पीडित युवतीला मुलगी मानून बविआचा मदतीचा हात; हितेंद्र ठाकूरांची सर्वतोपरी सहकार्याची ग्वाही",
+        "body_chars": 2914,
+        "raw_version_id": "f056373fcb9757a9b217f7a87f86165da6b46c1687cd0584e0cbe81cdb11b43a",
+        "categories": [
+          "politics"
+        ],
+        "category_mappings": [
+          {
+            "category": "politics",
+            "original_category": "politics",
+            "section_url": "https://marathi.abplive.com/news/politics",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "0417b5bd218300662d32ec0341001d896be9b3996f2cc9b2345b1d51388b8141",
+        "canonical_url": "https://marathi.abplive.com/sports/cricket/new-zealand-suffer-double-blow-ahead-of-3rd-odi-against-india-two-fast-bowlers-ruled-out-marathi-news-1444937",
+        "date": "2026-11-09T12:10:08+05:30",
+        "title": "IND vs NZ 3rd ODI : आधी दोन पराभव, आता दोन बॉलर्स OUT! भारताविरुद्ध तिसऱ्या वनडेआधी न्यूझीलंडची गोलंदाजी खिळखिळी, आता कोण झालं बाहेर?",
+        "body_chars": 2614,
+        "raw_version_id": "74e41ef00e1ef651dd062061baceb0e9dbb5a2e5d5532cfcc77e42e8fda8afc6",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://marathi.abplive.com/news/sports",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.969,
+        "flags": []
+      },
+      {
+        "article_id": "0c60560993505f06e8473694d3e703cb3b6b855f176f5943538bea6cb261e460",
+        "canonical_url": "https://marathi.abplive.com/business/gold-price-news-a-major-blow-to-consumers-during-the-festive-season-gold-prices-rise-by-3-percent-1444765",
+        "date": "2026-11-07T11:23:48+05:30",
+        "title": "सणासुदीच्या काळात ग्राहकांना मोठा झटका, सोन्याच्या दरात 3 टक्क्यांची वाढ, खरेदी करावी की नको? सध्या काय आहे दर?",
+        "body_chars": 2655,
+        "raw_version_id": "b916bff787268969d2b2ba22d396d93a9e03117c3449ef909d97f805300e6d66",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://marathi.abplive.com/business",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.99,
+        "flags": []
+      },
+      {
+        "article_id": "0fcda4f75b6efcd495acf9814fa90f0f3765e6c9b808c690f11596b4323310a3",
+        "canonical_url": "https://marathi.abplive.com/news/politics/harshvardhan-patil-revealed-ncp-merger-ajit-pawar-meeting-both-ncp-factions-had-decided-to-come-together-january-18th-1445179",
+        "date": "2026-11-12T21:18:47+05:30",
+        "title": "दोन्ही राष्ट्रवादीने एकत्र यायचं ठरलं होतं, 18 जानेवारीला बैठक झालेली; विलिनीकरणाबाबत हर्षवर्धन पाटलांनी सगळं सांगितलं",
+        "body_chars": 2577,
+        "raw_version_id": "8cbcb5bd31a45334ec09ecf1b12146626cbbc7bd8920350c0d2c813ed2caa7d4",
+        "categories": [
+          "politics"
+        ],
+        "category_mappings": [
+          {
+            "category": "politics",
+            "original_category": "politics",
+            "section_url": "https://marathi.abplive.com/news/politics",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.985,
+        "flags": []
+      }
+    ],
+    "amarujala_hi": [
+      {
+        "article_id": "0dc01b3150084e0510f5390e160217299fd2e7ebd5bd65e156313162cc9b5cb0",
+        "canonical_url": "https://www.amarujala.com/business/business-diary/why-is-the-indian-stock-market-attracting-foreign-investors-pk-mishra-explains-reason-behind-rise-investment-2026-11-12",
+        "date": "2026-11-12T14:53:54+05:30",
+        "title": "एफआईआई: विदेशी निवेशकों को क्यों लुभा रहा भारतीय शेयर बाजार? पीके मिश्रा ने बताई निवेश बढ़ने की वजह",
+        "body_chars": 2449,
+        "raw_version_id": "e3da1dad46f8d50089bd74eb988b9685e1508a42d8a5363e3a1b5a01ee335b01",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://www.amarujala.com/business",
+            "mapping_version": "global-category-v3"
+          }
+        ],
+        "language_script_ratio": 0.996,
+        "flags": []
+      },
+      {
+        "article_id": "307d4b2f74ee6dde6365a7e07f5b0d4f2acede0244173b766152366fbb0ffb83",
+        "canonical_url": "https://www.amarujala.com/sports/india-shines-at-issf-world-championship-2026-womens-25m-pistol-team-wins-gold-mens-50m-rifle-team-bags-bronze-2026-11-10",
+        "date": "2026-11-10T20:34:42+05:30",
+        "title": "आईएसएसएफ वर्ल्ड चैंपियनशिप: ईशा, मनु और दिव्या की तिकड़ी ने दिलाया स्वर्ण पदक, पुरुष टीम ने जीता कांस्य",
+        "body_chars": 3036,
+        "raw_version_id": "c82ec547047f625b58bd7860c62bbe847822b58992da1c0be06ee1a3cf6820ca",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://www.amarujala.com/sports",
+            "mapping_version": "global-category-v3"
+          }
+        ],
+        "language_script_ratio": 0.986,
+        "flags": []
+      },
+      {
+        "article_id": "3342e51cb9df7cbb41a6bda653737134be514a37e8f2659d25f734ca052c92d3",
+        "canonical_url": "https://www.amarujala.com/sports/india-s-lairenlakpam-ambekar-meetei-stormed-into-men-s-50kg-boxing-final-at-dakar-2026-youth-olympic-games-2026-11-11",
+        "date": "2026-11-11T22:48:35+05:30",
+        "title": "यूथ ओलंपिक: मुक्केबाज लैरेनलाकपाम मीतेई ने फाइनल में बनाई जगह, गोल्ड मेडल के लिए किससे होगी भिड़ंत?",
+        "body_chars": 1441,
+        "raw_version_id": "20a0d02c4a949e96473a429df4eb7d2d5869847a1bbf34b528f270a769599fa7",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://www.amarujala.com/sports",
+            "mapping_version": "global-category-v3"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "376165b3ca2ce99805286d313c99bdb2278db2146ceccc3c4351111b0bd161f9",
+        "canonical_url": "https://www.amarujala.com/sports/pt-usha-loses-ioa-som-election-saina-nehwal-anju-bobby-george-among-four-women-elected-know-2026-11-09",
+        "date": "2026-11-09T19:53:49+05:30",
+        "title": "आईओए चुनाव: पीटी उषा को मिली हार, साइना नेहवाल समेत चार महिला खिलाड़ी जीतीं",
+        "body_chars": 2205,
+        "raw_version_id": "e19c6f3c48c7bfa92cdeb44da9910d20563d3a5b334259cf21e13b44927e532d",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://www.amarujala.com/sports",
+            "mapping_version": "global-category-v3"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "3bd2c1b99fe8ad59a6a9311703ea326eb93a3a291ae4f0d5320c9206f9f3e76b",
+        "canonical_url": "https://www.amarujala.com/lifestyle/yoga-and-health/best-yoga-poses-for-digestion-yoga-asanas-to-improve-digestion-and-stay-active-after-eating-sweets-2026-11-01",
+        "date": "2026-11-07T21:05:24+05:30",
+        "title": "ज्यादा मिठाइयां खाने से पहले आज से करें इन योगासनों की शुरुआत, शरीर रहेगा एक्टिव और पाचन को मिलेगा फायदा",
+        "body_chars": 2494,
+        "raw_version_id": "7d14adaf02c6d055c59feb45d3eff478ad112039244d36c7caa798ba4d0541f7",
+        "categories": [
+          "health"
+        ],
+        "category_mappings": [
+          {
+            "category": "health",
+            "original_category": "health",
+            "section_url": "https://www.amarujala.com/lifestyle/yoga-and-health",
+            "mapping_version": "global-category-v3"
+          }
+        ],
+        "language_script_ratio": 0.979,
+        "flags": []
+      }
+    ],
+    "loksatta_mr": [
+      {
+        "article_id": "03a408227def1af7cac8e702063a3aaed0b6b7b87e27237472ec6790a5da8910",
+        "canonical_url": "https://www.loksatta.com/krida/arshdeep-singh-got-engaged-to-girlfriend-samreen-kaur-photos-hardik-pandya-comment-viral-hrc-97-6240910/",
+        "date": "2026-11-11T17:21:11+05:30",
+        "title": "अर्शदीप सिंगने गर्लफ्रेंडला गुडघ्यावर बसून केलं प्रपोज, फोटोंवर हार्दिक पंड्या कमेंट करत म्हणाला…",
+        "body_chars": 1952,
+        "raw_version_id": "6c0c9115909a0607a372c9fc844cbf6245f701e98fa7872d88b3f112cf566eda",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "क्रीडा",
+            "section_url": "https://www.loksatta.com/krida/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.801,
+        "flags": []
+      },
+      {
+        "article_id": "0538aa3f969a35780767b8e092d13f2ea3b0bae4de1f804a4fc06536c31c3ac4",
+        "canonical_url": "https://www.loksatta.com/politics/sonia-gandhi-memoir-belonging-pranab-mukherjee-congress-dispute-politics-vap-97-6242464/",
+        "date": "2026-11-12T15:29:09+05:30",
+        "title": "सोनिया गांधींच्या आत्मचरित्रातून प्रणव मुखर्जींबाबत कोणते राजकीय पैलू समोर आले?",
+        "body_chars": 5116,
+        "raw_version_id": "f174e87c7d0a0b9a6cd6a6f1010e24f4448f5ef1c52f3f483ce11660baec9441",
+        "categories": [
+          "politics"
+        ],
+        "category_mappings": [
+          {
+            "category": "politics",
+            "original_category": "politics",
+            "section_url": "https://www.loksatta.com/politics/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.979,
+        "flags": []
+      },
+      {
+        "article_id": "0b97362b70002d8f9a9fa414e15cef5a7459d8cb8ac15c3338e3a077ec90fb58",
+        "canonical_url": "https://www.loksatta.com/lifestyle/lung-cancer-symptoms-causes-diagnosis-and-treatment-options-health-news-hsp-89-6239102/",
+        "date": "2026-11-10T14:25:27+05:30",
+        "title": "सुरुवातीला साधा खोकला वाटतो, पण… फुफ्फुसांच्या कॅन्सरची &#8216;ही&#8217; लक्षणं तुम्हाला माहीत आहेत का? आरोग्य मंत्रालयाने दिला इशारा",
+        "body_chars": 6189,
+        "raw_version_id": "08d259a4a0fab1968f91d2219abbaf3cc457dc8b7b6bd71266351e1bea87c6ee",
+        "categories": [
+          "health"
+        ],
+        "category_mappings": [
+          {
+            "category": "health",
+            "original_category": "health tips",
+            "section_url": "https://www.loksatta.com/lifestyle/health-tips/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.964,
+        "flags": []
+      },
+      {
+        "article_id": "11ba0eda1ed315af3b7c06736d1befa27792a48617b6d42d0c0a1a54cdb0aaf5",
+        "canonical_url": "https://www.loksatta.com/krida/lance-morris-suffers-freak-injury-at-engagement-party-faces-month-long-absence-psp-88-6241914/",
+        "date": "2026-11-12T11:45:36+05:30",
+        "title": "स्वत:च्या एंगेजमेंट पार्टीत पडला, काचेवर हात आदळून गंभीर दुखापत, फास्ट बॉलरचं पुनरागमन महिनाभर लांबणीवर",
+        "body_chars": 1699,
+        "raw_version_id": "38389a27be750bd6bd13e7ae71bf8f8cf38b1259b2b7b637a50a915ae9a6d628",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "क्रीडा",
+            "section_url": "https://www.loksatta.com/krida/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "1e0a56dfeca498c455e0f7d8d90bcf5627fa08acbbe6101511b3cf1ad402f41a",
+        "canonical_url": "https://www.loksatta.com/lifestyle/lemon-water-and-kidney-health-what-regular-lemon-water-consumption-does-to-your-kidney-health-snk-9-6237556/",
+        "date": "2026-11-09T12:26:33+05:30",
+        "title": "लिंबू पाणी हेल्दी; पण प्रत्येकासाठी नाही! किडनीच्या रुग्णांना लिंबूपाणी पिणे पडू शकते महागात?",
+        "body_chars": 3576,
+        "raw_version_id": "c81c2b3c5429e1ecc5783da58c55198d33cb1b0828ec648237654901b31015e7",
+        "categories": [
+          "health"
+        ],
+        "category_mappings": [
+          {
+            "category": "health",
+            "original_category": "health tips",
+            "section_url": "https://www.loksatta.com/lifestyle/health-tips/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.962,
+        "flags": []
+      }
+    ],
+    "news18_bn": [
+      {
+        "article_id": "030a26cf0f6eb523de16373cde556a216c72afd191582ba64c2dbf56c4547f64",
+        "canonical_url": "https://bengali.news18.com/news/business/how-millet-cultivation-and-innovative-efforts-are-bringing-new-opportunities-and-changing-the-lives-of-villager-l18-dc-local18-2961665.html",
+        "date": "2026-11-12T20:05:42+05:30",
+        "title": "এক শিক্ষিকার উদ্যোগে বদলে যাচ্ছে গোটা গ্রাম, কালিম্পংয়ে গড়ে উঠছে মিলেটের নতুন দুনিয়া!",
+        "body_chars": 2111,
+        "raw_version_id": "17280e222503a5fae364226a10e20865992ee30d410ee421b89aa302d8ff631f",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://bengali.news18.com/news/business/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.988,
+        "flags": []
+      },
+      {
+        "article_id": "0b55e3b26ade4d4e49973ac80949f307c008224b44be6cb8bfa14ed4be0b4877",
+        "canonical_url": "https://bengali.news18.com/news/sports/ind-vs-nz-3rd-odi-new-zealand-makes-multiple-changes-in-squad-for-rest-of-matches-against-india-sup-2956829.html",
+        "date": "2026-11-09T10:35:06+05:30",
+        "title": "IND vs NZ:  তৃতীয় ম্যাচ থেকেই স্কোয়াডে বদল, কারা থাকল দলে? আর কারা পড়ল বাদ?",
+        "body_chars": 1828,
+        "raw_version_id": "6d92aa285e1ff712f77df5e3784a778113e9a228718f21a6be08bb0123c3e25c",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://bengali.news18.com/news/sports/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "0b7de06e6317169634fc501c99e5008364231fb521d7e8d188225f9f289c201a",
+        "canonical_url": "https://bengali.news18.com/news/sports/kl-rahul-torn-match-kl-rahul-clothes-torn-before-match-shocking-image-goes-viral-on-social-media-dd-2954702.html",
+        "date": "2026-11-07T11:04:00+05:30",
+        "title": "KL Rahul Jersey: এ কী কাণ্ড! মাঠের মধ্যেই ক্যাঁচক্যাঁচ করে কাঁচি দিয়ে জার্সি কেটে ফেলা হচ্ছে রাহুলের",
+        "body_chars": 1995,
+        "raw_version_id": "de22b344ff89c6160560db2ceedfc0b02c1b8e28e2074393e21b527be614d0f7",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://bengali.news18.com/news/sports/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.971,
+        "flags": []
+      },
+      {
+        "article_id": "0e2c70214d86684856a422bb55a81fdb8a553abad6b5ef566adf44ecb81b63cb",
+        "canonical_url": "https://bengali.news18.com/news/sports/virat-kohli-iconic-celebration-after-stunning-catch-vs-new-zealand-in-first-odi-smj-2951188.html",
+        "date": "2026-11-04T13:20:36+05:30",
+        "title": "Virat Kohli : এক হাতে ক্যাচ, বিশ্বরেকর্ড! তার পরই মাঠে এটা কী করলেন বিরাট কোহলি! দীপাবলির আগে কোহলির 'সেল...",
+        "body_chars": 2560,
+        "raw_version_id": "0ea6228b827b92df57baf6b0ab00519251740c2b34a196c20979b09848334306",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://bengali.news18.com/news/sports/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.991,
+        "flags": []
+      },
+      {
+        "article_id": "239c143fa4105f5022c3f1da5734132df17080cdf8528408bcd05b02f0e480fd",
+        "canonical_url": "https://bengali.news18.com/news/sports/history-by-virat-kohli-virat-kohli-creates-history-becomes-first-batsman-in-the-world-to-score-13000-odi-runs-at-number-3-dd-2951428.html",
+        "date": "2026-11-04T15:24:44+05:30",
+        "title": "Virat Kohli's New Record: ৩ নম্বর বিরাট কোহলি এখন ১ নম্বর,  কী নজির গড়লেন কিং, আর একটা একটুর জন্যে মিস!",
+        "body_chars": 2632,
+        "raw_version_id": "90c1c3e8c4ae33e76ba055114e3417338dd3724ed95a98c74faf633ff656fe09",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://bengali.news18.com/news/sports/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 0.969,
+        "flags": []
+      }
+    ],
+    "oneindia_en": [
+      {
+        "article_id": "084d40a4fdb1dd30477758801bda8d5f776058f2dae642a5b28269d53723b27d",
+        "canonical_url": "https://www.oneindia.com/sports/cricket/ind-vs-nz-3rd-odi-rain-washes-out-hamilton-match-india-continue-to-lead-series-2-0-8255777.html",
+        "date": "2026-11-10T12:11:24+05:30",
+        "title": "IND vs NZ 3rd ODI: Rain Washes Out Hamilton Match, India Continue To Lead Series 2-0",
+        "body_chars": 1952,
+        "raw_version_id": "bb4cc137fb68b4823bf1911d4cfe2be5a5e04f5a7201737ee15675f02ceee952",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://www.oneindia.com/sports/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "09a78f31e6aac2bce0bcac565813d984c88752719c49b1fd12582b1af6682075",
+        "canonical_url": "https://www.oneindia.com/business/9-year-diwali-winning-streak-ends-sensex-nifty-lose-early-gains-in-muhurat-trading-2026-8254515.html",
+        "date": "2026-11-08T16:59:04+05:30",
+        "title": "9-Year Diwali Winning Streak Ends! Sensex, Nifty Lose Early Gains In Muhurat Trading 2026",
+        "body_chars": 3141,
+        "raw_version_id": "a71e523c879d005b45374747723ea5a0a947b85cc1e16888944042a852f018e7",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://www.oneindia.com/business/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "0d70facbc9b284ad01394770f532f257130e317cd4ec7b4bb6cf351b6c610d82",
+        "canonical_url": "https://www.oneindia.com/sports/cricket/india-vs-new-zealand-3rd-odi-toss-delayed-due-to-rain-in-hamilton-inspection-at-8-15-am-ist-8255673.html",
+        "date": "2026-11-10T08:23:42+05:30",
+        "title": "India vs New Zealand 3rd ODI: Toss Delayed Due To Rain In Hamilton, Play To Resume At 9.30 AM",
+        "body_chars": 2981,
+        "raw_version_id": "61cb372276b70ff5dd841b72cc9db3a63529fdbdc543836bdc32ba281741b68b",
+        "categories": [
+          "sports"
+        ],
+        "category_mappings": [
+          {
+            "category": "sports",
+            "original_category": "sports",
+            "section_url": "https://www.oneindia.com/sports/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "24c09cc6cda79aa921a30fc6c4d7fee259b75c6cbcd8a3f107c9fba8d1b4b147",
+        "canonical_url": "https://www.oneindia.com/business/asian-stocks-slump-after-us-tech-rout-amid-ai-jitters-8252503.html",
+        "date": "2026-11-06T10:26:30+05:30",
+        "title": "Asian Stocks Slump After US Tech Rout Amid AI Jitters",
+        "body_chars": 2154,
+        "raw_version_id": "cf956377e23e9beffda1fb42de7afce2a23a637eeacc2b0c2bdcdd6f5ad5949f",
+        "categories": [
+          "finance"
+        ],
+        "category_mappings": [
+          {
+            "category": "finance",
+            "original_category": "business",
+            "section_url": "https://www.oneindia.com/business/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      },
+      {
+        "article_id": "3091ede2b84d82d45b7870eb1ce1efefb7accc0a30b90baf39327975ec8e2152",
+        "canonical_url": "https://www.oneindia.com/entertainment/president-murmu-on-srk-ajay-devgn-akshay-kumar-promoting-harmful-products-8212957.html",
+        "date": "2026-09-22T23:14:57+05:30",
+        "title": "President Murmu On SRK, Ajay Devgn, Akshay Kumar Promoting Harmful Products: ‘A True Star Spreads Light’",
+        "body_chars": 2478,
+        "raw_version_id": "c64efbd2dad399f93e1410abbcba9c109e0a8d587fa6abc0305b435957aa163c",
+        "categories": [
+          "health"
+        ],
+        "category_mappings": [
+          {
+            "category": "health",
+            "original_category": "health",
+            "section_url": "https://www.oneindia.com/topic/health/",
+            "mapping_version": "global-category-v2"
+          }
+        ],
+        "language_script_ratio": 1.0,
+        "flags": []
+      }
+    ]
+  },
+  "limitations": [
+    "Unicode script ratios flag implausible language assignments but do not certify language or translation accuracy.",
+    "Exact normalized body matches are review groups; no records are removed and publisher provenance is retained.",
+    "Near-duplicate/syndication detection beyond exact normalized body matches is deferred.",
+    "Category mappings are section-derived weak labels, not verified article-topic judgments."
+  ]
+}
