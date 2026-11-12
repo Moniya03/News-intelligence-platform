@@ -1,7 +1,10 @@
-.PHONY: up down api eval ingest index cluster
+.PHONY: up down api eval ingest index cluster infra-smoke
 
 up:
 	docker compose -f infra/docker-compose.yml up -d
+
+infra-smoke:
+	python infra/smoke_test.py
 
 down:
 	docker compose -f infra/docker-compose.yml down

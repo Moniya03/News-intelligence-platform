@@ -6,6 +6,7 @@ pydantic>=2.7.0
 
 # MongoDB
 pymongo>=4.7.0
+scrapy>=2.13.0,<3.0
 
 # Weaviate
 weaviate-client>=4.5.0

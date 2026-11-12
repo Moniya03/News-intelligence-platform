@@ -32,7 +32,7 @@ Before setting up the project, ensure your host development machine has the foll
 | **CUDA (Optional)** | CUDA 12.1+ | NVIDIA GPU (4 GB+ VRAM) | Enables fast FP16 inference for `bge-m3` and reranker |
 
 > [!NOTE]
-> An NVIDIA GPU is **optional**. The system automatically detects CUDA availability and gracefully falls back to CPU execution or lightweight representations when running on machines without a discrete GPU.
+> An NVIDIA GPU is **optional**; CPU execution is available. The model smoke checks below require the real configured backend and fail if a deterministic or lexical fallback is used, so a fallback must not be reported as verified inference.
 
 ---
 
@@ -55,7 +55,7 @@ ls -la
 
 ## 3. Environment Configuration
 
-The application requires environment configuration for database ports, model flags, and the Google Gemini API key.
+The verified local runtime and spider path need MongoDB and Weaviate connection settings. A Gemini key is not required for the verified infrastructure, model, or crawler checks; any Gemini configuration is optional legacy behavior and is outside the current project scope.
 
 ### 3.1 Backend Environment (`.env`)
 
@@ -71,10 +71,6 @@ Open `.env` in your editor of choice:
 # Multilingual News Intelligence Platform - Environment Configuration
 # ==============================================================================
 
-# Google Gemini API Key for English RAG synthesis with citations
-# If left blank, the platform automatically utilizes deterministic offline fallback responses
-GEMINI_API_KEY=your_gemini_api_key_here
-
 # MongoDB Connection (matches infra/docker-compose.yml)
 MONGO_URI=mongodb://localhost:27017
 
@@ -84,8 +80,10 @@ WEAVIATE_PORT=8080
 WEAVIATE_GRPC_PORT=50051
 ```
 
-> [!TIP]
-> You can acquire a free Google AI Studio API key at [ai.google.dev](https://ai.google.dev/). If no key is supplied, all RAG and credibility components will transparently use the built-in deterministic fallback generator, allowing full end-to-end testing without external API credentials.
+The Gemini summary and credibility paths are legacy project behavior and are
+outside the current project scope. No summary provider has been verified. A
+deterministic fallback response is not evidence that a summary, chat, or
+credibility result is real.
 
 ### 3.2 Frontend Environment (`frontend/.env.local`)
 
@@ -134,6 +132,17 @@ curl -i http://localhost:8080/v1/.well-known/ready
 # Expected HTTP/1.1 200 OK
 ```
 
+Run the project smoke check to test MongoDB read-after-write in a separate
+`news_intel_verification` database and Weaviate readiness:
+
+```bash
+make infra-smoke
+```
+
+It inserts a uniquely named temporary MongoDB record and removes that record
+after the check. It does not touch the project corpus. Start the services with
+`make up` first; this check does not start or stop containers.
+
 To stop the containers at any time, run:
 ```bash
 make down
@@ -166,6 +175,57 @@ Verify key package installations:
 ```bash
 python -c "import fastapi, weaviate, pymongo, torch; print('Environment initialized successfully!')"
 ```
+
+### 5.1 Verify real local model inference
+
+With the project's Python environment active and the configured model weights
+available locally or downloadable, run each model in its own process. This
+keeps both large models from occupying GPU memory at once:
+
+```bash
+python scripts/verify_models.py embedder
+python scripts/verify_models.py reranker
+```
+
+The command reports the selected model, actual backend, device, elapsed time,
+and output shape or score count. A `PASS` requires real FlagEmbedding or
+CrossEncoder execution; the wrapper's mock or lexical fallback fails the
+check. To test CPU execution explicitly, append `--device cpu`. To require
+CUDA, append `--device cuda`; it exits with an error when CUDA is unavailable.
+On the development machine used for this report, both commands passed on an
+RTX 3050 Ti with CUDA fp16: BGE-M3 returned two finite 1,024-dimensional
+vectors and the cross-encoder returned two finite scores. This verifies model
+execution and output validity, not retrieval relevance or ranking quality.
+
+The cross-encoder requests fp16 weights as it loads on CUDA to fit the 4 GB
+GPU. CPU execution does not request fp16. Keep the two smoke commands separate
+processes to release one model before loading the other.
+
+### 5.2 Run a bounded Scrapy source pilot
+
+Start MongoDB first (`make up`), then run one adapter from the repository root.
+This command uses the project virtual environment and stores raw and normalized
+records in the `news_intel` database:
+
+```bash
+SCRAPY_SETTINGS_MODULE=scrapers.settings .venv/bin/python -m scrapy crawl abp_en -a max_articles=10 -s MONGO_DATABASE=news_intel -s LOG_LEVEL=WARNING
+```
+
+Use one of `abp_en`, `abp_hi`, `abp_bn`, `abp_mr`, `oneindia_en`,
+`amarujala_hi`, `news18_bn`, or `loksatta_mr` in place of `abp_en`. The
+`max_articles` limit applies to article/section request pairs; the same
+canonical article found in multiple mapped sections may be merged into one
+normalized article with multiple section provenance entries. Inspect run
+counters in MongoDB's `crawl_runs` collection. The global category IDs,
+publisher sections, and routes are maintained in
+[`scrapers/sources.py`](../scrapers/sources.py).
+
+The 12 November 2026 UTC bounded live pilot fetched 102 request pairs, accepted
+94 article records, rejected 8, and recorded one robots-obeyed candidate error
+for OneIndia's disallowed `/partner-content/` path. This is a smoke campaign,
+not a representative corpus or a claim of complete category coverage; see the
+[verification report](VERIFICATION_REPORT.md) for per-adapter counts and
+limitations. Do not bypass a publisher's robots exclusions.
 
 ---
 
@@ -235,21 +295,11 @@ make api
 # Equivalent to: uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Startup Log Output
-You should observe logs indicating initialization of models and database connections:
-```
-INFO:     Started server process [28491]
-INFO:     Waiting for application startup.
-2026-11-04 12:30:00 [INFO] api.main: Initializing backend services and models...
-2026-11-04 12:30:02 [INFO] api.main: EmbedModel initialized.
-2026-11-04 12:30:03 [INFO] api.main: RerankModel initialized.
-2026-11-04 12:30:03 [INFO] api.main: Connected to MongoDB at mongodb://localhost:27017 (db: news_intel)
-2026-11-04 12:30:03 [INFO] api.main: Weaviate client initialized.
-2026-11-04 12:30:03 [INFO] api.main: Gemini Flash client initialized.
-2026-11-04 12:30:03 [INFO] api.main: Backend initialization complete.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-```
+API startup, endpoint behavior, and the end-to-end UI were not included in
+these runtime checks. The previous setup guide contained a dated startup log;
+it is removed here because it does not establish the current runtime or
+summary-provider status. A passing health response alone would not certify
+search, topic, or summary behavior.
 
 ### Health Check Verification
 In another terminal, test the `/api/health` endpoint:
@@ -292,44 +342,50 @@ The Next.js 16 development server will start on port `3000`:
  ✓ Ready in 1200ms
 ```
 
-Open your browser to **[http://localhost:3000](http://localhost:3000)**. You can now explore:
-- **Chat (`/chat`)**: Ask questions in English, Hindi, Bengali, or Tamil; observe synthesized English responses with citations, credibility meters, and veracity explanations.
-- **Search (`/search`)**: Run Hybrid, Dense, or BM25 queries across multilingual articles with language filtering pills.
-- **Clusters (`/clusters`)**: Inspect cross-lingual topic clusters, view multilingual language ratios, and browse member articles.
+Open **[http://localhost:3000](http://localhost:3000)** to start the frontend.
+The existing Chat, Search, and Clusters routes are legacy interface paths; they
+have not passed the revised project acceptance checks and should not be used
+as a faculty demo claim. The presentation target is Search, Topics, and Corpus
+as defined in the [overhaul plan](OVERHAUL_PLAN.md). In particular, the old
+chat and credibility screens and their deterministic fallback responses are
+not validated product features.
 
 ---
 
 ## 9. Running Evaluations & Automated Tests
 
-### 9.1 Unit & Integration Tests
+### 9.1 Focused verified checks
 
-Run the test suite with `pytest`:
+The following focused suites were run for the bounded model and scraper
+changes:
 
 ```bash
-pytest tests/ -v
+.venv/bin/python -m unittest tests.test_rerank tests.test_scrapers -v
+MONGO_TEST_URI=mongodb://localhost:27017 \
+  MONGO_TEST_DATABASE=news_intel_scraper_test_local \
+  .venv/bin/python -m unittest tests.test_scraper_mongo -v
 ```
 
-This verifies:
-- Citation regex extraction and citation-passage mapping (`tests/test_rag.py`).
-- Weaviate search filtering, deduplication, and score normalizers (`tests/test_retrieval.py`).
+The Mongo lifecycle test drops and recreates the database named in
+`MONGO_TEST_DATABASE`; use a fresh disposable name with the required
+`news_intel_scraper_test_` prefix. The reported run used a dedicated database.
+These checks cover focused regressions, not the full application or user
+experience. The revised corpus pipeline still needs the broader, repeatable
+acceptance gates in the plan.
 
-### 9.2 Complete Benchmark Suite (`make eval`)
+### 9.2 Legacy evaluation scripts (`make eval`)
 
-To reproduce the experimental results reported in the project documentation:
+`make eval` still invokes the original evaluation scripts, but their historical
+results are not valid evidence for the revised project. Prior audits found
+synthetic predictions, leakage, and misleading fallback paths in the old
+experiments. Do not use those scores in a report or presentation. The revised
+BM25/dense/hybrid retrieval and topic-clustering evaluation has not yet been
+run on a frozen, validated news corpus.
 
 ```bash
 make eval
 # Equivalent to: python -m eval.run_all
 ```
-
-This automatically runs the 5 benchmark suites sequentially:
-1. `eval/retrieval_flores.py`: FLORES-200 sentence retrieval comparison (BGE-M3 vs. multilingual-e5-base vs. BM25).
-2. `eval/retrieval_news.py`: News retrieval ablation benchmark (BM25 $\rightarrow$ Dense $\rightarrow$ Hybrid $\rightarrow$ Cross-Encoder Reranker).
-3. `eval/rag_eval.py`: RAG Faithfulness, Correctness, and Citation Accuracy vs. No-Retrieval generation.
-4. `eval/cluster_eval.py`: Topic clustering NMI, ARI, and Multilingual Purity.
-5. `eval/misinfo_eval.py`: Veracity classification Macro-F1 across English and Hindi test sets.
-
-Results are printed in formatted terminal tables and saved to `results/*.json`.
 
 ---
 
@@ -346,11 +402,6 @@ Results are printed in formatted terminal tables and saved to `results/*.json`.
   python -m core.index --batch-size 16 --device cpu
   ```
 
-### Issue 3: `GEMINI_API_KEY is not configured` warning
-- **Cause**: Missing or unconfigured Gemini API key in `.env`.
-- **Behavior**: The application does **not** crash. It automatically engages high-fidelity deterministic responses for chat and veracity verification so you can develop and demonstrate the application offline.
-- **Fix**: Add a valid key from [Google AI Studio](https://aistudio.google.com/) to `.env` and restart the backend.
-
-### Issue 4: Next.js Frontend cannot communicate with API
+### Issue 3: Next.js Frontend cannot communicate with API
 - **Cause**: CORS restriction or mismatched `NEXT_PUBLIC_API_URL`.
 - **Fix**: Confirm FastAPI is running on `http://localhost:8000`. Confirm `frontend/.env.local` contains `NEXT_PUBLIC_API_URL=http://localhost:8000`.

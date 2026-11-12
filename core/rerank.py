@@ -49,10 +49,8 @@ class RerankModel:
 
             resolved_device = "cuda" if (self.device == "cuda" and torch.cuda.is_available()) else "cpu"
             logger.info("Loading CrossEncoder '%s' on %s...", self.model_name, resolved_device)
-            # CrossEncoder supports model_kwargs or torch_dtype
-            self._model = CrossEncoder(self.model_name, device=resolved_device)
-            if self.fp16 and resolved_device == "cuda" and hasattr(self._model.model, "half"):
-                self._model.model.half()
+            model_kwargs = {"torch_dtype": "float16"} if self.fp16 and resolved_device == "cuda" else {}
+            self._model = CrossEncoder(self.model_name, device=resolved_device, model_kwargs=model_kwargs)
             self.backend = "cross_encoder"
             logger.info("Loaded CrossEncoder successfully.")
         except Exception as e:
