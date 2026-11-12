@@ -54,7 +54,7 @@ async def health_check(
             logger.debug("Weaviate health ping failed: %s", e)
 
     return HealthResponse(
-        status="ok",
+        status="ok" if mongo_ok and weaviate_ok else "degraded",
         services=ServicesStatus(
             mongodb=mongo_ok,
             weaviate=weaviate_ok,

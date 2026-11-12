@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ExternalLink, ChevronDown, ChevronUp, ShieldCheck, AlertTriangle, AlertCircle } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import { Citation } from "@/types";
 
 interface CitationCardProps {
@@ -23,32 +23,6 @@ export function CitationCard({ citation, index }: CitationCardProps) {
     label: citation.lang.toUpperCase(),
     badge: "bg-gray-500/15 text-gray-300 border-gray-500/30",
   };
-
-  const getVeracityBadge = () => {
-    const v = citation.veracity.toLowerCase();
-    if (v.includes("reliable")) {
-      return {
-        icon: ShieldCheck,
-        style: "bg-emerald-950/60 text-emerald-300 border-emerald-800/60",
-        dot: "bg-emerald-400",
-      };
-    }
-    if (v.includes("uncertain")) {
-      return {
-        icon: AlertTriangle,
-        style: "bg-amber-950/60 text-amber-300 border-amber-800/60",
-        dot: "bg-amber-400",
-      };
-    }
-    return {
-      icon: AlertCircle,
-      style: "bg-rose-950/60 text-rose-300 border-rose-800/60",
-      dot: "bg-rose-400",
-    };
-  };
-
-  const veracity = getVeracityBadge();
-  const VeracityIcon = veracity.icon;
 
   return (
     <div className="bg-gray-900/80 hover:bg-gray-900 border border-gray-800/80 hover:border-gray-700/80 rounded-xl p-4 transition-all duration-200 shadow-sm flex flex-col justify-between">
@@ -131,22 +105,6 @@ export function CitationCard({ citation, index }: CitationCardProps) {
         </div>
       </div>
 
-      {/* Veracity Footer */}
-      <div className="pt-2 border-t border-gray-800/60 mt-1">
-        <div
-          className={`flex items-start gap-1.5 px-2.5 py-1.5 rounded-lg border text-[11px] leading-tight ${veracity.style}`}
-        >
-          <VeracityIcon className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <span className="font-semibold">{citation.veracity}</span>
-            {citation.reason && (
-              <span className="text-gray-300 opacity-90 block mt-0.5">
-                {citation.reason}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

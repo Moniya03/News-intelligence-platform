@@ -7,16 +7,13 @@ import {
   Bot,
   User,
   Quote,
-  ShieldAlert,
   ArrowRight,
-  RotateCcw,
   Copy,
   Check,
   AlertCircle,
 } from "lucide-react";
 import { LangFilter } from "@/components/LangFilter";
 import { CitationCard } from "@/components/CitationCard";
-import { CredibilityMeter } from "@/components/CredibilityMeter";
 import { ChatAnswerSkeleton } from "@/components/LoadingSkeleton";
 import { chatQuery } from "@/lib/api";
 import { ChatResponse } from "@/types";
@@ -27,7 +24,6 @@ interface MessageItem {
   content?: string;
   data?: ChatResponse;
   error?: string;
-  isMockFallback?: boolean;
   timestamp: string;
 }
 
@@ -132,6 +128,7 @@ export default function ChatPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const threadEndRef = useRef<HTMLDivElement>(null);
+  const messageSequence = useRef(0);
 
   const scrollToBottom = () => {
     threadEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -145,8 +142,9 @@ export default function ChatPage() {
     const textToSend = (customQuery ?? query).trim();
     if (!textToSend || isLoading) return;
 
-    const userMessageId = `user-${Date.now()}`;
-    const assistantMessageId = `assist-${Date.now()}`;
+    const messageId = ++messageSequence.current;
+    const userMessageId = `user-${messageId}`;
+    const assistantMessageId = `assist-${messageId}`;
 
     // Add user message to state
     const userMsg: MessageItem = {
@@ -218,7 +216,7 @@ export default function ChatPage() {
             </h1>
           </div>
           <p className="text-xs text-gray-400 mt-0.5">
-            Query across English, Hindi, Bengali, and Tamil news sources with consensus verification
+            Ask questions using retrieved articles from the indexed corpus
           </p>
         </div>
 
@@ -239,12 +237,11 @@ export default function ChatPage() {
             </div>
 
             <h2 className="text-2xl font-bold text-gray-100 tracking-tight mb-2">
-              Cross-Lingual Intelligence at Scale
+              Explore the News Corpus
             </h2>
             <p className="text-sm text-gray-400 max-w-lg mb-8 leading-relaxed">
-              Ask questions across India&apos;s leading multilingual news media. Our
-              system translates, retrieves, verifies facts across 4 languages, and calculates
-              cross-source agreement.
+              Answers use retrieved article excerpts when the retrieval and summary services
+              are available. Check the original sources; generated answers do not verify facts.
             </p>
 
             {/* Example Queries */}
@@ -273,25 +270,6 @@ export default function ChatPage() {
               </div>
             </div>
 
-            {/* Corpus Capabilities */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-400">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-blue-500" />
-                <span>English (The Hindu, Express)</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-500" />
-                <span>Hindi (Dainik Bhaskar, Jagran)</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span>Bengali (Anandabazar, Bartaman)</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-purple-500" />
-                <span>Tamil (Dinamalar, Thanthi)</span>
-              </div>
-            </div>
           </div>
         ) : (
           /* Message List */
@@ -383,7 +361,7 @@ export default function ChatPage() {
                                 </span>
                               </div>
                               <span className="text-[11px] text-gray-400">
-                                Ranked by relevance & cross-veracity
+                                Retrieved source excerpts
                               </span>
                             </div>
 
@@ -395,12 +373,6 @@ export default function ChatPage() {
                           </div>
                         )}
 
-                        {/* Credibility Meter */}
-                        {msg.data.credibility && (
-                          <div className="pt-2">
-                            <CredibilityMeter credibility={msg.data.credibility} />
-                          </div>
-                        )}
                       </div>
                     ) : null}
                   </div>
@@ -439,7 +411,7 @@ export default function ChatPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask a question across Hindi, Bengali, Tamil, & English news..."
+              placeholder="Ask a question about the indexed news..."
               rows={1}
               className="w-full bg-transparent px-4 py-3.5 text-sm text-gray-100 placeholder-gray-400 focus:outline-none resize-none min-h-[48px] max-h-32"
             />
@@ -463,7 +435,7 @@ export default function ChatPage() {
             <div className="flex items-center gap-2">
               <span className="hidden sm:inline">Active filters:</span>
               <span className="font-mono text-indigo-400">
-                {selectedLangs.length === 0 ? "All 4 Languages" : selectedLangs.join(", ").toUpperCase()}
+                {selectedLangs.length === 0 ? "All languages" : selectedLangs.join(", ").toUpperCase()}
               </span>
             </div>
           </div>

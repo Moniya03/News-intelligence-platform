@@ -81,10 +81,10 @@ def retrieve_hybrid(
         List of candidate chunk dictionaries with score.
     """
     if client is None:
-        logger.warning("Weaviate client is None. Returning empty retrieval results.")
-        return []
+        raise RuntimeError("Weaviate client is unavailable")
 
     vec_list = query_vec.tolist() if isinstance(query_vec, np.ndarray) else query_vec
+    last_error = None
 
     # 1. Try Weaviate v4 API
     if hasattr(client, "collections"):
@@ -105,7 +105,8 @@ def retrieve_hybrid(
             results = [_format_v4_object(o, rank=i) for i, o in enumerate(res.objects)]
             return results
         except Exception as e:
-            logger.warning("Weaviate v4 hybrid search error: %s", e)
+            last_error = e
+            logger.warning("Weaviate v4 hybrid search failed")
 
     # 2. Try Weaviate v3 API fallback
     if hasattr(client, "query"):
@@ -150,9 +151,12 @@ def retrieve_hybrid(
                 })
             return results
         except Exception as e:
-            logger.warning("Weaviate v3 hybrid search error: %s", e)
+            logger.warning("Weaviate v3 hybrid search failed")
+            raise RuntimeError("Weaviate hybrid retrieval failed") from e
 
-    return []
+    if last_error is not None:
+        raise RuntimeError("Weaviate hybrid retrieval failed") from last_error
+    raise RuntimeError("Weaviate client does not support hybrid retrieval")
 
 
 def retrieve_dense(
@@ -173,10 +177,10 @@ def retrieve_dense(
         List of retrieved chunk dicts.
     """
     if client is None:
-        logger.warning("Weaviate client is None. Returning empty retrieval results.")
-        return []
+        raise RuntimeError("Weaviate client is unavailable")
 
     vec_list = query_vec.tolist() if isinstance(query_vec, np.ndarray) else query_vec
+    last_error = None
 
     # 1. Try v4 API
     if hasattr(client, "collections"):
@@ -194,7 +198,8 @@ def retrieve_dense(
             )
             return [_format_v4_object(o, rank=i) for i, o in enumerate(res.objects)]
         except Exception as e:
-            logger.warning("Weaviate v4 dense search error: %s", e)
+            last_error = e
+            logger.warning("Weaviate v4 dense search failed")
 
     # 2. Try v3 API fallback
     if hasattr(client, "query"):
@@ -231,9 +236,12 @@ def retrieve_dense(
                 })
             return results
         except Exception as e:
-            logger.warning("Weaviate v3 dense search error: %s", e)
+            logger.warning("Weaviate v3 dense search failed")
+            raise RuntimeError("Weaviate dense retrieval failed") from e
 
-    return []
+    if last_error is not None:
+        raise RuntimeError("Weaviate dense retrieval failed") from last_error
+    raise RuntimeError("Weaviate client does not support dense retrieval")
 
 
 def retrieve_bm25(
@@ -254,8 +262,9 @@ def retrieve_bm25(
         List of retrieved chunk dicts.
     """
     if client is None:
-        logger.warning("Weaviate client is None. Returning empty retrieval results.")
-        return []
+        raise RuntimeError("Weaviate client is unavailable")
+
+    last_error = None
 
     # 1. Try v4 API
     if hasattr(client, "collections"):
@@ -273,7 +282,8 @@ def retrieve_bm25(
             )
             return [_format_v4_object(o, rank=i) for i, o in enumerate(res.objects)]
         except Exception as e:
-            logger.warning("Weaviate v4 BM25 search error: %s", e)
+            last_error = e
+            logger.warning("Weaviate v4 BM25 search failed")
 
     # 2. Try v3 API fallback
     if hasattr(client, "query"):
@@ -308,6 +318,9 @@ def retrieve_bm25(
                 })
             return results
         except Exception as e:
-            logger.warning("Weaviate v3 BM25 search error: %s", e)
+            logger.warning("Weaviate v3 BM25 search failed")
+            raise RuntimeError("Weaviate BM25 retrieval failed") from e
 
-    return []
+    if last_error is not None:
+        raise RuntimeError("Weaviate BM25 retrieval failed") from last_error
+    raise RuntimeError("Weaviate client does not support BM25 retrieval")

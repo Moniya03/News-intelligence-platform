@@ -6,7 +6,7 @@ Extracts initialized model, database, and client instances from the FastAPI appl
 from __future__ import annotations
 
 from typing import Any, Optional
-from fastapi import Request
+from fastapi import HTTPException, Request
 
 from core.embed import get_embed_model as _default_embed_model, EmbedModel
 from core.rerank import get_rerank_model as _default_rerank_model, RerankModel
@@ -20,7 +20,10 @@ def get_embed_model(request: Request) -> EmbedModel:
     """Return the BGE-M3 embedding model from application state or global singleton."""
     model = getattr(request.app.state, "embed_model", None)
     if model is None:
-        return _default_embed_model()
+        try:
+            return _default_embed_model()
+        except Exception as e:
+            raise HTTPException(status_code=503, detail="Embedding model is unavailable") from e
     return model
 
 
@@ -28,7 +31,10 @@ def get_rerank_model(request: Request) -> RerankModel:
     """Return the BGE reranker cross-encoder model from application state or global singleton."""
     model = getattr(request.app.state, "rerank_model", None)
     if model is None:
-        return _default_rerank_model()
+        try:
+            return _default_rerank_model()
+        except Exception as e:
+            raise HTTPException(status_code=503, detail="Reranking model is unavailable") from e
     return model
 
 
@@ -53,7 +59,10 @@ def get_weaviate_client(request: Request) -> Any:
     client = getattr(request.app.state, "weaviate_client", None)
     if client is not None:
         return client
-    return _default_weaviate_client()
+    try:
+        return _default_weaviate_client()
+    except Exception:
+        return None
 
 
 def get_gemini_client(request: Request) -> Optional[Any]:
@@ -61,4 +70,7 @@ def get_gemini_client(request: Request) -> Optional[Any]:
     client = getattr(request.app.state, "gemini_client", None)
     if client is not None:
         return client
-    return _default_gemini_client()
+    try:
+        return _default_gemini_client()
+    except Exception:
+        return None

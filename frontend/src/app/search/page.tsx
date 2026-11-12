@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Search as SearchIcon,
   SlidersHorizontal,
+  Filter,
+  X,
   Sparkles,
   Zap,
   BookOpen,
-  Filter,
-  X,
   AlertCircle,
 } from "lucide-react";
 import { LangFilter } from "@/components/LangFilter";
@@ -63,6 +63,7 @@ export default function SearchPage() {
 
     setIsLoading(true);
     setError(null);
+    setResults([]);
     setHasSearched(true);
 
     try {
@@ -113,7 +114,7 @@ export default function SearchPage() {
           </span>
         </h1>
         <p className="text-xs sm:text-sm text-gray-400 mt-1">
-          Search over thousands of indexed articles across English, Hindi, Bengali, and Tamil with hybrid reranking
+          Search the indexed news corpus using lexical or multilingual semantic retrieval
         </p>
       </div>
 
@@ -230,7 +231,7 @@ export default function SearchPage() {
       )}
 
       {/* Results Header / Sorting Meta */}
-      {hasSearched && !isLoading && (
+      {hasSearched && !isLoading && !error && (
         <div className="flex items-center justify-between text-xs text-gray-400 border-b border-gray-800/60 pb-3">
           <div>
             <span>Found </span>
@@ -249,7 +250,7 @@ export default function SearchPage() {
 
       {/* Error State */}
       {error && (
-        <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-800/60 text-rose-300 text-sm flex items-center gap-3">
+        <div role="alert" className="p-4 rounded-xl bg-rose-950/40 border border-rose-800/60 text-rose-300 text-sm flex items-center gap-3">
           <AlertCircle className="w-5 h-5 shrink-0" />
           <div>
             <div className="font-semibold">Search request failed</div>
@@ -262,7 +263,7 @@ export default function SearchPage() {
       {isLoading && <SearchSkeletonList count={4} />}
 
       {/* Results List */}
-      {!isLoading && hasSearched && results.length > 0 && (
+      {!isLoading && hasSearched && !error && results.length > 0 && (
         <div className="space-y-3.5">
           {results.map((item, index) => (
             <SearchResultCard
@@ -283,7 +284,7 @@ export default function SearchPage() {
           </h3>
           <p className="text-xs text-gray-400 max-w-md mx-auto mt-1 mb-4">
             Try adjusting your query or resetting language filters to broaden coverage across
-            English, Hindi, Bengali, and Tamil corpora.
+            the indexed corpus.
           </p>
           <button
             onClick={() => {

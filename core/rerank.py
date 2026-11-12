@@ -37,7 +37,7 @@ class RerankModel:
         self.fp16 = fp16
         self.device = device
         self._model = None
-        self.backend = "fallback"
+        self.backend = "unavailable"
 
         self._init_model()
 
@@ -54,18 +54,8 @@ class RerankModel:
             self.backend = "cross_encoder"
             logger.info("Loaded CrossEncoder successfully.")
         except Exception as e:
-            logger.warning("Could not load CrossEncoder (%s). Using lexical fallback reranker.", e)
-            self.backend = "fallback"
-
-    def _lexical_score(self, query: str, text: str, initial_score: float) -> float:
-        """Compute fallback relevance score using token overlap and initial score."""
-        q_tokens = set(query.lower().split())
-        t_tokens = set(text.lower().split())
-        if not q_tokens or not t_tokens:
-            return float(initial_score)
-
-        overlap = len(q_tokens.intersection(t_tokens)) / len(q_tokens)
-        return float(initial_score * 0.5 + overlap * 0.5)
+            logger.warning("Could not load CrossEncoder (%s). Reranking is unavailable.", e)
+            self.backend = "unavailable"
 
     def rerank(
         self,
@@ -97,24 +87,25 @@ class RerankModel:
             try:
                 pairs = [[query, c.get("text", "")] for c in candidates]
                 scores = self._model.predict(pairs)
-                for cand, score in zip(candidates, scores):
-                    item = dict(cand)
-                    item["score"] = float(score)
-                    rescored_candidates.append(item)
+                if len(scores) != len(candidates):
+                    logger.warning(
+                        "Cross-encoder returned %s scores for %s candidates; preserving retrieval order",
+                        len(scores), len(candidates),
+                    )
+                else:
+                    for cand, score in zip(candidates, scores):
+                        item = dict(cand)
+                        item["score"] = float(score)
+                        rescored_candidates.append(item)
             except Exception as e:
-                logger.error("Error during cross-encoder predict: %s. Using fallback.", e)
-                self.backend = "fallback"
+                logger.warning("Cross-encoder prediction failed; preserving retrieval order: %s", e)
 
-        if self.backend == "fallback" or not rescored_candidates:
-            for cand in candidates:
-                item = dict(cand)
-                init_score = float(item.get("score", 0.5))
-                text = item.get("text", "")
-                item["score"] = self._lexical_score(query, text, init_score)
-                rescored_candidates.append(item)
+        did_rerank = bool(rescored_candidates)
+        if not did_rerank:
+            rescored_candidates = [dict(candidate) for candidate in candidates]
 
-        # Sort by rerank score descending
-        rescored_candidates.sort(key=lambda x: x.get("score", 0.0), reverse=True)
+        if did_rerank:
+            rescored_candidates.sort(key=lambda x: x.get("score", 0.0), reverse=True)
 
         # Apply deduplication (one chunk per article_id + text similarity filter)
         deduped = dedup_citations(rescored_candidates, sim_threshold=dedup_threshold)

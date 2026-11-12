@@ -1,16 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
-  Layers,
   X,
   ExternalLink,
   ChevronLeft,
   ChevronRight,
   Search,
-  FolderGit2,
   Newspaper,
-  Tag,
   AlertCircle,
   RefreshCw,
 } from "lucide-react";
@@ -37,6 +34,8 @@ export default function ClustersPage() {
   const [detailData, setDetailData] = useState<ClusterDetail | null>(null);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [detailError, setDetailError] = useState<string | null>(null);
+  const detailRequestId = useRef(0);
   const pageSize = 10;
 
   const loadClusters = async () => {
@@ -47,6 +46,7 @@ export default function ClustersPage() {
       setClusters(data);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to load story clusters.";
+      setClusters([]);
       setError(msg);
     } finally {
       setIsLoading(false);
@@ -54,38 +54,43 @@ export default function ClustersPage() {
   };
 
   useEffect(() => {
-    loadClusters();
+    let cancelled = false;
+    getClusters()
+      .then((data) => { if (!cancelled) setClusters(data); })
+      .catch((err: unknown) => {
+        if (!cancelled) setError(err instanceof Error ? err.message : "Failed to load story clusters.");
+      })
+      .finally(() => { if (!cancelled) setIsLoading(false); });
+    return () => { cancelled = true; };
   }, []);
+
+  const loadDetail = async (cluster: Cluster, targetPage: number) => {
+    const requestId = ++detailRequestId.current;
+    setIsDetailLoading(true);
+    setDetailError(null);
+    setDetailData(null);
+    setPage(targetPage);
+    try {
+      const detail = await getClusterDetail(cluster.id, targetPage, pageSize);
+      if (requestId !== detailRequestId.current) return;
+      setDetailData(detail);
+    } catch (err: unknown) {
+      if (requestId !== detailRequestId.current) return;
+      setDetailError(err instanceof Error ? err.message : "Failed to load cluster articles.");
+    } finally {
+      if (requestId === detailRequestId.current) setIsDetailLoading(false);
+    }
+  };
 
   const handleSelectCluster = async (cluster: Cluster) => {
     setSelectedCluster(cluster);
     setPage(1);
-    setIsDetailLoading(true);
-    try {
-      const detail = await getClusterDetail(cluster.id, 1, pageSize);
-      setDetailData(detail);
-    } catch {
-      // In case detail fails, fallback with minimal
-      setDetailData({
-        cluster,
-        articles: [],
-        total: cluster.size,
-      });
-    } finally {
-      setIsDetailLoading(false);
-    }
+    await loadDetail(cluster, 1);
   };
 
   const handlePageChange = async (newPage: number) => {
     if (!selectedCluster || newPage < 1) return;
-    setPage(newPage);
-    setIsDetailLoading(true);
-    try {
-      const detail = await getClusterDetail(selectedCluster.id, newPage, pageSize);
-      setDetailData(detail);
-    } finally {
-      setIsDetailLoading(false);
-    }
+    await loadDetail(selectedCluster, newPage);
   };
 
   const filteredClusters = clusters.filter(
@@ -103,12 +108,10 @@ export default function ClustersPage() {
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-gray-100 tracking-tight flex items-center gap-2">
             <span>Cross-Lingual Story Clusters</span>
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              HDBSCAN + IndicBERT
-            </span>
+
           </h1>
           <p className="text-xs sm:text-sm text-gray-400 mt-1">
-            Unsupervised cross-lingual clustering grouping shared events across English, Hindi, Bengali, and Tamil
+            Explore topic groups computed from the indexed news corpus
           </p>
         </div>
 
@@ -158,7 +161,7 @@ export default function ClustersPage() {
 
       {/* Error Message */}
       {error && (
-        <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-800/60 text-rose-300 text-sm flex items-center gap-3">
+        <div role="alert" className="p-4 rounded-xl bg-rose-950/40 border border-rose-800/60 text-rose-300 text-sm flex items-center gap-3">
           <AlertCircle className="w-5 h-5 shrink-0" />
           <div>
             <div className="font-semibold">Failed to fetch clusters</div>
@@ -182,6 +185,12 @@ export default function ClustersPage() {
             />
           ))}
         </div>
+      )}
+
+      {!isLoading && !error && filteredClusters.length === 0 && (
+        <p className="text-sm text-gray-400" role="status">
+          {clusters.length === 0 ? "No topic clusters are available yet." : "No clusters match this filter."}
+        </p>
       )}
 
       {/* Slide-over Detail Panel */}
@@ -294,6 +303,16 @@ export default function ClustersPage() {
                     </div>
                   ))}
                 </div>
+              ) : detailError ? (
+                <div role="alert" className="text-sm text-rose-300 py-6 space-y-3">
+                  <p>{detailError}</p>
+                  <button
+                    onClick={() => loadDetail(selectedCluster, page)}
+                    className="px-3 py-1.5 rounded-lg border border-gray-700 text-gray-200"
+                  >
+                    Retry loading articles
+                  </button>
+                </div>
               ) : detailData && detailData.articles.length > 0 ? (
                 detailData.articles.map((art: ClusterArticle, i) => {
                   const lang = (art.lang || "en").toLowerCase();
@@ -370,7 +389,7 @@ export default function ClustersPage() {
             <div className="p-4 border-t border-gray-800/80 flex items-center justify-between bg-gray-950/90">
               <button
                 onClick={() => handlePageChange(page - 1)}
-                disabled={page <= 1 || isDetailLoading}
+                disabled={page <= 1 || isDetailLoading || !detailData}
                 className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 disabled:opacity-40 text-xs text-gray-300 hover:text-white transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -383,7 +402,7 @@ export default function ClustersPage() {
 
               <button
                 onClick={() => handlePageChange(page + 1)}
-                disabled={isDetailLoading || (detailData ? detailData.articles.length < pageSize : false)}
+                disabled={isDetailLoading || !detailData || page * pageSize >= detailData.total}
                 className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 disabled:opacity-40 text-xs text-gray-300 hover:text-white transition-colors"
               >
                 <span>Next</span>

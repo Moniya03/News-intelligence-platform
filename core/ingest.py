@@ -12,7 +12,7 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import pandas as pd
-from pymongo import MongoClient, UpdateOne
+from pymongo import InsertOne, MongoClient
 from pymongo.errors import PyMongoError
 
 from core.config import get_config
@@ -63,7 +63,6 @@ def _read_dataframe_safe(path: Path) -> Optional[pd.DataFrame]:
     if not path.is_file():
         logger.warning("Dataset file not found: %s", path)
         return None
-
     suffix = path.suffix.lower()
     try:
         if suffix in [".csv", ".txt"]:
@@ -89,6 +88,25 @@ def _read_dataframe_safe(path: Path) -> Optional[pd.DataFrame]:
     except Exception as e:
         logger.error("Error reading file %s: %s", path, e)
         return None
+
+
+def _assert_no_article_id_collisions(collection: Any, article_ids: List[str]) -> None:
+    """Refuse sequential-ID ingestion before it can replace existing records."""
+    if article_ids and collection.find_one({"_id": {"$in": article_ids}}, {"_id": 1}):
+        raise RuntimeError(
+            "Ingestion IDs already exist in this collection; refusing to overwrite articles. "
+            "Use an isolated database until stable source-based IDs are implemented."
+        )
+
+
+def _assert_legacy_ingest_target(requested_db: Optional[str], app_db: str) -> str:
+    """Require legacy benchmark datasets to target an explicitly isolated DB."""
+    if not requested_db or requested_db == app_db:
+        raise RuntimeError(
+            "Legacy fake-news/Tamil benchmark ingestion is disabled for the application database. "
+            "Pass --db with a separate isolated database name to ingest these legacy datasets."
+        )
+    return requested_db
 
 
 def load_bengali_news(path: str | Path, max_articles: int = 5000) -> List[Dict[str, Any]]:
@@ -300,7 +318,8 @@ def ingest_all(
     """
     cfg = get_config()
     mongo_uri = mongo_uri or cfg.get("mongo", {}).get("uri", "mongodb://localhost:27017")
-    db_name = db_name or cfg.get("mongo", {}).get("db", "news_intel")
+    app_db = cfg.get("mongo", {}).get("db", "news_intel")
+    db_name = _assert_legacy_ingest_target(db_name, app_db)
     base_data = Path(data_dir)
     raw_data = base_data / "raw" if (base_data / "raw").exists() else base_data
 
@@ -359,9 +378,18 @@ def ingest_all(
         logger.error("Could not connect to MongoDB (%s): %s. Aborting DB write.", mongo_uri, e)
         return len(unique_articles)
 
-    bulk_ops: List[UpdateOne] = []
+    bulk_ops: List[InsertOne] = []
     lang_counters: Dict[str, int] = {}
     total_upserted = 0
+
+    candidate_ids: List[str] = []
+    candidate_counters: Dict[str, int] = {}
+    for art in unique_articles:
+        lang = art.get("lang", "en")
+        idx = candidate_counters.get(lang, 1)
+        candidate_counters[lang] = idx + 1
+        candidate_ids.append(f"{lang}_{idx:06d}")
+    _assert_no_article_id_collisions(coll, candidate_ids)
 
     for i, art in enumerate(unique_articles, 1):
         lang = art.get("lang", "en")
@@ -370,9 +398,7 @@ def ingest_all(
         article_id = f"{lang}_{idx:06d}"
         art["_id"] = article_id
 
-        bulk_ops.append(
-            UpdateOne({"_id": article_id}, {"$set": art}, upsert=True)
-        )
+        bulk_ops.append(InsertOne(art))
 
         if len(bulk_ops) >= 500:
             coll.bulk_write(bulk_ops)

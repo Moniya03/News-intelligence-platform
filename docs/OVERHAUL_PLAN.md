@@ -187,7 +187,7 @@ Summaries are supporting functionality. Verify source-bound citation IDs, unavai
 
 Implementation runs sequentially by slice. Parallelism is allowed only for bounded workers with nonoverlapping file ownership. The coordinator never writes application code, performs project scouting, or reviews code; it assigns tasks, resolves ownership, relays evidence, and tracks gates. The coordinator's only writing exception is this final plan.
 
-Each slice must use the following ordered phases; the slice descriptions below specialize their assignments and acceptance evidence:
+Each slice must use the following ordered phases; the slice descriptions below specialize their assignments and acceptance evidence. Verification is risk-targeted: run the smallest existing focused checks that cover changed behavior and required acceptance gates. Do not add broad or duplicate test suites without a specific uncovered risk; record any skipped gate and its reason.
 
 1. **Scout phase:** named read-only scout(s) inspect current code, callers, tests, configuration, dependencies, and applicable AGENTS/skills. Return exact file/line references, current interfaces, risks, a bounded file-ownership proposal, and the checks needed. Use Context7 CLI for current library/framework/API usage as required by AGENTS. Do not ask the user for discoverable facts.
 2. **Worker phase:** coordinator passes the scout packet and acceptance criteria to bounded worker(s). Each has an explicit allowlist of files/subsystems, inputs, outputs, and tests. Shared files have one owner; cross-owner requests return to the coordinator. Workers implement the whole authorized slice including affected callers and focused regression checks.
@@ -209,7 +209,7 @@ Annotation workload is explicit: the three mandatory systems produce at most 720
 
 ### Phase A — Make the foundation truthful and runnable
 
-#### Slice 00 — Remove fabricated success and protect existing data (~0.5 day)
+#### Slice 00 — Remove fabricated success and protect existing data (~0.5 day) — Code accepted; docs review and commit pending
 
 * **Scouts:** one API/core scout maps every fake article/model/credibility/evaluation fallback and its callers; one UI/docs scout maps frontend mocks and unsupported claims. Inventory ignored local data without deleting it.
 * **Workers:** backend worker owns API/core fallbacks and truthful statuses; frontend worker owns API-client mock catches and unsupported badges; one worker owns any shared contract changes. Disable misleading experiment paths until replaced, retaining only explicit test fixtures.
@@ -217,13 +217,17 @@ Annotation workload is explicit: the three mandatory systems produce at most 720
 * **Docs:** docs agent removes misleading metrics, fake verification claims, misinformation scope, and stale no-scraping claims; records current honest limitations and preservation policy. Reviewer verifies the wording.
 * **Commit:** commit agent creates `fix: remove fabricated news and evaluation fallbacks` only after both gates pass.
 
-#### Slice 01 — Reproducible local runtime and hardware gate (~0.5 day)
+**Completion evidence:** Independent frontend review passed 15 focused Node checks, lint, production build and production dependency audit (0 findings); development dependencies still have 7 moderate audit findings. Independent backend/retrieval and evaluation-safety reviews passed their focused checks and compile/diff checks. Manual readiness stubs confirmed degraded status for unavailable embedding/index dependencies and ready status when configured dependencies were usable. These checks do not establish a populated index, retrieval quality, provider access or end-to-end UI acceptance. The existing ignored datasets and result artifacts remain untouched; the legacy loader refuses the configured application database, and legacy generated evaluation entrypoints are disabled. No paid provider or corpus write was used for these gates.
+
+#### Slice 01 — Reproducible local runtime and hardware gate (~0.5 day) — PARTIALLY VERIFIED
 
 * **Scouts:** runtime scout checks actual Python environment/lock conventions, Docker endpoints and existing volumes, model configuration, GPU access, frontend scripts, and applicable setup instructions. No destructive reset or system permission changes.
 * **Workers:** runtime worker owns reproducible Python/Scrapy dependencies and Makefile/configuration; infra worker owns existing Compose health checks and local service configuration, with no overlap. Preserve database volumes, avoid public unauthenticated exposure, and keep secrets in local environment files.
 * **Review/fix:** reviewer starts/checks MongoDB and Weaviate where permitted, runs database health checks, then a tiny real BGE-M3 inference and index write/read in a dedicated test namespace. Measure CPU/CUDA memory and a small batch latency. Check frontend build scripts. Missing Docker/CUDA is recorded as a blocker or explicit CPU path, never hidden.
 * **Docs:** docs agent writes the exact tested setup/start/health commands, dependency installation, CPU setting, GPU prerequisites, resource budget, and recovery steps; reviewer verifies them on this environment as far as access permits.
 * **Commit:** `build: make local NLP and database setup reproducible`.
+
+**Current status:** MongoDB and Weaviate readiness, real local CUDA embedding/reranker inference, and bounded spider-to-Mongo persistence passed the dated checks in [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md). A dedicated index write/read round-trip and full application acceptance remain outstanding; therefore Slice 01 is not complete.
 
 ### Phase B — Acquire a traceable four-language news corpus
 

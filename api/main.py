@@ -100,7 +100,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 app = FastAPI(
     title="Multilingual News Intelligence API",
-    description="Cross-lingual news search, RAG synthesis, and topic clustering for English, Hindi, Bengali, and Tamil.",
+    description="Cross-lingual news search, RAG synthesis, and topic clustering for English, Hindi, Bengali, and Marathi.",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -123,10 +123,25 @@ app.include_router(health.router, prefix="/api")
 
 @app.get("/")
 async def root():
-    """Root health and welcome message."""
+    """Report whether the core search path initialized successfully."""
+    embed_model = getattr(app.state, "embed_model", None)
+    embed_available = getattr(embed_model, "backend", None) in {"flagembedding", "sentence_transformers"}
+
+    weaviate_client = getattr(app.state, "weaviate_client", None)
+    weaviate_ready = False
+    if weaviate_client is not None:
+        try:
+            if callable(getattr(weaviate_client, "is_ready", None)):
+                weaviate_ready = bool(weaviate_client.is_ready())
+            elif callable(getattr(weaviate_client, "is_live", None)):
+                weaviate_ready = bool(weaviate_client.is_live())
+        except Exception as e:
+            logger.debug("Weaviate readiness check failed: %s", e)
+
+    ready = embed_available and weaviate_ready
     return {
         "name": "Multilingual News Intelligence Platform API",
         "version": "1.0.0",
-        "status": "online",
+        "status": "ready" if ready else "degraded",
         "docs_url": "/docs",
     }

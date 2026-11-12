@@ -8,8 +8,8 @@ export interface Citation {
   source: string;
   url: string | null;
   snippet: string;
-  veracity: "Likely reliable" | "Uncertain" | "Likely misleading";
-  reason: string;
+  veracity?: "Likely reliable" | "Uncertain" | "Likely misleading";
+  reason?: string;
 }
 
 export interface Credibility {
@@ -25,7 +25,7 @@ export interface ChatRequest {
 export interface ChatResponse {
   answer: string;
   citations: Citation[];
-  credibility: Credibility;
+  credibility?: Credibility;
 }
 
 export interface SearchRequest {

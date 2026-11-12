@@ -1,6 +1,7 @@
 """Unit tests for RAG prompt construction, citation parsing, and generation."""
 
 import unittest
+from unittest.mock import patch
 
 from core.rag import build_prompt, generate_answer, parse_citations
 
@@ -64,14 +65,19 @@ class TestRAG(unittest.TestCase):
         self.assertEqual(citations[0]["chunk_id"], "hi_000204_c000")
         self.assertEqual(citations[0]["article_id"], "hi_000204")
 
-    def test_generate_answer_fallback_mode(self):
-        """Verify generate_answer returns grounded English answer and citations when client is None."""
-        res = generate_answer("What is happening with energy?", self.sample_chunks, gemini_client=None)
+    def test_parse_citations_does_not_invent_sources(self):
+        self.assertEqual(parse_citations("Coverage confirms a change.", self.sample_chunks), [])
 
-        self.assertIn("answer", res)
-        self.assertIn("cited_chunk_ids", res)
-        self.assertGreater(len(res["cited_chunk_ids"]), 0)
-        self.assertIn("en_000101_c000", res["cited_chunk_ids"])
+    @patch("core.rag.get_llm_client", return_value=None)
+    def test_generate_answer_requires_provider_when_context_exists(self, _):
+        with self.assertRaisesRegex(RuntimeError, "provider is unavailable"):
+            generate_answer("What is happening with energy?", self.sample_chunks)
+
+    def test_generate_answer_empty_context_is_honest_without_provider(self):
+        self.assertEqual(
+            generate_answer("query", []),
+            {"answer": "Not found in the indexed articles.", "cited_chunk_ids": []},
+        )
 
 
 if __name__ == "__main__":

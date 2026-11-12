@@ -11,7 +11,7 @@ This guide provides a comprehensive, step-by-step walkthrough for configuring, b
 3. [Environment Configuration](#3-environment-configuration)
 4. [Infrastructure Deployment (Docker)](#4-infrastructure-deployment-docker)
 5. [Python Environment Setup](#5-python-environment-setup)
-6. [Offline Data Pipeline (Ingest, Index, Cluster)](#6-offline-data-pipeline-ingest-index-cluster)
+6. [Corpus and evaluation commands](#6-corpus-and-evaluation-commands)
 7. [Starting the FastAPI Backend](#7-starting-the-fastapi-backend)
 8. [Starting the Next.js Frontend](#8-starting-the-nextjs-frontend)
 9. [Running Evaluations & Automated Tests](#9-running-evaluations--automated-tests)
@@ -28,7 +28,7 @@ Before setting up the project, ensure your host development machine has the foll
 | **Operating System** | Ubuntu 22.04 LTS, macOS 13+, or Windows WSL2 | Linux (x86_64 or arm64) | Native Linux environment recommended |
 | **Docker & Docker Compose** | Docker 24.0+ & Compose v2.20+ | Latest Docker Desktop / Engine | Required for Weaviate and MongoDB containers |
 | **Python** | Python `3.11` or `3.12` | Python `3.12.x` | Managed via `uv`, `mise`, or `pyenv` |
-| **Node.js & npm** | Node.js `20.x` (LTS) | Node.js `20.14+` or `22.x` | Required for Next.js 16 frontend |
+| **Node.js & npm** | Node.js `20.x` (LTS) | Node.js `20.14+` or `22.x` | Required for Next.js 16 frontend (package currently pins Next.js 16.4.6) |
 | **CUDA (Optional)** | CUDA 12.1+ | NVIDIA GPU (4 GB+ VRAM) | Enables fast FP16 inference for `bge-m3` and reranker |
 
 > [!NOTE]
@@ -229,60 +229,23 @@ limitations. Do not bypass a publisher's robots exclusions.
 
 ---
 
-## 6. Offline Data Pipeline (Ingest, Index, Cluster)
+## 6. Corpus and evaluation commands
 
-The offline data pipeline populates MongoDB and Weaviate with the processed multilingual news dataset.
+The legacy dataset ingestion/index/cluster commands are not the verified
+Scrapy-based research pipeline. In particular, `make ingest` refuses to write
+to the configured application database because its legacy input files are not
+the curated news corpus. Do not point it at `news_intel`, and do not assume
+that ignored Parquet/vector files or old Mongo records are valid inputs.
 
-```
-┌──────────────┐     ┌─────────────┐     ┌────────────────┐
-│ make ingest  │ ──> │ make index  │ ──> │  make cluster  │
-└──────────────┘     └─────────────┘     └────────────────┘
- (MongoDB load)       (Embed & Vector)    (BERTopic UMAP)
-```
-
-### Step 6.1: Ingestion (`make ingest`)
-
-```bash
-make ingest
-# Equivalent to: python -m core.ingest
-```
-
-**What this executes**:
-1. Checks for raw dataset files under `data/raw/` or downloads standard splits from [L3Cube-IndicNews](https://github.com/l3cube-pune/indic-nlp) (English, Hindi, Bengali, Tamil) and HinFakeNews.
-2. Performs exact deduplication using normalized `SHA-256` hashing.
-3. Performs near-duplicate filtering within each language using token overlap shingles.
-4. Normalizes article fields (`_id`, `lang`, `title`, `body`, `category`, `source`, `url`, `date`).
-5. Inserts articles into the MongoDB `articles` collection and builds compound indices on `lang`, `category`, and `cluster_id`.
-
-### Step 6.2: Chunking & Vector Indexing (`make index`)
-
-```bash
-make index
-# Equivalent to: python -m core.index
-```
-
-**What this executes**:
-1. Splits article bodies into overlapping windows of max 256 tokens (with 32 token overlap) using the `BAAI/bge-m3` tokenizer.
-2. Prepends the article headline to every chunk to retain global contextual awareness.
-3. Generates 1024-dimensional dense vectors using `BAAI/bge-m3` in FP16 precision.
-4. Creates the `NewsChunk` collection in Weaviate with vector indexing and BM25 property mappings.
-5. Batch uploads chunk texts, dense vectors, and metadata into Weaviate.
-6. Serializes chunk mappings to `data/chunks_final.parquet` and vectors to `data/vectors.npy` for rapid offline reuse.
-
-### Step 6.3: Cross-Lingual Topic Clustering (`make cluster`)
-
-```bash
-make cluster
-# Equivalent to: python -m core.cluster
-```
-
-**What this executes**:
-1. Loads document vectors from `data/vectors.npy` and article identifiers.
-2. Runs **BERTopic** dimensionality reduction via **UMAP** (reducing 1024 dimensions down to 5).
-3. Clusters vectors using **HDBSCAN** (minimum cluster size = 15).
-4. Computes class-based TF-IDF (`c-TF-IDF`) to extract top descriptive keywords per cluster.
-5. Computes multilingual distribution counts (`en`, `hi`, `bn`, `ta`) per cluster.
-6. Writes cluster definitions to MongoDB `clusters` collection and tags each article with its corresponding `cluster_id`.
+The legacy loader may only be run for isolated investigation with an
+explicitly selected disposable database distinct from the application
+database. Review its source and dataset terms first. Existing ignored local
+datasets and generated evaluation result files are preserved in place; they
+are not current corpus or evaluation evidence. Legacy generated evaluation
+entrypoints are disabled. Follow [OVERHAUL_PLAN.md](OVERHAUL_PLAN.md) for the
+supported collection, snapshot, indexing and evaluation workflow as each
+slice is completed. Do not run `make index`, `make cluster` or `make eval` as
+if they produced validated research results.
 
 ---
 
@@ -332,9 +295,9 @@ npm install
 npm run dev
 ```
 
-The Next.js 16 development server will start on port `3000`:
+The installed Next.js 16.4.6 development server will start on port `3000`:
 ```
-   ▲ Next.js 16.4.0
+   ▲ Next.js 16.4.6
    - Local:        http://localhost:3000
    - Environments: .env.local
 
@@ -373,19 +336,15 @@ These checks cover focused regressions, not the full application or user
 experience. The revised corpus pipeline still needs the broader, repeatable
 acceptance gates in the plan.
 
-### 9.2 Legacy evaluation scripts (`make eval`)
+### 9.2 Legacy evaluation entrypoints
 
-`make eval` still invokes the original evaluation scripts, but their historical
-results are not valid evidence for the revised project. Prior audits found
-synthetic predictions, leakage, and misleading fallback paths in the old
-experiments. Do not use those scores in a report or presentation. The revised
-BM25/dense/hybrid retrieval and topic-clustering evaluation has not yet been
-run on a frozen, validated news corpus.
-
-```bash
-make eval
-# Equivalent to: python -m eval.run_all
-```
+The old evaluation entrypoints, including `make eval`, are intentionally
+disabled because their generated outputs are not valid evidence for this
+project. Do not run them or use the existing ignored result files in a report.
+The revised BM25/dense/hybrid retrieval and topic evaluation has not yet been
+run on a frozen, validated news corpus. The plan specifies minimal,
+risk-targeted checks for each implementation slice; broad duplicate test runs
+are not required.
 
 ---
 

@@ -2,6 +2,7 @@
 
 import unittest
 from unittest.mock import MagicMock
+from types import SimpleNamespace
 import numpy as np
 
 from core.retrieve import retrieve_bm25, retrieve_dense, retrieve_hybrid
@@ -33,20 +34,13 @@ class TestRetrieval(unittest.TestCase):
         self.query_text = "clean energy solar"
         self.query_vec = np.random.randn(1024).astype(np.float32)
 
-    def test_retrieve_hybrid_none_client(self):
-        """When client is None, retrieve_hybrid should return an empty list without error."""
-        results = retrieve_hybrid(self.query_vec, self.query_text, client=None, top_k=5)
-        self.assertEqual(results, [])
-
-    def test_retrieve_dense_none_client(self):
-        """When client is None, retrieve_dense should return an empty list."""
-        results = retrieve_dense(self.query_vec, client=None, top_k=5)
-        self.assertEqual(results, [])
-
-    def test_retrieve_bm25_none_client(self):
-        """When client is None, retrieve_bm25 should return an empty list."""
-        results = retrieve_bm25(self.query_text, client=None, top_k=5)
-        self.assertEqual(results, [])
+    def test_unavailable_client_raises_for_every_retrieval_mode(self):
+        with self.assertRaisesRegex(RuntimeError, "unavailable"):
+            retrieve_hybrid(self.query_vec, self.query_text, client=None, top_k=5)
+        with self.assertRaisesRegex(RuntimeError, "unavailable"):
+            retrieve_dense(self.query_vec, client=None, top_k=5)
+        with self.assertRaisesRegex(RuntimeError, "unavailable"):
+            retrieve_bm25(self.query_text, client=None, top_k=5)
 
     def test_retrieve_hybrid_with_mock_client(self):
         """Test hybrid retrieval structure with mock Weaviate v4 collection response."""
@@ -83,6 +77,53 @@ class TestRetrieval(unittest.TestCase):
         r1 = results[1]
         self.assertEqual(r1["article_id"], "hi_002")
         self.assertEqual(r1["lang"], "hi")
+
+    def test_query_outages_raise_instead_of_looking_like_empty_results(self):
+        cases = (
+            ("hybrid", lambda client: retrieve_hybrid(self.query_vec, self.query_text, client, top_k=5)),
+            ("near_vector", lambda client: retrieve_dense(self.query_vec, client, top_k=5)),
+            ("bm25", lambda client: retrieve_bm25(self.query_text, client, top_k=5)),
+        )
+        for method, retrieve in cases:
+            with self.subTest(method=method):
+                query = MagicMock()
+                getattr(query, method).side_effect = RuntimeError("transport unavailable")
+                collection = SimpleNamespace(query=query)
+                client = SimpleNamespace(collections=SimpleNamespace(get=lambda _: collection))
+                with self.assertRaisesRegex(RuntimeError, "retrieval failed"):
+                    retrieve(client)
+
+    def test_v3_transport_outages_raise_after_v4_fallback(self):
+        cases = (
+            ("hybrid", lambda client: retrieve_hybrid(self.query_vec, self.query_text, client, top_k=5)),
+            ("near_vector", lambda client: retrieve_dense(self.query_vec, client, top_k=5)),
+            ("bm25", lambda client: retrieve_bm25(self.query_text, client, top_k=5)),
+        )
+        for method, retrieve in cases:
+            with self.subTest(method=method):
+                query_v4 = MagicMock()
+                getattr(query_v4, method).side_effect = RuntimeError("v4 unavailable")
+                collection = SimpleNamespace(query=query_v4)
+
+                query_v3 = MagicMock()
+                query_v3.get.return_value = query_v3
+                for builder in ("with_additional", "with_hybrid", "with_near_vector", "with_bm25", "with_limit", "with_where"):
+                    getattr(query_v3, builder).return_value = query_v3
+                query_v3.do.side_effect = RuntimeError("v3 transport unavailable")
+                client = SimpleNamespace(
+                    collections=SimpleNamespace(get=lambda _: collection),
+                    query=query_v3,
+                )
+                with self.assertRaisesRegex(RuntimeError, "retrieval failed"):
+                    retrieve(client)
+
+    def test_successful_empty_query_remains_empty(self):
+        empty_response = SimpleNamespace(objects=[])
+        query = MagicMock()
+        query.bm25.return_value = empty_response
+        collection = SimpleNamespace(query=query)
+        client = SimpleNamespace(collections=SimpleNamespace(get=lambda _: collection))
+        self.assertEqual(retrieve_bm25(self.query_text, client, top_k=5), [])
 
 
 if __name__ == "__main__":

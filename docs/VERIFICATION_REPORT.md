@@ -16,6 +16,12 @@ Scope: local MongoDB/Weaviate readiness, real local model inference, and a bound
 
 The model checks establish execution and output validity only. They do not measure retrieval relevance, ranking quality, summary quality, or API account entitlement.
 
+## Truthfulness and preservation gates (13 November 2026)
+
+Independent Slice 00 reviews passed the focused backend/retrieval and evaluation-safety checks, plus frontend checks (15 Node tests, lint, production build and production dependency audit with zero findings). The development dependency audit reported seven moderate findings. The reviewers also checked readiness behavior with dependency stubs: missing embedding/index dependencies report degraded readiness; configured usable dependencies report ready. This is bounded implementation verification, not a populated-index or end-to-end research acceptance result. These gates were run by the independent implementation reviewers; this report update does not claim they were rerun here.
+
+The updated API returns valid empty search/topic results as empty responses, reports unavailable dependencies as errors, and does not fabricate article, topic or chat fallback content. Legacy generated evaluation entrypoints are disabled, and the legacy loader refuses the configured application database. Existing ignored datasets and result artifacts were preserved; they are not certified as the new corpus or valid experimental results. The full corpus, indexed search quality, topic evaluation and UI acceptance remain incomplete. See [OVERHAUL_PLAN.md](OVERHAUL_PLAN.md) for slice status and remaining acceptance criteria.
+
 ## Bounded Scrapy-to-Mongo pilot (12 November 2026 UTC)
 
 The live crawl and database audit used the local Scrapy project and `news_intel` Mongo database. Latest successful run records are dated 12 November UTC (18:16–18:42); counts below are request/article outcomes, not unique stories across publishers. The mapping versions were `global-category-v2`, except Amar Ujala's final corrected run, which used `global-category-v3`.

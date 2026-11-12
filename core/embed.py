@@ -7,7 +7,6 @@ and fallback representation when GPU or heavy ML libraries are not available.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import logging
 from pathlib import Path
 from typing import List, Optional
@@ -41,7 +40,7 @@ class EmbedModel:
         self.model_name = model_name
         self.fp16 = fp16
         self.device = device
-        self.backend = "fallback"
+        self.backend = "unavailable"
         self._model = None
 
         self._init_model()
@@ -82,25 +81,8 @@ class EmbedModel:
             logger.info("Successfully loaded SentenceTransformer.")
             return
         except Exception as e:
-            logger.warning("SentenceTransformer unavailable (%s). Using deterministic mock embedder.", e)
-            self.backend = "fallback"
-
-    def _deterministic_embed(self, text: str) -> np.ndarray:
-        """Generate a deterministic 1024-dim unit vector from text for development/fallback."""
-        if not text:
-            vec = np.zeros(EMBED_DIM, dtype=np.float32)
-            vec[0] = 1.0
-            return vec
-
-        # Seed random generator with SHA256 of text
-        digest = hashlib.sha256(text.encode("utf-8")).digest()
-        seed = int.from_bytes(digest[:8], byteorder="big") % (2**32)
-        rng = np.random.RandomState(seed)
-        vec = rng.randn(EMBED_DIM).astype(np.float32)
-        norm = np.linalg.norm(vec)
-        if norm > 0:
-            vec /= norm
-        return vec
+            logger.warning("SentenceTransformer unavailable (%s). Embedding is unavailable.", e)
+            self.backend = "unavailable"
 
     def embed_texts(self, texts: List[str], batch_size: int = 32) -> np.ndarray:
         """Embed a list of texts into dense vectors of shape (len(texts), 1024).
@@ -137,10 +119,7 @@ class EmbedModel:
             vecs = self._model.encode(texts, batch_size=batch_size, show_progress_bar=False)
             return np.array(vecs, dtype=np.float32)
 
-        else:
-            # Deterministic fallback
-            vectors = [self._deterministic_embed(t) for t in texts]
-            return np.array(vectors, dtype=np.float32)
+        raise RuntimeError("Embedding model is unavailable")
 
     def embed_query(self, text: str) -> np.ndarray:
         """Embed a single query into a 1D vector of shape (1024,).

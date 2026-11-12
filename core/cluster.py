@@ -41,6 +41,44 @@ def _extract_top_terms_tfidf(texts: List[str], top_n: int = 5) -> List[str]:
         return [w for w, _ in Counter(words).most_common(top_n)] or ["topic"]
 
 
+def _assert_cluster_store_empty(articles_coll: Any, clusters_coll: Any) -> None:
+    """Protect legacy cluster assignments until clustering has run-scoped IDs."""
+    if clusters_coll.find_one({}) or articles_coll.find_one({"cluster_id": {"$exists": True, "$ne": None}}):
+        raise RuntimeError(
+            "Cluster data already exists; refusing to replace it until clustering writes are run-scoped."
+        )
+
+
+def _persist_cluster_run(articles_coll: Any, clusters_coll: Any, article_ids: List[str], labels: Any,
+                         cluster_docs: List[Dict[str, Any]]) -> None:
+    """Insert this run's clusters and roll back its writes if article updates fail."""
+    inserted_cluster_ids: List[int] = []
+    touched_assignments: List[tuple[str, int]] = []
+    try:
+        for cluster in cluster_docs:
+            cluster_id = int(cluster["id"])
+            clusters_coll.insert_one(dict(cluster, _id=cluster_id))
+            inserted_cluster_ids.append(cluster_id)
+
+        for article_id, cluster_id in zip(article_ids, labels):
+            assigned_cluster_id = int(cluster_id)
+            touched_assignments.append((article_id, assigned_cluster_id))
+            articles_coll.update_one({"_id": article_id}, {"$set": {"cluster_id": assigned_cluster_id}})
+    except Exception as write_error:
+        try:
+            for article_id, cluster_id in touched_assignments:
+                articles_coll.update_one(
+                    {"_id": article_id, "cluster_id": cluster_id}, {"$unset": {"cluster_id": ""}}
+                )
+            if inserted_cluster_ids:
+                clusters_coll.delete_many({"_id": {"$in": inserted_cluster_ids}})
+        except Exception as rollback_error:
+            raise RuntimeError(
+                "Cluster persistence failed and rollback also failed; inspect this run's cluster records and assignments."
+            ) from rollback_error
+        raise RuntimeError("Cluster persistence failed; this run's writes were rolled back.") from write_error
+
+
 def run_clustering(
     embeddings_npy: str | Path = "data/vectors.npy",
     article_ids: Optional[List[str]] = None,
@@ -173,21 +211,9 @@ def run_clustering(
 
     # Write to MongoDB
     if client is not None and articles_coll is not None and clusters_coll is not None:
-        try:
-            # Update articles with cluster_id
-            for aid, cl_id in zip(article_ids, cluster_labels):
-                articles_coll.update_one({"_id": aid}, {"$set": {"cluster_id": int(cl_id)}})
-
-            # Save cluster docs
-            clusters_coll.delete_many({})
-            for c_doc in cluster_docs:
-                db_doc = dict(c_doc)
-                db_doc["_id"] = c_doc["id"]
-                clusters_coll.replace_one({"_id": c_doc["id"]}, db_doc, upsert=True)
-
-            logger.info("Successfully updated MongoDB with %d clusters.", len(cluster_docs))
-        except Exception as e:
-            logger.error("Error writing clusters to MongoDB: %s", e)
+        _assert_cluster_store_empty(articles_coll, clusters_coll)
+        _persist_cluster_run(articles_coll, clusters_coll, article_ids, cluster_labels, cluster_docs)
+        logger.info("Successfully updated MongoDB with %d clusters.", len(cluster_docs))
 
     return cluster_docs
 
