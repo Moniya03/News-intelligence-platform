@@ -370,7 +370,7 @@ make eval-retrieval ACTION=validate
 make eval-retrieval ACTION=run
 make eval-retrieval ACTION="run --split dev --output artifacts/retrieval_eval/v1/runs/corpus-59b2b589fe3bbdbffdc3/dev_baseline.json"
 make eval-retrieval ACTION="pool --run artifacts/retrieval_eval/v1/runs/corpus-59b2b589fe3bbdbffdc3/baseline.json"
-make eval-retrieval ACTION="score --run artifacts/retrieval_eval/v1/runs/corpus-59b2b589fe3bbdbffdc3/baseline.json --pool artifacts/retrieval_eval/v1/pools/corpus-59b2b589fe3bbdbffdc3/pool.json"
+make eval-retrieval ACTION="score --run artifacts/retrieval_eval/v1/runs/corpus-59b2b589fe3bbdbffdc3/baseline.json --pool artifacts/retrieval_eval/v1/pools/corpus-59b2b589fe3bbdbffdc3/pool.json --judgments data/retrieval_eval/corpus-59b2b589fe3bbdbffdc3/judgments.jsonl"
 ```
 
 The default run is held-out `test`; development is run separately and does not
