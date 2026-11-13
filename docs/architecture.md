@@ -1,36 +1,60 @@
-# Architecture and implementation status
+# Architecture and current status
 
-## Intended research flow
+## Verified data path
 
 ```mermaid
 flowchart LR
-  S[Publisher section pages] --> C[Scrapy adapters]
-  C --> R[MongoDB raw versions and normalized articles]
-  R --> F[Frozen corpus snapshot]
-  F --> P[Chunking and multilingual embeddings]
-  P --> W[Weaviate index]
-  W --> A[BM25 / dense / hybrid retrieval]
-  A --> U[Search interface and evaluated topic browsing]
+  S[Eight Scrapy adapters] --> R[MongoDB raw versions and accepted articles]
+  R --> F[Immutable 516 article snapshot]
+  F --> P[2,135 chunks and cached BGE-M3 embeddings]
+  P --> W[Snapshot-specific Weaviate collection]
+  W --> A[BM25 / dense / hybrid search]
+  F --> T[BERTopic artifacts]
+  A --> U[Search interface]
+  T --> U
+  F --> U[Topics and Corpus views]
 ```
 
-This is the intended research pipeline, not a claim that every stage currently forms a complete, validated product. The bounded scraper pilot, Mongo storage, local model inference and service readiness checks have been verified; corpus quality, full snapshot-to-index reproducibility, retrieval relevance, clustering usefulness and complete UI workflows remain open. See [OVERHAUL_PLAN.md](OVERHAUL_PLAN.md) for phase status and acceptance criteria.
+The 13 November 2026 local rehearsal passed for this configured environment.
+It exercised Search, Topics and Corpus against the active snapshot, and a
+scratch restore reused all 2,135 cached chunk vectors in 6.012 seconds without
+activating them or re-embedding. This is not a fresh-clone or full-pipeline
+reproduction. See [the verification report](VERIFICATION_REPORT.md) and
+[setup/runbook](setup.md).
 
-## Components
+## Components and evidence
 
-- **Collection:** Scrapy source-language adapters use publisher section mappings to shared categories. Raw article versions and normalized article records are stored in MongoDB. The live pilot is small and its source-section categories are weak labels, not verified article themes.
-- **Processing and retrieval:** The intended pipeline freezes a corpus, chunks article text, creates multilingual vectors, and compares BM25, dense and hybrid search using Weaviate. BGE-M3 embedding and cross-encoder inference were verified locally; their retrieval quality has not been measured.
-- **API:** FastAPI exposes `/api/search`, `/api/chat`, `/api/clusters` and `/api/health`. Valid empty search/topic collections are represented as empty results; unavailable dependencies produce errors; the API does not fabricate fallback records. Chat requires retrieved evidence and explicit citations.
-- **Frontend:** Next.js provides search, chat and topic views. It no longer supplies demo article fallbacks. End-to-end behavior against a representative research corpus remains unverified.
+- **Collection:** Eight bounded live Scrapy adapters: `abp_en`, `oneindia_en`,
+  `abp_hi`, `amarujala_hi`, `abp_bn`, `news18_bn`, `abp_mr`, `loksatta_mr`.
+  The campaign accepted 516 articles (English 123, Hindi 116, Bengali 156,
+  Marathi 121), with 586 raw versions and 66 rejected versions. These are
+  section-derived weak labels and uneven coverage: environment count is zero;
+  near-duplicate and syndication checks remain incomplete.
+- **Snapshot and index:** `corpus-59b2b589fe3bbdbffdc3` freezes 516 articles
+  and 2,135 chunks. Its manifest SHA-256 is
+  `0c56de1aafcbd32d19e68f8c0b99f2f31f1f5c5e89a49cbeae20acf416bb5eb2`; the
+  chunk data SHA-256 is
+  `db3f0a1727b264f5c73df330e407ea3468f34c812d3b36d94b76e3fd7b303c16`.
+  The dedicated Weaviate collection passed ID, provenance and vector readback.
+- **Retrieval:** BM25, BGE-M3 dense, and hybrid are implemented and shown in
+  the UI. The saved held-out evaluation has 48 queries and 427 pooled unique
+  query/article pairs. Its score is `incomplete` with `metrics: null` because
+  human judgments are absent. UI reranking was observed; reranking was omitted
+  from the saved evaluation pool.
+- **Topics:** BERTopic produced 11 non-noise topics and 17 outliers from the
+  same snapshot. Comparison to TF-IDF/KMeans uses coarse publisher-section
+  labels; those scores do not establish factual truth or event coherence.
+- **API/UI:** FastAPI exposes Search, Topics and Corpus data, plus chat and an
+  optional summary endpoint. Summary provider access is unverified. The local
+  rehearsal displayed the unavailable summary state. Playwright's 503 state
+  was explicitly simulated by request interception; it was not a live outage.
 
-## Reliability behavior
+## Deferred and incomplete
 
-- Embedding or index failures make dense/hybrid retrieval unavailable; no random vectors are substituted.
-- Optional reranker failure preserves the original candidate order and scores.
-- Chat does not invent a canned fallback when a provider is missing or fails.
-- `GET /` reports `degraded` when embedding or Weaviate is unavailable; `GET /api/health` reports `degraded` when MongoDB or Weaviate is unavailable.
-- Topic listing does not delete stored data. The legacy cluster generation path refuses a nonempty store rather than replacing existing records.
-- Legacy synthetic evaluation entrypoints are disabled. Existing ignored datasets and result artifacts are preserved and are not the new corpus or valid measurements.
-
-## Out of scope
-
-The system does not score article truth or publisher credibility, detect misinformation, or prove that sources independently corroborate a claim. Airflow scheduling and broader source expansion remain later work.
+Slice 09's engineering/provenance checks passed, but relevance-quality
+acceptance remains unmet: at least 86 pairs must be double-judged, with at
+least 513 initial helper decisions overall, followed by agreement,
+adjudication and score review. No synthetic or generated labels are valid
+substitutes. Airflow, continuous ingestion, summary-provider verification,
+near-duplicate/syndication checks, and a fresh-clone full-pipeline rehearsal
+are deferred or unverified. Overall project completion is not claimed.

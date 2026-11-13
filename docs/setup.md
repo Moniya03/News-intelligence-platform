@@ -1,6 +1,6 @@
 # 🛠️ Developer Setup & Deployment Guide
 
-This guide provides a comprehensive, step-by-step walkthrough for configuring, building, running, and testing the **Multilingual News Intelligence Platform** from a fresh clone.
+This guide covers the checked local setup commands and the current faculty demo path. A fresh CPU dependency-lock install/import gate passed separately; a fresh clone, CPU model inference, and complete fresh-clone collection-to-demo pipeline have not been rehearsed.
 
 ---
 
@@ -38,7 +38,7 @@ Before setting up the project, ensure your host development machine has the foll
 
 ## 2. Cloning & Directory Navigation
 
-Clone the repository to your local development environment:
+To create a working checkout (this command alone does not reproduce ignored local data or model weights):
 
 ```bash
 git clone https://github.com/vasu/News-Intelligence-Platform.git
@@ -308,6 +308,10 @@ Current artifacts are local and ignored by Git. Keep the snapshot files and
 their checksums together for replay. This index gate verifies construction and
 provenance, not retrieval quality. Do not share raw article text or images.
 
+For the current demo, use the existing snapshot and index; do not rebuild or
+activate an index just to present. Required snapshot identity and checksums
+are in [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md).
+
 ### 6.2 Generate and compare snapshot topics
 
 The topic runner accepts only the configured active snapshot. It verifies the
@@ -426,6 +430,37 @@ Example health body:
 
 Interactive OpenAPI Swagger documentation is accessible in your browser at:
 **[http://localhost:8000/docs](http://localhost:8000/docs)**
+
+## Faculty demo rehearsal
+
+The recorded 13 November rehearsal used this configured local environment and
+existing MongoDB/Weaviate services. First ensure the local snapshot and topic
+artifacts are present, start API with `make api`, then start the frontend in a
+second terminal:
+
+```bash
+cd frontend
+npm ci
+npm run dev
+```
+
+Open `http://localhost:3000`. Verify API readiness and database health:
+
+```bash
+curl -i http://localhost:8000/
+curl -i http://localhost:8000/api/health
+```
+
+Demo Search → cross-language results → original publisher URL → Topics →
+Corpus → the measured latency table in
+[VERIFICATION_REPORT.md](VERIFICATION_REPORT.md). The rehearsal query was
+`test-en-05`: “Find Hindi coverage explaining why October inflation crossed
+the central bank’s tolerance ceiling.” Search's optional summary should show
+provider access unverified. The rehearsal's publisher URL returned HTTP 200,
+but external availability can change. A Playwright 503 screen was simulated
+with request interception; no service was stopped. The full flow and scratch
+recovery details are in the runtime rehearsal record. This is not a fresh
+clone/full-pipeline test.
 
 ---
 

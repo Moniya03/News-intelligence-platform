@@ -2,7 +2,7 @@
 
 An NLP course project exploring whether multilingual retrieval can help readers find Indian news across English, Hindi, Bengali and Marathi, and whether topic clustering can make a collected corpus easier to explore.
 
-**Status: active research project; Slice 08 is committed as `8063962`; Slice 09 retrieval engineering and documentation are complete, but retrieval quality remains unevaluated pending human judgments.** An isolated 90-day campaign collected 516 accepted articles across English, Hindi, Bengali and Marathi, with 586 raw versions and 66 rejected raw versions. A frozen snapshot and provenance-checked Weaviate index are built. Browser checks against that snapshot verified BM25, dense and hybrid Search, real topic browsing, and corpus coverage. The 48-query held-out run and 427-pair blinded pool are saved, but the score is incomplete with null metrics because no judgments have been collected. Topic scores are agreement with coarse publisher-section labels, not verified topic truth. This is the actual qualifying count, not a quota-complete or representative corpus. See the [retrieval evaluation protocol](docs/retrieval_evaluation.md), [overhaul roadmap](docs/OVERHAUL_PLAN.md), [frontend guide](docs/frontend_guide.md), and [verification record](docs/VERIFICATION_REPORT.md) for commands, screenshots, coverage, access caveats and limitations.
+**Status: active research project; local runtime and demo rehearsal passed, documentation is prepared for independent review, and final acceptance is pending. Slice 09 retrieval engineering passed but its quality gate is unmet:** 427 pooled query/article pairs have no human judgments, so its score has null metrics. The isolated campaign contains 516 accepted articles, 586 raw versions and 66 rejected raw versions. The active snapshot has a provenance-checked Weaviate index and the UI displays Search, Topics and Corpus from it. These counts are not representative or quota-complete. Topic comparison measures agreement with weak publisher-section labels, not truth or event coherence. See the [retrieval evaluation protocol](docs/retrieval_evaluation.md), [overhaul roadmap](docs/OVERHAUL_PLAN.md), [presentation runbook](docs/presentation_guide.md) and [verification record](docs/VERIFICATION_REPORT.md).
 
 ## Research focus
 
@@ -17,6 +17,7 @@ Compare lexical BM25, multilingual dense retrieval and hybrid retrieval on a doc
 - BM25, dense, and hybrid each ranked the 48 frozen held-out queries once, plus a separate 12-query development run. Their union contains 427 distinct query/article pairs; human judgments are still pending, so no relevance score is claimed. See the [evaluation guide](docs/retrieval_evaluation.md).
 - The API now distinguishes valid empty results from unavailable dependencies; it does not return demo search/chat content when a provider or index is unavailable.
 - Search, Topics, and Corpus were checked in a real browser at desktop and 390px mobile widths. The bounded checks covered three retrieval modes, original publisher links, topic pagination, corpus counts, keyboard focus, and explicitly simulated empty/error states. See [frontend guide](docs/frontend_guide.md) and [verification record](docs/VERIFICATION_REPORT.md).
+- The 13 November local rehearsal also verified a cross-language UI query, HTTP 200 for its original source, summary-unavailable display, and recovery of 2,135 cached vectors into a scratch Weaviate collection without activation or re-embedding. A Playwright 503 screen was intercepted and simulated; no service was stopped. Original MongoDB, Weaviate, configuration, snapshot and vector state remained unchanged. This is not a fresh-clone/full-pipeline rehearsal.
 
 Detailed counts, commands and limitations are in [docs/VERIFICATION_REPORT.md](docs/VERIFICATION_REPORT.md). Current implementation and remaining work are tracked in [docs/OVERHAUL_PLAN.md](docs/OVERHAUL_PLAN.md).
 
@@ -33,7 +34,7 @@ Search responses include ranked unique articles and top-level execution metadata
 
 ## Local development
 
-Requirements: Python 3.12.15 for the checked CPU lock, Node.js supported by the installed Next.js version, Docker Compose, and model weights for local inference. `uv 0.8.23` was observed during verification; it is not pinned. The checked lock installs CPU Torch. The existing CUDA environment is separate and should not be overwritten by syncing that lock.
+Requirements: Python 3.12.15 for the checked CPU lock, Node.js supported by the installed Next.js version, Docker Compose, local snapshot/topic artifacts, and model weights for dense search. The checked fresh CPU dependency install/import gate passed, but a fresh clone, CPU model inference, and full collection-to-demo pipeline were not tested. The existing CUDA environment is separate and should not be overwritten by syncing that lock. See [setup.md](docs/setup.md).
 
 ```bash
 cp .env.example .env

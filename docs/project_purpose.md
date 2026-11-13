@@ -12,9 +12,9 @@ College faculty and students reviewing the research question, corpus constructio
 
 ## Current status
 
-The repository contains a bounded eight-adapter Scrapy-to-Mongo pilot and verified local embedding/reranker inference. These checks establish that selected infrastructure paths run; they do not establish a representative four-language corpus, retrieval quality, useful clusters or an end-to-end research result. The overall project remains in progress. See [the verification report](VERIFICATION_REPORT.md) and [the roadmap](OVERHAUL_PLAN.md).
+The active local snapshot contains 516 accepted articles and 2,135 chunks from eight adapters. Search, Topics and Corpus have passed a bounded browser/runtime rehearsal, including cached-vector recovery into an isolated scratch index. The corpus is not representative: source/category coverage is uneven, there are no environment-category articles, and near-duplicate/syndication checks remain incomplete. The held-out retrieval baseline is saved, but quality is unevaluated because its 427-pair pool has no human judgments. The project remains in progress; see [the verification report](VERIFICATION_REPORT.md) and [the roadmap](OVERHAUL_PLAN.md).
 
-The API supports search, evidence-grounded chat and stored topic clusters. Search quality and chat quality have not been validated on a frozen research corpus. If the provider or index is unavailable, the service reports an error rather than presenting generated demo content as evidence.
+The API supports Search, optional evidence-grounded chat, topic artifacts and Corpus data. Summary provider access is unverified. The rehearsal checked the UI's summary-unavailable state; its Playwright 503 state used explicit request interception and was simulated. No retrieval-quality or chat-quality result is claimed.
 
 ## Scope boundaries
 

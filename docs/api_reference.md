@@ -91,4 +91,4 @@ The detail response contains `snapshot_id`, `run_id`, `settings_hash`, the reque
 
 ## Scope and status
 
-These contracts describe current API behavior, not an end-to-end research result. Search relevance, summary quality, and UI acceptance have not been evaluated. Topic comparison is measured only against weak publisher-section labels; agreement is not evidence of event coherence or factual truth. See [verification evidence](VERIFICATION_REPORT.md) and [the phased plan](OVERHAUL_PLAN.md).
+These contracts describe current API behavior, not a retrieval-quality result. A configured local API/UI rehearsal passed, including Search, Topics, Corpus and summary-unavailable behavior; the simulated Playwright 503 was not a live outage test. Search relevance and summary quality remain unevaluated. Topic comparison is measured only against weak publisher-section labels; agreement is not evidence of event coherence or factual truth. See [verification evidence](VERIFICATION_REPORT.md) and [the phased plan](OVERHAUL_PLAN.md).

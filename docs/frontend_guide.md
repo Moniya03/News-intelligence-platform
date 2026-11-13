@@ -63,5 +63,9 @@ the unavailable summary state. The mobile Search capture is 390px wide.
 ![Search at 390px mobile width](images/slice08/search-mobile-390.png)
 
 The final browser checks found no horizontal overflow on Search, Topics, or
-Corpus at 1440px and 390px. See [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md)
-for the gate results and boundaries.
+Corpus at 1440px and 390px. A later local rehearsal exercised a cross-language
+search, source link, Topics, Corpus, summary-unavailable state and recovery;
+its Playwright 503 state was simulated by request interception. See
+[VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) and the
+[runtime rehearsal record](../artifacts/demo_rehearsal/runtime_rehearsal.json)
+for the separate evidence and boundaries.

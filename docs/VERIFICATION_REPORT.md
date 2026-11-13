@@ -1,7 +1,7 @@
 # Runtime verification report
 
 Date: 13 November 2026
-Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, the isolated 90-day corpus campaign, Slice 06 search/API behavior, Slice 07 topic artifacts/API behavior, Slice 08 browser acceptance, and Slice 09 retrieval-evaluation engineering. This does not certify retrieval quality, publisher permission, or production-wide source coverage.
+Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, the isolated 90-day corpus campaign, Slice 06 search/API behavior, Slice 07 topic artifacts/API behavior, Slice 08 browser acceptance, Slice 09 retrieval-evaluation engineering, and the Slice 10 configured-local-runtime rehearsal. This does not certify retrieval quality, publisher permission, representativeness, or production-wide source coverage.
 
 ## Results
 
@@ -15,6 +15,7 @@ Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier 
 | Isolated corpus campaign | PASS (collection and read-only audit) | Campaign `corpus-20261112T194939Z` contains 516 accepted current records, 586 raw versions and 66 rejected raw versions in `news_intel_corpus_v1`; details and limitations below. |
 | Slice 07 topics and baseline | PASS (focused gate) | Real BERTopic and fixed TF-IDF/KMeans artifacts match the frozen snapshot; focused topic/API checks, metric/provenance self-check, saved comparison, compilation, diff check and read-only API checks passed. Results are weak-label agreement, not verified truth. |
 | Slice 08 frontend | PASS (independent review) | Frontend client tests 14/14, lint and production build passed. Real-browser desktop and 390px checks covered Search, Topics, Corpus, keyboard focus, live API results, and labeled simulated states; no horizontal overflow was found. |
+| Slice 10 runtime rehearsal | PASS (configured local environment); independent docs review PASS; commit pending | Search → cross-language results → original source → Topics → Corpus → latency table passed; summary-unavailable state and isolated cached-vector recovery passed. Playwright 503 was simulated. Fresh-clone/full-pipeline setup was not tested. See Slice 10 evidence below. |
 | Summary generation/provider access | NOT TESTED | The Slice 06 route returned its unavailable state; no model call or account-access request was made. Rotate/revoke any active key that appeared in tool output before use. |
 
 The model checks establish execution and output validity only. They do not measure retrieval relevance, ranking quality, summary quality, or API account entitlement.
@@ -147,9 +148,7 @@ uncertainty and local-only raw text remain as recorded above.
 
 ## Slice 09 retrieval evaluation engineering (13 November 2026)
 
-The current repository HEAD is `8063962` (`feat(ui): add multilingual
-research workspace`), which reconciles the prior Slice 08 pending-commit note.
-Slice 09 engineering and documentation are complete; its relevance-quality
+Slice 09 evaluation engineering is committed as `a595c4d`; its relevance-quality
 acceptance is incomplete until genuine language-capable helpers judge the
 frozen pool. An independent review passed eight focused evaluation checks and
 the ranking provenance/honesty checks, including CPU ranking provenance; GPU
@@ -195,6 +194,59 @@ rubric, JSONL format, 20% double-judgment requirement, agreement/adjudication
 rules, exact commands, and handoff counts are in
 [retrieval_evaluation.md](retrieval_evaluation.md). Do not redistribute raw
 article text or images.
+
+## Slice 10 configured local runtime rehearsal (13 November 2026)
+
+The bounded local rehearsal passed for the existing configured environment.
+The API/UI path displayed Search, Topics and Corpus. The saved cross-language
+query `test-en-05` returned 20 results in Keyword, Semantic and Hybrid modes;
+the original source returned HTTP 200. This verifies execution/rendering, not
+relevance. The UI showed summary unavailable because provider access is
+unverified. The Playwright 503 state used explicit interception; no service
+was stopped.
+
+Recovery used the existing `build_snapshot_index(snapshot_id, activate=False,
+client=scratch_client, model=CachedEmbeddingOnly())` routine. It restored 2,135
+chunks in 6.012 seconds, reused cached embeddings and passed scratch BM25 and
+nearest-vector provenance queries. No re-embedding or activation occurred.
+Before/after evidence showed original MongoDB, Weaviate, config and snapshot
+hashes unchanged. The scratch container, listeners, and API/UI processes were
+cleaned up. Full evidence, IDs and hashes are in
+[`artifacts/demo_rehearsal/runtime_rehearsal.json`](../artifacts/demo_rehearsal/runtime_rehearsal.json).
+
+The active snapshot is `corpus-59b2b589fe3bbdbffdc3`: 516 accepted articles,
+586 raw versions, 66 rejected raw versions, and 2,135 chunks. Language counts
+are English 123, Hindi 116, Bengali 156, Marathi 121; the eight adapters are
+`abp_en`, `oneindia_en`, `abp_hi`, `amarujala_hi`, `abp_bn`, `news18_bn`,
+`abp_mr`, `loksatta_mr` across five publisher families. The campaign and
+category/source limitations are detailed above. Snapshot manifest SHA-256:
+`0c56de1aafcbd32d19e68f8c0b99f2f31f1f5c5e89a49cbeae20acf416bb5eb2`; chunks
+SHA-256: `db3f0a1727b264f5c73df330e407ea3468f34c812d3b36d94b76e3fd7b303c16`.
+The active Weaviate collection is
+`NewsChunkSnapshotdcc85b7d4a2e9122136846f3874bca65af0ce6d0`.
+
+The saved retrieval baseline (`baseline.json`) used 48 held-out queries and
+BM25, dense and hybrid, with reranking omitted. Mean / median retrieval
+latencies were BM25 30.62 / 31.10 ms, dense 79.41 / 56.99 ms, and hybrid
+85.72 / 63.99 ms. Dense and hybrid include query embedding time. These are
+local retrieval timings, not API/UI or hardware guarantees. Baseline run SHA-256
+is `64261101c7c613dcbe7f5e6e459ff8e405076aca99b212aa0df81d8c91835651`;
+the pool has 427 unique query/article pairs, and the score remains
+`incomplete` with `metrics: null`. Topic run
+`bertopic-20261112T205209237980Z-177ffa64` produced 11 non-noise topics and 17
+outliers. BGE-M3 revision `5617a9f61b028005a4858fdac845db406aefb181` ran on
+RTX 3050 Ti Laptop GPU/CUDA fp16 for retrieval; topic fitting used CPU and
+cached embeddings.
+
+The separate fresh CPU dependency lock install/import gate used Python 3.12.15
+and passed; it does not establish a fresh-clone full app/pipeline rehearsal.
+CPU model inference was not tested. Slice 09's human-quality gate is unmet:
+the pool needs at least 86 double-judged pairs and at least 513 initial helper
+decisions before agreement, adjudication and score review. Source/category
+quality sampling, near-duplicate/syndication detection, summary provider
+verification, Airflow/continuous collection, and a fresh-clone full-pipeline
+rehearsal remain deferred or unverified. Runtime PASS does not make the overall
+project complete. The concise demo commands are in [setup.md](setup.md).
 
 ## Slice 01 runtime gate (13 November 2026)
 
