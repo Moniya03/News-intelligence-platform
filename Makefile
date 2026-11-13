@@ -1,4 +1,4 @@
-.PHONY: up down api eval ingest index index-snapshot cluster cluster-snapshot infra-smoke
+.PHONY: up down api eval eval-retrieval ingest index index-snapshot cluster cluster-snapshot infra-smoke
 
 PYTHON ?= .venv/bin/python
 
@@ -16,6 +16,9 @@ api:
 
 eval:
 	$(PYTHON) -m eval.run_all
+
+eval-retrieval:
+	$(PYTHON) -m eval.snapshot_retrieval $(ACTION)
 
 ingest:
 	$(PYTHON) -m core.ingest

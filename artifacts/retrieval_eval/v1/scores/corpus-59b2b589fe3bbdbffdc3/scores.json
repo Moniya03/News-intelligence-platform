@@ -1,0 +1,11 @@
+{
+  "candidate_pairs": 427,
+  "metrics": null,
+  "packets_sha256": "5157a4bb1e3e68ad41020ec9711daf99985516586a1f4da9dbc7e804c59a6aa9",
+  "pool_sha256": "efdbe250bf37b9e91ad25933320e4d1ccfc582b113a69bc13715cdefbaafe993",
+  "reason": "human judgments are not available; metrics were not calculated",
+  "run_sha256": "64261101c7c613dcbe7f5e6e459ff8e405076aca99b212aa0df81d8c91835651",
+  "schema_version": 1,
+  "snapshot_id": "corpus-59b2b589fe3bbdbffdc3",
+  "status": "incomplete"
+}

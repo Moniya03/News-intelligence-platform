@@ -1,7 +1,7 @@
 # Runtime verification report
 
 Date: 13 November 2026
-Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, the isolated 90-day corpus campaign, Slice 06 search/API behavior, Slice 07 topic artifacts/API behavior, and the Slice 08 browser workspace. This does not certify retrieval quality, publisher permission, or production-wide source coverage.
+Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, the isolated 90-day corpus campaign, Slice 06 search/API behavior, Slice 07 topic artifacts/API behavior, Slice 08 browser acceptance, and Slice 09 retrieval-evaluation engineering. This does not certify retrieval quality, publisher permission, or production-wide source coverage.
 
 ## Results
 
@@ -144,6 +144,57 @@ that the reviewed interface can display the active snapshot. They do not
 establish search relevance, summary quality, topic coherence, source
 permissions, or release readiness. Airflow remains deferred; source-policy
 uncertainty and local-only raw text remain as recorded above.
+
+## Slice 09 retrieval evaluation engineering (13 November 2026)
+
+The current repository HEAD is `8063962` (`feat(ui): add multilingual
+research workspace`), which reconciles the prior Slice 08 pending-commit note.
+Slice 09 engineering and documentation are complete; its relevance-quality
+acceptance is incomplete until genuine language-capable helpers judge the
+frozen pool. An independent review passed eight focused evaluation checks and
+the ranking provenance/honesty checks, including CPU ranking provenance; GPU
+memory was released. No relevance judgments were available, and no retrieval
+quality result is claimed.
+
+The frozen query file contains 60 corpus-derived queries: 12 dev and 48
+held-out, 15 per language across English, Hindi, Bengali and Marathi. Each
+language has four held-out queries for each of same-language, cross-language,
+and multilingual needs. The held-out run ranked all 48 queries exactly once
+with BM25, BGE-M3 dense, and hybrid, top five unique articles per system. A
+separate 12-query dev run used the same settings; held-out results did not tune
+them. Queries come from this corpus and are not representative of reader needs.
+The run used the frozen 516-article/2,135-chunk snapshot, candidate depth 150,
+hybrid alpha 0.7, BGE-M3 revision
+`5617a9f61b028005a4858fdac845db406aefb181`, FlagEmbedding on CUDA fp16, and an
+RTX 3050 Ti Laptop GPU. Reranking was omitted before pool freeze so this is a
+consistent three-system baseline.
+
+The three held-out rankings contain 720 possible result slots and pooled to
+427 distinct query/article pairs. The blinded short-excerpt packet is local
+and ignored; it contains query text, randomized candidate IDs, title, URL and
+excerpt, but no system identity or rank and no full article body. The packet
+SHA-256 is
+`5157a4bb1e3e68ad41020ec9711daf99985516586a1f4da9dbc7e804c59a6aa9`. Saved
+retrieval-only mean latencies were BM25 30.623 ms, dense 79.412 ms, and hybrid
+85.717 ms held out; dev means were 30.556, 107.432 and 114.843 ms. Dense and
+hybrid include query embedding time; BM25 does not. These are local retrieval
+timings, not API/UI end-to-end timings or a hardware benchmark. Device load,
+warmup and embedding/cache state affect them.
+
+The saved artifacts are `artifacts/retrieval_eval/v1/runs/corpus-59b2b589fe3bbdbffdc3/baseline.json`
+(SHA-256 `64261101c7c613dcbe7f5e6e459ff8e405076aca99b212aa0df81d8c91835651`),
+`dev_baseline.json` (SHA-256
+`45f73d0ee207f379b2b125b817746957a2b5e30479a342a3162e148b1263b0d2`),
+`pools/corpus-59b2b589fe3bbdbffdc3/pool.json` (SHA-256
+`efdbe250bf37b9e91ad25933320e4d1ccfc582b113a69bc13715cdefbaafe993`), and
+`scores/corpus-59b2b589fe3bbdbffdc3/scores.json` (SHA-256
+`f6bea89c99ca52140774ab24f28b39fffc0fbe2a8085aba5c54aa1187126dd25`). The
+score is `incomplete`, has `metrics: null`, and records that human judgments
+are unavailable. No fake qrels or generated judgments were added. The helper
+rubric, JSONL format, 20% double-judgment requirement, agreement/adjudication
+rules, exact commands, and handoff counts are in
+[retrieval_evaluation.md](retrieval_evaluation.md). Do not redistribute raw
+article text or images.
 
 ## Slice 01 runtime gate (13 November 2026)
 

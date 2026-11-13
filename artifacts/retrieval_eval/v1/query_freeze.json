@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "corpus-59b2b589fe3bbdbffdc3",
+  "queries_sha256": "6f210ec78a55b0a5ba1195767382ca153f9211ff88d1afc96a4994ffc8fbffac",
+  "snapshot": {
+    "manifest_sha256": "0c56de1aafcbd32d19e68f8c0b99f2f31f1f5c5e89a49cbeae20acf416bb5eb2",
+    "chunks_sha256": "db3f0a1727b264f5c73df330e407ea3468f34c812d3b36d94b76e3fd7b303c16",
+    "embeddings_sha256": "5af06aece21c39567300d09e5a8b313701924e7cfe70a92ee140df31c70505bd",
+    "embedding_metadata_sha256": "58f18ce1ad5ffbd7ae5744747b2704f3a2c06dcf5be98dab15fa191cda514802"
+  },
+  "seed": 42,
+  "frozen_at_utc": "2026-11-13T16:03:19+00:00"
+}

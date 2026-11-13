@@ -353,6 +353,32 @@ See [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md) for saved run IDs,
 metrics, denominators, per-language values and limitations. Topic artifact
 generation does not write generic article/cluster records to MongoDB.
 
+### 6.3 Run the snapshot retrieval evaluation
+
+The retrieval evaluation requires the active frozen snapshot and its verified
+Weaviate index. It runs real BM25, dense BGE-M3, and hybrid rankings; it does
+not generate relevance labels. The committed query file and freeze record bind
+the runs to snapshot `corpus-59b2b589fe3bbdbffdc3` and the frozen 60-query set.
+Use the saved runs and pool when continuing the current experiment:
+
+```bash
+make eval-retrieval ACTION=validate
+make eval-retrieval ACTION=run
+make eval-retrieval ACTION="run --split dev --output artifacts/retrieval_eval/v1/runs/corpus-59b2b589fe3bbdbffdc3/dev_baseline.json"
+make eval-retrieval ACTION="pool --run artifacts/retrieval_eval/v1/runs/corpus-59b2b589fe3bbdbffdc3/baseline.json"
+make eval-retrieval ACTION="score --run artifacts/retrieval_eval/v1/runs/corpus-59b2b589fe3bbdbffdc3/baseline.json --pool artifacts/retrieval_eval/v1/pools/corpus-59b2b589fe3bbdbffdc3/pool.json"
+```
+
+The default run is held-out `test`; development is run separately and does not
+change settings. Pooling writes a blinded short-excerpt judging packet to
+ignored local `data/retrieval_eval/`. Do not redistribute article text or
+images. The default score command writes `status: incomplete` and
+`metrics: null` until real human judgments are supplied at
+`data/retrieval_eval/corpus-59b2b589fe3bbdbffdc3/judgments.jsonl`. The packet,
+rubric, annotation schema, and current counts are documented in
+[retrieval_evaluation.md](retrieval_evaluation.md). Do not use `make eval` for
+this workflow; that target is a disabled legacy evaluation entrypoint.
+
 ---
 
 ## 7. Starting the FastAPI Backend
@@ -451,8 +477,8 @@ The Mongo lifecycle test drops and recreates the database named in
 `MONGO_TEST_DATABASE`; use a fresh disposable name with the required
 `news_intel_scraper_test_` prefix. The reported run used a dedicated database.
 These checks cover focused regressions, not the full application or user
-experience. The revised corpus pipeline still needs the broader, repeatable
-acceptance gates in the plan.
+experience. See the verification report for which bounded gates passed and
+the remaining human-judgment and release checks.
 
 ### 9.2 Legacy evaluation entrypoints
 
@@ -462,11 +488,14 @@ project. Do not run them or use the existing ignored result files in a report.
 For clustering, use the snapshot-scoped `eval.snapshot_topics` commands in
 section 6.2 and cite its saved artifacts. Those results compare clustering to
 publisher-section weak labels; they do not establish factual topic truth.
-BM25, dense and hybrid have passed API behavior smoke checks against the active
-frozen snapshot, and the Search/Topics/Corpus browser gate passed against real
-services. Retrieval relevance has not been evaluated on a judged dataset. The
-plan specifies minimal, risk-targeted checks for each implementation slice;
-broad duplicate test runs are not required.
+For retrieval, use `make eval-retrieval` as described in section 6.3. The
+saved held-out run and blinded pool are ready for annotation, but its score
+remains incomplete until human judgments pass the documented coverage,
+double-judgment, and adjudication requirements. BM25, dense and hybrid also
+passed API behavior smoke checks against the active frozen snapshot, and the
+Search/Topics/Corpus browser gate passed against real services. The plan
+specifies minimal, risk-targeted checks for each implementation slice; broad
+duplicate test runs are not required.
 
 ---
 

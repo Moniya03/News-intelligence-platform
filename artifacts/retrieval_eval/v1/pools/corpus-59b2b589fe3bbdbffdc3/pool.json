@@ -1,0 +1,3721 @@
+{
+  "candidate_map": [
+    {
+      "article_id": "0069d9876c7e2c5b7b7ad3990872e5b0008d86e04d8bffb17db1f2e1c832a159",
+      "candidate_id": "c001",
+      "query_id": "test-bn-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "dbf2f50b407a99838adcf7c06ec3c4f799b583c4c65fff50a2f494afb111bf04",
+      "candidate_id": "c002",
+      "query_id": "test-bn-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "dca34684758f058ec8090e5110b39f0d1b77543af5c0cfc9b51548dd977c57f3",
+      "candidate_id": "c003",
+      "query_id": "test-bn-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "42be398a932519030f895f407bf03e2ba9f0cf4b19f94503d917b54d51e512b6",
+      "candidate_id": "c004",
+      "query_id": "test-bn-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "f4a41505da31b00c2a901030d70ec520655a16312f2d1b670a9ab3042f1977d4",
+      "candidate_id": "c005",
+      "query_id": "test-bn-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "5d4cc7e291d646791c435eb1d61cd93f56bd419c0bdb02c2d62d387e911e9332",
+      "candidate_id": "c006",
+      "query_id": "test-bn-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "4e1df41a21dcd02d9420d30f0a1915b15f2716c6bf574222219203d1e7a7ff64",
+      "candidate_id": "c007",
+      "query_id": "test-bn-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "7cf6409450edb2db57335da3eedc542b56936fe7e277f125a06f49bd1bbe2a01",
+      "candidate_id": "c008",
+      "query_id": "test-bn-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "d93da04033937608c8c6877ad5412765d27d0ae77534c282f8f9bb2ab347d04b",
+      "candidate_id": "c009",
+      "query_id": "test-bn-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "18acc3f95b32e1cd6b107b344b6bc65b50af9d60bf92dbaf3e8928b8804f1d32",
+      "candidate_id": "c001",
+      "query_id": "test-bn-02",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "443524cffd3caabdde950e5ac8d292204f0e0df03f99c53edcb6a1877b8d5fa3",
+      "candidate_id": "c002",
+      "query_id": "test-bn-02",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "d8beb03bbcd580187587ceb0737ef49b75e4876b2d778658b3092ec1a3471ac2",
+      "candidate_id": "c003",
+      "query_id": "test-bn-02",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "3d9b6b869318c76b721a7cd21624577e3ecf78ecddb8ef08cc0d45d657a7cd77",
+      "candidate_id": "c004",
+      "query_id": "test-bn-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "bbf206b825ae179134ebcf79915303ce2108f17599ebbc0237c20d66252276e2",
+      "candidate_id": "c005",
+      "query_id": "test-bn-02",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "90f362ee33f192a4669e97a5e8f9a0f5dfe5397dad986704e09883b8e074fa90",
+      "candidate_id": "c006",
+      "query_id": "test-bn-02",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "48392c1ebb88ec6aaf02ada1d72264311197588677513f5288d49a4b3607e06d",
+      "candidate_id": "c007",
+      "query_id": "test-bn-02",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "5912b7a29f31c82c2267121d237cb42f56fbbee3f21f942feb00c54ecb5effcd",
+      "candidate_id": "c008",
+      "query_id": "test-bn-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "8df8e326ad8fad7f6492711b7ea13a94000bb75dc6f0b6faed4d48f3f80940f0",
+      "candidate_id": "c009",
+      "query_id": "test-bn-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "42be398a932519030f895f407bf03e2ba9f0cf4b19f94503d917b54d51e512b6",
+      "candidate_id": "c010",
+      "query_id": "test-bn-02",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "887edfb5f890996e985de04d28be16520c37c2168429a10ca2f3ce0031d96ed6",
+      "candidate_id": "c001",
+      "query_id": "test-bn-03",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "d64c89b2984776ec06c868e78ccc86674ec48ee5a8c7f8eea0283e109035c170",
+      "candidate_id": "c002",
+      "query_id": "test-bn-03",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "0b7de06e6317169634fc501c99e5008364231fb521d7e8d188225f9f289c201a",
+      "candidate_id": "c003",
+      "query_id": "test-bn-03",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "84a89eefb882466ba3ff1f291f374123532e1813dad5733e7948b8e0fd2eaee1",
+      "candidate_id": "c004",
+      "query_id": "test-bn-03",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "0b55e3b26ade4d4e49973ac80949f307c008224b44be6cb8bfa14ed4be0b4877",
+      "candidate_id": "c005",
+      "query_id": "test-bn-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "fabf6c1a03f60ec068d8927637ea556f5ea5a071fba71c54cb2aa21173766133",
+      "candidate_id": "c006",
+      "query_id": "test-bn-03",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "3386a2538dc25c4ec3df520f7be0e3b29bad923928b2c17cc21642438e7d421c",
+      "candidate_id": "c007",
+      "query_id": "test-bn-03",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "52d93abaf96bde4103eaea7b7283633d7a9d2ac79e6fd0d370f4b69a37cefba0",
+      "candidate_id": "c008",
+      "query_id": "test-bn-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bfd3b8ea3f781ad22b3634257a26a07001652325700f001498b08435acb8179c",
+      "candidate_id": "c009",
+      "query_id": "test-bn-03",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "8e80990d31d1cb5554a65d0c57989e1367067c2d2eb73541708dc4e3f074eb11",
+      "candidate_id": "c010",
+      "query_id": "test-bn-03",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "b4936eed48acedbd5a51997d90e24f3f9a3fb767eb51a3dd081f65d0e5cf81d4",
+      "candidate_id": "c001",
+      "query_id": "test-bn-04",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "15394a1a3ef3a28aab79f377ffc9dd7bd44534e2e8e6a9997fa8d4851edb595d",
+      "candidate_id": "c002",
+      "query_id": "test-bn-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0d14c174f89536898ec96cfa8d7cd44dcedbb8f0acfbed439abe31f32237f152",
+      "candidate_id": "c003",
+      "query_id": "test-bn-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "4ae36ea70813c386a9bf35441a26adf114ecc9e5c83c082249bbe101a194504e",
+      "candidate_id": "c004",
+      "query_id": "test-bn-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "64e52e91c7e9f7e3e25d279178d288131310dcd946da94572c6b2f8db33b8a55",
+      "candidate_id": "c005",
+      "query_id": "test-bn-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "597675972bf5688e094620ba85f41ae303afa044f40a63a5766eb224f1a0c9fb",
+      "candidate_id": "c006",
+      "query_id": "test-bn-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "608338b135fea15c23260a02d83ef8c628dbf7dbddfec4f1f52c12f741443ebc",
+      "candidate_id": "c007",
+      "query_id": "test-bn-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c4ce72835e773ac35ee6667438f758668be9e2f0f91dc9fa832c86435a8eede0",
+      "candidate_id": "c008",
+      "query_id": "test-bn-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "f93293c602f55cedaffd26c33f6e55392443353be1cc4ad8a0d645786f1eb27a",
+      "candidate_id": "c009",
+      "query_id": "test-bn-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "33a54a3a36c28887d8d0032389119a09a376217f901862294b46dd06721ad3bf",
+      "candidate_id": "c001",
+      "query_id": "test-bn-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "64e52e91c7e9f7e3e25d279178d288131310dcd946da94572c6b2f8db33b8a55",
+      "candidate_id": "c002",
+      "query_id": "test-bn-05",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "352dbd85d65f329430bac3a23771cda09b1d83a2f93a617a0a568cb704c6b4be",
+      "candidate_id": "c003",
+      "query_id": "test-bn-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "888c943bc7952e8fc4a1eef721bde92f2edf1ae4fce26767b8c0ac0a19eaab71",
+      "candidate_id": "c004",
+      "query_id": "test-bn-05",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c4ce72835e773ac35ee6667438f758668be9e2f0f91dc9fa832c86435a8eede0",
+      "candidate_id": "c005",
+      "query_id": "test-bn-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "66a53cb622b951ba61ea1f71b4ca25fcb7ac7a0581594f1d3b15f889af1f6e7a",
+      "candidate_id": "c006",
+      "query_id": "test-bn-05",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "12d091c4707c8952a0017704c725bffb3dfa5ddaff3a700826df23cd047e47c6",
+      "candidate_id": "c007",
+      "query_id": "test-bn-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "67c0edacb96652ec12d8ef47a06d168c5ddb6909a6babe890440c1b89a77fee3",
+      "candidate_id": "c008",
+      "query_id": "test-bn-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "80fe355ae47871f9105db3eb1f41a4ffd7c0766b289fe0910ae76279156153b6",
+      "candidate_id": "c009",
+      "query_id": "test-bn-05",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ac3ae045b1457b06beb390785a474500a74874a824a248bd55124634f118fb7e",
+      "candidate_id": "c010",
+      "query_id": "test-bn-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "608338b135fea15c23260a02d83ef8c628dbf7dbddfec4f1f52c12f741443ebc",
+      "candidate_id": "c001",
+      "query_id": "test-bn-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "de6f16f4c0ecc728f81b03637ff2df77941b86e65ffdcfc6190ab6c2a90851bd",
+      "candidate_id": "c002",
+      "query_id": "test-bn-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "352dbd85d65f329430bac3a23771cda09b1d83a2f93a617a0a568cb704c6b4be",
+      "candidate_id": "c003",
+      "query_id": "test-bn-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "33b9e96cc42adb5bc0b9621b3db30ad4e2bd67cd640ad507f804d82d3e67b325",
+      "candidate_id": "c004",
+      "query_id": "test-bn-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "2dc4fad1930c7c2b21d409af38e259c4cac9f256b454dc2e803ad0ec25c31894",
+      "candidate_id": "c005",
+      "query_id": "test-bn-06",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "67c0edacb96652ec12d8ef47a06d168c5ddb6909a6babe890440c1b89a77fee3",
+      "candidate_id": "c006",
+      "query_id": "test-bn-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "77c14c35c67057338424f48ff4196b45d1f143f36f702cac0182d5e34413e4d4",
+      "candidate_id": "c007",
+      "query_id": "test-bn-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c4ce72835e773ac35ee6667438f758668be9e2f0f91dc9fa832c86435a8eede0",
+      "candidate_id": "c008",
+      "query_id": "test-bn-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "4b447320a5ee9a4894fe4458eb73ced8bfd008354c696a86adbb2df305936af2",
+      "candidate_id": "c009",
+      "query_id": "test-bn-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0d60c22386810f18739ae54e7a2c508cdde94fbdf42d9555e3459e639790ce12",
+      "candidate_id": "c001",
+      "query_id": "test-bn-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "67c0edacb96652ec12d8ef47a06d168c5ddb6909a6babe890440c1b89a77fee3",
+      "candidate_id": "c002",
+      "query_id": "test-bn-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "3725aa4a8c18a41b66a48bd0f5cc61b9aee74027a22f5c4fe2f30fac381e840f",
+      "candidate_id": "c003",
+      "query_id": "test-bn-07",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "eefde9d74278a0b698870e511d5c413ff912335da7315b6059961acacfe351cf",
+      "candidate_id": "c004",
+      "query_id": "test-bn-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "608338b135fea15c23260a02d83ef8c628dbf7dbddfec4f1f52c12f741443ebc",
+      "candidate_id": "c005",
+      "query_id": "test-bn-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "49159d2ce11f54429f1efe7218654536fa004f7eae5f0aa7b2008d7f91b39ee2",
+      "candidate_id": "c006",
+      "query_id": "test-bn-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f9238089e09304c07cdd3ca631e792d99b1570b3be1564df0361876ce5948c92",
+      "candidate_id": "c007",
+      "query_id": "test-bn-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "3a43d041c7eb92a663df94fac959362fb358e5589134b5b4ce86788f1dc94e49",
+      "candidate_id": "c008",
+      "query_id": "test-bn-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "90e262d8b8361424f1c9650de29d50003991e2858a934f20ac08112bc3307f2c",
+      "candidate_id": "c009",
+      "query_id": "test-bn-07",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "dca34684758f058ec8090e5110b39f0d1b77543af5c0cfc9b51548dd977c57f3",
+      "candidate_id": "c010",
+      "query_id": "test-bn-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c4ce72835e773ac35ee6667438f758668be9e2f0f91dc9fa832c86435a8eede0",
+      "candidate_id": "c001",
+      "query_id": "test-bn-08",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "417cd3008908949e49ab85f898110265e4af941105f48a62c29ac60e24eee7b6",
+      "candidate_id": "c002",
+      "query_id": "test-bn-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "3725aa4a8c18a41b66a48bd0f5cc61b9aee74027a22f5c4fe2f30fac381e840f",
+      "candidate_id": "c003",
+      "query_id": "test-bn-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0d5dbcc8afed926995447a24598c5fe5b77edf00a7c960d2e466c40c36560a86",
+      "candidate_id": "c004",
+      "query_id": "test-bn-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "dbf2f50b407a99838adcf7c06ec3c4f799b583c4c65fff50a2f494afb111bf04",
+      "candidate_id": "c005",
+      "query_id": "test-bn-08",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "694dbe2f040db15ebd9a425afd29b69617b37226bf54fec7f88d5e2c6d2d62b3",
+      "candidate_id": "c006",
+      "query_id": "test-bn-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "eefde9d74278a0b698870e511d5c413ff912335da7315b6059961acacfe351cf",
+      "candidate_id": "c007",
+      "query_id": "test-bn-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "513d82258c25e251b58b0b3c5c4c0e901814bbde692269dabc28b275b9d41877",
+      "candidate_id": "c008",
+      "query_id": "test-bn-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1e0a56dfeca498c455e0f7d8d90bcf5627fa08acbbe6101511b3cf1ad402f41a",
+      "candidate_id": "c009",
+      "query_id": "test-bn-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "6530ce747745b98fd63a5919ddcba28c51ddc8692f4e32d69a22115b82c84b54",
+      "candidate_id": "c010",
+      "query_id": "test-bn-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "d83fe8a0a3c1668344a85f9fa869c5e55a466fa78db699315b5b2c02b0122284",
+      "candidate_id": "c001",
+      "query_id": "test-bn-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "429233d9adb939f3f9d600046380e8836187c02f4a91838626aae674f933d332",
+      "candidate_id": "c002",
+      "query_id": "test-bn-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f7343813be481ac4512e07452e7fa76b7f62e841a1d8abd9e2cbd448f503c564",
+      "candidate_id": "c003",
+      "query_id": "test-bn-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "488aa4642bafe80c9fc80b1b95263761b9b5bec204f2bfea575dc6f742bdf640",
+      "candidate_id": "c004",
+      "query_id": "test-bn-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "ea989b795cdd0be8f22542a4b8ea64a708770502222d1470d058f84f09716e3d",
+      "candidate_id": "c005",
+      "query_id": "test-bn-09",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "13d691b82a946d510f03e713b55198a55776685253f73b2da6317597205a9c95",
+      "candidate_id": "c006",
+      "query_id": "test-bn-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "6b7362a1df8d12db1daa1c609296f5173b156d70e3e862617e36bc765482590c",
+      "candidate_id": "c007",
+      "query_id": "test-bn-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "49069577b434607ab3b5066dbcf8771c6ac732531bba50ff470912d31efe0957",
+      "candidate_id": "c008",
+      "query_id": "test-bn-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "865503aa0add415473106e65cef2e92ac44c5207405a8165ef584b2d17558665",
+      "candidate_id": "c009",
+      "query_id": "test-bn-09",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "99772c8797b2bd6f3bd2167d2ec336796b4dab6ff15956c83d1b2a47d4d7e4cd",
+      "candidate_id": "c010",
+      "query_id": "test-bn-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "2dc4fad1930c7c2b21d409af38e259c4cac9f256b454dc2e803ad0ec25c31894",
+      "candidate_id": "c001",
+      "query_id": "test-bn-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0d5dbcc8afed926995447a24598c5fe5b77edf00a7c960d2e466c40c36560a86",
+      "candidate_id": "c002",
+      "query_id": "test-bn-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "92aa40b5e01639dbc0ea8048f4e108e6505268c1a8690b5fc7233acd7f47507c",
+      "candidate_id": "c003",
+      "query_id": "test-bn-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "e5e88f5c0722244efeab3a948090224d2d673ce25ca77922077bf69684501412",
+      "candidate_id": "c004",
+      "query_id": "test-bn-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "536d442661a4b7362827c054be48a6b7caf31d27d59f98c345362dd1e65c948f",
+      "candidate_id": "c005",
+      "query_id": "test-bn-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1dc289ffd85b5514a1955e461967f6c9c643497f51ea552e0e11fe67374f52d6",
+      "candidate_id": "c006",
+      "query_id": "test-bn-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "eefde9d74278a0b698870e511d5c413ff912335da7315b6059961acacfe351cf",
+      "candidate_id": "c007",
+      "query_id": "test-bn-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c0329c555b7a945bc04c3d7024de61f1bb140f5d2c40fbad479cbd127ebb40cf",
+      "candidate_id": "c001",
+      "query_id": "test-bn-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "92aa40b5e01639dbc0ea8048f4e108e6505268c1a8690b5fc7233acd7f47507c",
+      "candidate_id": "c002",
+      "query_id": "test-bn-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "6dd356425e5c4d9389d44ec61c65b8f1c6691c8273bc20d5af15459e2c2c2848",
+      "candidate_id": "c003",
+      "query_id": "test-bn-11",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bfd3b8ea3f781ad22b3634257a26a07001652325700f001498b08435acb8179c",
+      "candidate_id": "c004",
+      "query_id": "test-bn-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0c60560993505f06e8473694d3e703cb3b6b855f176f5943538bea6cb261e460",
+      "candidate_id": "c005",
+      "query_id": "test-bn-11",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "49d110949f9f8dcd9ae7e63eba927b20b93ba87ce092d3d0d0953101bc6c3715",
+      "candidate_id": "c006",
+      "query_id": "test-bn-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "fabf6c1a03f60ec068d8927637ea556f5ea5a071fba71c54cb2aa21173766133",
+      "candidate_id": "c007",
+      "query_id": "test-bn-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "e6af5fb1349ee6291dbd5ac23c49e12fe2dca6b4af5c6ec66f63cd67e3f4746d",
+      "candidate_id": "c008",
+      "query_id": "test-bn-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f4a41505da31b00c2a901030d70ec520655a16312f2d1b670a9ab3042f1977d4",
+      "candidate_id": "c009",
+      "query_id": "test-bn-11",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "5912b7a29f31c82c2267121d237cb42f56fbbee3f21f942feb00c54ecb5effcd",
+      "candidate_id": "c010",
+      "query_id": "test-bn-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "de8b168a8761af943dcf0b9bb6b67cdad62139643e7301a3396a59f90f3055a1",
+      "candidate_id": "c001",
+      "query_id": "test-bn-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ca41536b0a86e7ab5c14d176bcf8f71fb44c38d78a005a0a69f8b953d50d9886",
+      "candidate_id": "c002",
+      "query_id": "test-bn-12",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "e1f9336f95dfef4d0a8a4381cf8be189da642b22b41f698dfb39546c90597ef9",
+      "candidate_id": "c003",
+      "query_id": "test-bn-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "e13ae87ceefcd2972823ef42048bf02dfae560b82df264cf665d70a45b6e8b17",
+      "candidate_id": "c004",
+      "query_id": "test-bn-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "3725aa4a8c18a41b66a48bd0f5cc61b9aee74027a22f5c4fe2f30fac381e840f",
+      "candidate_id": "c005",
+      "query_id": "test-bn-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "8df8e326ad8fad7f6492711b7ea13a94000bb75dc6f0b6faed4d48f3f80940f0",
+      "candidate_id": "c006",
+      "query_id": "test-bn-12",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "67c0edacb96652ec12d8ef47a06d168c5ddb6909a6babe890440c1b89a77fee3",
+      "candidate_id": "c007",
+      "query_id": "test-bn-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "11ae9274fdf0df6a04dafc9437ef424b6b8a81f2933da14f1e5fa85cbd8926f7",
+      "candidate_id": "c008",
+      "query_id": "test-bn-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "608338b135fea15c23260a02d83ef8c628dbf7dbddfec4f1f52c12f741443ebc",
+      "candidate_id": "c009",
+      "query_id": "test-bn-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c4ce72835e773ac35ee6667438f758668be9e2f0f91dc9fa832c86435a8eede0",
+      "candidate_id": "c010",
+      "query_id": "test-bn-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "eb451a1c8560cd330d3d2dc46af7ad8cb211d30cc7c883f7c23c682495103763",
+      "candidate_id": "c001",
+      "query_id": "test-en-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "01430d2fa95e11551488ebea2527432659ad49bf4625f39486b90f0ad730f710",
+      "candidate_id": "c002",
+      "query_id": "test-en-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "19283515a55a5d3adacae50e20351e320040e75948979d3cd05e658efa258a34",
+      "candidate_id": "c003",
+      "query_id": "test-en-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "040720bd5a70ae012c11c72bbbbd090e6239398c13df2f26719648fde1cf618f",
+      "candidate_id": "c004",
+      "query_id": "test-en-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "90e262d8b8361424f1c9650de29d50003991e2858a934f20ac08112bc3307f2c",
+      "candidate_id": "c005",
+      "query_id": "test-en-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "730e8ff5f2129778aff2abb00ba71930b3e31d7f27f8f6a0137185d8723e07ff",
+      "candidate_id": "c001",
+      "query_id": "test-en-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "d1532d87d264be5574db71435c6879837cff733c2aadb7e3885f3d5024e7ebf6",
+      "candidate_id": "c002",
+      "query_id": "test-en-02",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "37317b27f2e94cb076e44e7bd2e801574a6dd827bc6c5acf9ff0c9055051b891",
+      "candidate_id": "c003",
+      "query_id": "test-en-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "617820b5c8fbbe1f1976ef2c3125a3fe5874a4f784966a0fc08ae458b8e801de",
+      "candidate_id": "c004",
+      "query_id": "test-en-02",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "4e1df41a21dcd02d9420d30f0a1915b15f2716c6bf574222219203d1e7a7ff64",
+      "candidate_id": "c005",
+      "query_id": "test-en-02",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "33703e1ac38c242966352c0e6708fab3a84356f28f8ef2a1938e25bc7de31631",
+      "candidate_id": "c006",
+      "query_id": "test-en-02",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "5a3c9da1a591f2c1582004e39a9ddc12914f6006c91f2dfb473a9f744e1cb777",
+      "candidate_id": "c007",
+      "query_id": "test-en-02",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "84a89eefb882466ba3ff1f291f374123532e1813dad5733e7948b8e0fd2eaee1",
+      "candidate_id": "c008",
+      "query_id": "test-en-02",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "984f57f7ccd7fc3bf41eb4ed340eeb434916a8cdf477a528ad13bae592d104f9",
+      "candidate_id": "c009",
+      "query_id": "test-en-02",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f9238089e09304c07cdd3ca631e792d99b1570b3be1564df0361876ce5948c92",
+      "candidate_id": "c001",
+      "query_id": "test-en-03",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "49159d2ce11f54429f1efe7218654536fa004f7eae5f0aa7b2008d7f91b39ee2",
+      "candidate_id": "c002",
+      "query_id": "test-en-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "961ffc7fd0befe7a346367c4bf5a55c4b6e599e70f064265c4ac3d05c9dd3f1d",
+      "candidate_id": "c003",
+      "query_id": "test-en-03",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "fdf0675f3ff15173866f0a4893caaa6e56c303f8b43e645b7d1b87b9d5cea132",
+      "candidate_id": "c004",
+      "query_id": "test-en-03",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "4c3d72bc0fabf9fe32da62fbb9d9427e5b1df62f0825481725dfcf36a23c1e28",
+      "candidate_id": "c005",
+      "query_id": "test-en-03",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "573b2c55da205d0e5894e4635320db528fa51410848887843d4e7f323f26a363",
+      "candidate_id": "c006",
+      "query_id": "test-en-03",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "90f362ee33f192a4669e97a5e8f9a0f5dfe5397dad986704e09883b8e074fa90",
+      "candidate_id": "c007",
+      "query_id": "test-en-03",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0d60c22386810f18739ae54e7a2c508cdde94fbdf42d9555e3459e639790ce12",
+      "candidate_id": "c008",
+      "query_id": "test-en-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "2c6ac92450afd526999083f2195371b5e76ddaba279cf5a88937b039a5d6e13a",
+      "candidate_id": "c001",
+      "query_id": "test-en-04",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "903126f1f963598652037576cb8cb4103e6802c9c4d1df9fa90e480a9959b2e1",
+      "candidate_id": "c002",
+      "query_id": "test-en-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "8f00ff9f96422bc25574e0b2957856d0ed0030bb0f0f9441f700fe30d1942b28",
+      "candidate_id": "c003",
+      "query_id": "test-en-04",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "37e8dad76cda726ef6dc7a91bc784a3a12fab8b4361fb4c6e8c91f3f5d94ef84",
+      "candidate_id": "c004",
+      "query_id": "test-en-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "09a78f31e6aac2bce0bcac565813d984c88752719c49b1fd12582b1af6682075",
+      "candidate_id": "c005",
+      "query_id": "test-en-04",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ec291d02c78afd36c78c4d7aba4971254e6422072e8fa4b73fb82a4c787dacec",
+      "candidate_id": "c006",
+      "query_id": "test-en-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "76fbedf0fcb264fd899723674df3fff07cc9b40ee1f979e5ac4ed4dd88a9e05a",
+      "candidate_id": "c007",
+      "query_id": "test-en-04",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "2595d659ca2a8c86f8020a42a855e33039032a1601069cd0c673ba53719e7262",
+      "candidate_id": "c008",
+      "query_id": "test-en-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "de6f16f4c0ecc728f81b03637ff2df77941b86e65ffdcfc6190ab6c2a90851bd",
+      "candidate_id": "c001",
+      "query_id": "test-en-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "9dbfdcc406bfc9b1118797a484d431867afe7ab347e3a594f65b623e27aef7a9",
+      "candidate_id": "c002",
+      "query_id": "test-en-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "66a53cb622b951ba61ea1f71b4ca25fcb7ac7a0581594f1d3b15f889af1f6e7a",
+      "candidate_id": "c003",
+      "query_id": "test-en-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bbef2b72eb72573e3e1cf750a4a5f31de4c84564f84eb5bed02460f9d06f15b8",
+      "candidate_id": "c004",
+      "query_id": "test-en-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "feae789401c0b71f2431d1c9d3e26aec18ea8ccb4816e23d2c3d753c9e6a62a6",
+      "candidate_id": "c005",
+      "query_id": "test-en-05",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "5e9add3e27e6e8a8b8a514e4b7f4682d8d460ea266d9717814e5f7a1d20ede5b",
+      "candidate_id": "c006",
+      "query_id": "test-en-05",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "499ba55ce640c4f1493b2c6fe92c1370e8833433b49e8f6485795d6194b97b2b",
+      "candidate_id": "c007",
+      "query_id": "test-en-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "8117751fa932e4b4b255a66ec82583f3fbd4e89e591f6f73d4621cea5606996a",
+      "candidate_id": "c008",
+      "query_id": "test-en-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "08c26db21c427a40d7d5dcf5a573a97939e2ffd5c28901eeb3ae75c361fd9434",
+      "candidate_id": "c001",
+      "query_id": "test-en-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "de6f16f4c0ecc728f81b03637ff2df77941b86e65ffdcfc6190ab6c2a90851bd",
+      "candidate_id": "c002",
+      "query_id": "test-en-06",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "3725aa4a8c18a41b66a48bd0f5cc61b9aee74027a22f5c4fe2f30fac381e840f",
+      "candidate_id": "c003",
+      "query_id": "test-en-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "64cb3f09be42804bcf00b03b9a55cd77f3accd09b029c284f2b3669620ac8155",
+      "candidate_id": "c004",
+      "query_id": "test-en-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "505448e63d18ed136a69c663245894c9bbf00c3d5053fd84ee2486b0a5a8752d",
+      "candidate_id": "c005",
+      "query_id": "test-en-06",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "4b447320a5ee9a4894fe4458eb73ced8bfd008354c696a86adbb2df305936af2",
+      "candidate_id": "c006",
+      "query_id": "test-en-06",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "feae789401c0b71f2431d1c9d3e26aec18ea8ccb4816e23d2c3d753c9e6a62a6",
+      "candidate_id": "c007",
+      "query_id": "test-en-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "8117751fa932e4b4b255a66ec82583f3fbd4e89e591f6f73d4621cea5606996a",
+      "candidate_id": "c001",
+      "query_id": "test-en-07",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "b4936eed48acedbd5a51997d90e24f3f9a3fb767eb51a3dd081f65d0e5cf81d4",
+      "candidate_id": "c002",
+      "query_id": "test-en-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "499ba55ce640c4f1493b2c6fe92c1370e8833433b49e8f6485795d6194b97b2b",
+      "candidate_id": "c003",
+      "query_id": "test-en-07",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "e7c73643b36058be65e80b23d94683beacca2eaefa52d366999b1303d3b16d40",
+      "candidate_id": "c004",
+      "query_id": "test-en-07",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "b80b31355216fb600480a9b674341de61fa31e51f85e29ca39780bc223cb4b52",
+      "candidate_id": "c005",
+      "query_id": "test-en-07",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "72e5ac49b24532bf73bc3dac4fb76a3c4a654ad0234247ffa613cea7054ea98e",
+      "candidate_id": "c006",
+      "query_id": "test-en-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "876ce4382087042e7faa29ae4c3cfb4bb1b070b1bc916c3c7a1241de39551c3e",
+      "candidate_id": "c007",
+      "query_id": "test-en-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "08c26db21c427a40d7d5dcf5a573a97939e2ffd5c28901eeb3ae75c361fd9434",
+      "candidate_id": "c008",
+      "query_id": "test-en-07",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "597675972bf5688e094620ba85f41ae303afa044f40a63a5766eb224f1a0c9fb",
+      "candidate_id": "c009",
+      "query_id": "test-en-07",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "33b9e96cc42adb5bc0b9621b3db30ad4e2bd67cd640ad507f804d82d3e67b325",
+      "candidate_id": "c001",
+      "query_id": "test-en-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bbf206b825ae179134ebcf79915303ce2108f17599ebbc0237c20d66252276e2",
+      "candidate_id": "c002",
+      "query_id": "test-en-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "9dbfdcc406bfc9b1118797a484d431867afe7ab347e3a594f65b623e27aef7a9",
+      "candidate_id": "c003",
+      "query_id": "test-en-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "37317b27f2e94cb076e44e7bd2e801574a6dd827bc6c5acf9ff0c9055051b891",
+      "candidate_id": "c004",
+      "query_id": "test-en-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "3bc3cd490f2601a3e51c7e633b4fb66cea1d2e1e5e72e0b24564514818ebe9e6",
+      "candidate_id": "c005",
+      "query_id": "test-en-08",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "4b447320a5ee9a4894fe4458eb73ced8bfd008354c696a86adbb2df305936af2",
+      "candidate_id": "c006",
+      "query_id": "test-en-08",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ffb1d5709c0832c67f72d31c3b7bc91b72aab5624a73555c9627a56081738e76",
+      "candidate_id": "c007",
+      "query_id": "test-en-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "de6f16f4c0ecc728f81b03637ff2df77941b86e65ffdcfc6190ab6c2a90851bd",
+      "candidate_id": "c008",
+      "query_id": "test-en-08",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f91ab9ecf3186400e3a23c7683f5a2afd8b524744368ef7a235eb47045174c27",
+      "candidate_id": "c009",
+      "query_id": "test-en-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "6e75f7c4266ac199c5634a41fd36a095a800a13046ea41fa650804ed629cb2d4",
+      "candidate_id": "c001",
+      "query_id": "test-en-09",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f7343813be481ac4512e07452e7fa76b7f62e841a1d8abd9e2cbd448f503c564",
+      "candidate_id": "c002",
+      "query_id": "test-en-09",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "e9b7fcb9f32cbbd77736397f8df35a097182c1710a9857df51575213dc1437c3",
+      "candidate_id": "c003",
+      "query_id": "test-en-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "49069577b434607ab3b5066dbcf8771c6ac732531bba50ff470912d31efe0957",
+      "candidate_id": "c004",
+      "query_id": "test-en-09",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "28123b723f142d2026be59abe63467ef67ae74cf764d320e26a1316866e9f325",
+      "candidate_id": "c005",
+      "query_id": "test-en-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "429233d9adb939f3f9d600046380e8836187c02f4a91838626aae674f933d332",
+      "candidate_id": "c006",
+      "query_id": "test-en-09",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "99772c8797b2bd6f3bd2167d2ec336796b4dab6ff15956c83d1b2a47d4d7e4cd",
+      "candidate_id": "c007",
+      "query_id": "test-en-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ea7bb805ea4c625bd9e3e69595109cc41ff586e24323c9e81f9e4be7f66620e4",
+      "candidate_id": "c008",
+      "query_id": "test-en-09",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0d70facbc9b284ad01394770f532f257130e317cd4ec7b4bb6cf351b6c610d82",
+      "candidate_id": "c001",
+      "query_id": "test-en-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "5a8b95d54cc1394c2664b4666422553d242d14759b366cce0e105e79c5923f03",
+      "candidate_id": "c002",
+      "query_id": "test-en-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "16e8a87bad0bf41f0e6148ae3a28463783f11d5bab5def1ab596cd62dbf3276f",
+      "candidate_id": "c003",
+      "query_id": "test-en-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "084d40a4fdb1dd30477758801bda8d5f776058f2dae642a5b28269d53723b27d",
+      "candidate_id": "c004",
+      "query_id": "test-en-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "cf9c2be2239ddd53a284ca781768efa08b497dc29fe59c4cc0627d69cf38dfd5",
+      "candidate_id": "c005",
+      "query_id": "test-en-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "90e357c2b014316003816ddd6cbc94dc164f4b407a7e92ead9b41f9b35c63459",
+      "candidate_id": "c006",
+      "query_id": "test-en-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "2595d659ca2a8c86f8020a42a855e33039032a1601069cd0c673ba53719e7262",
+      "candidate_id": "c001",
+      "query_id": "test-en-11",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "49d110949f9f8dcd9ae7e63eba927b20b93ba87ce092d3d0d0953101bc6c3715",
+      "candidate_id": "c002",
+      "query_id": "test-en-11",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "66a53cb622b951ba61ea1f71b4ca25fcb7ac7a0581594f1d3b15f889af1f6e7a",
+      "candidate_id": "c003",
+      "query_id": "test-en-11",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "09a78f31e6aac2bce0bcac565813d984c88752719c49b1fd12582b1af6682075",
+      "candidate_id": "c004",
+      "query_id": "test-en-11",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "eb40afb20c5ab835cf0d1dc6fe8eb8142202767c6a80e4783faf2f990806e48c",
+      "candidate_id": "c005",
+      "query_id": "test-en-11",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "09a14cdecc74c3b8b00294331266604e1c349707c3daa244e6941ee4e3c9ec4f",
+      "candidate_id": "c006",
+      "query_id": "test-en-11",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "2e8b84882013d911bf8df2f7bc8b1081d6a41d53f823552f7b8a3fbfce4bd0e0",
+      "candidate_id": "c007",
+      "query_id": "test-en-11",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f4a41505da31b00c2a901030d70ec520655a16312f2d1b670a9ab3042f1977d4",
+      "candidate_id": "c008",
+      "query_id": "test-en-11",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "c0329c555b7a945bc04c3d7024de61f1bb140f5d2c40fbad479cbd127ebb40cf",
+      "candidate_id": "c009",
+      "query_id": "test-en-11",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "92aa40b5e01639dbc0ea8048f4e108e6505268c1a8690b5fc7233acd7f47507c",
+      "candidate_id": "c001",
+      "query_id": "test-en-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "536d442661a4b7362827c054be48a6b7caf31d27d59f98c345362dd1e65c948f",
+      "candidate_id": "c002",
+      "query_id": "test-en-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "1dc289ffd85b5514a1955e461967f6c9c643497f51ea552e0e11fe67374f52d6",
+      "candidate_id": "c003",
+      "query_id": "test-en-12",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "eefde9d74278a0b698870e511d5c413ff912335da7315b6059961acacfe351cf",
+      "candidate_id": "c004",
+      "query_id": "test-en-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0069d9876c7e2c5b7b7ad3990872e5b0008d86e04d8bffb17db1f2e1c832a159",
+      "candidate_id": "c005",
+      "query_id": "test-en-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0d5dbcc8afed926995447a24598c5fe5b77edf00a7c960d2e466c40c36560a86",
+      "candidate_id": "c006",
+      "query_id": "test-en-12",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ccc5ba2649ae91ce71e83b0e47a170405b97d3587256c6e5aed5d309062e4d43",
+      "candidate_id": "c007",
+      "query_id": "test-en-12",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "4918d622bdf288552f725f691a2e8fd0ffc7129d4922525d57fb661a0b8135aa",
+      "candidate_id": "c001",
+      "query_id": "test-hi-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "eb451a1c8560cd330d3d2dc46af7ad8cb211d30cc7c883f7c23c682495103763",
+      "candidate_id": "c002",
+      "query_id": "test-hi-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "01430d2fa95e11551488ebea2527432659ad49bf4625f39486b90f0ad730f710",
+      "candidate_id": "c003",
+      "query_id": "test-hi-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "961657dfba975ecaca29ec6177a375c575e127af39ba9532ca3529c4fdaa5b89",
+      "candidate_id": "c004",
+      "query_id": "test-hi-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "040720bd5a70ae012c11c72bbbbd090e6239398c13df2f26719648fde1cf618f",
+      "candidate_id": "c005",
+      "query_id": "test-hi-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "90e262d8b8361424f1c9650de29d50003991e2858a934f20ac08112bc3307f2c",
+      "candidate_id": "c006",
+      "query_id": "test-hi-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "19283515a55a5d3adacae50e20351e320040e75948979d3cd05e658efa258a34",
+      "candidate_id": "c007",
+      "query_id": "test-hi-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1dd082cfaf0a38aba3933845722eee097ecda500d14df65d244c14d0ec68e90e",
+      "candidate_id": "c008",
+      "query_id": "test-hi-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "dbf2f50b407a99838adcf7c06ec3c4f799b583c4c65fff50a2f494afb111bf04",
+      "candidate_id": "c001",
+      "query_id": "test-hi-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c6a56c1997c4d87b3edeb6364fb9d5665bda224132e12d0e910dc9c13cd635cd",
+      "candidate_id": "c002",
+      "query_id": "test-hi-02",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "961657dfba975ecaca29ec6177a375c575e127af39ba9532ca3529c4fdaa5b89",
+      "candidate_id": "c003",
+      "query_id": "test-hi-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "513d82258c25e251b58b0b3c5c4c0e901814bbde692269dabc28b275b9d41877",
+      "candidate_id": "c004",
+      "query_id": "test-hi-02",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1e0a56dfeca498c455e0f7d8d90bcf5627fa08acbbe6101511b3cf1ad402f41a",
+      "candidate_id": "c005",
+      "query_id": "test-hi-02",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "417cd3008908949e49ab85f898110265e4af941105f48a62c29ac60e24eee7b6",
+      "candidate_id": "c006",
+      "query_id": "test-hi-02",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c42210a4a399854a6302f0c654aae83547584699241a59f84b17f7095bdaaf7f",
+      "candidate_id": "c007",
+      "query_id": "test-hi-02",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "bc31d1e990ea3b684b9621dd5948a7f0cda3a36ee3698ab4c84e89bd4a1e517c",
+      "candidate_id": "c008",
+      "query_id": "test-hi-02",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1c0f6f2cc85dc5444bf8d880b51c815d84c6ebb6462f3b09fabb024e9baa5aee",
+      "candidate_id": "c001",
+      "query_id": "test-hi-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0982b983917d00d05c28e41a6026f8332dbd90e6034e654cd2eed8a993deffb4",
+      "candidate_id": "c002",
+      "query_id": "test-hi-03",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "651a88f1e3387ab36f9fc9203bbcba6e6e2da4c947511de4b3b97720f3079d1d",
+      "candidate_id": "c003",
+      "query_id": "test-hi-03",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "fdb1217e41d5fc7d36dfb616673b65aacb56e9555fd9b0c28e20cc9d20df43ce",
+      "candidate_id": "c004",
+      "query_id": "test-hi-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "33b9e96cc42adb5bc0b9621b3db30ad4e2bd67cd640ad507f804d82d3e67b325",
+      "candidate_id": "c005",
+      "query_id": "test-hi-03",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "a4d685cc65cec8ae6db6f3768380cc8c17a8c1cd116a534833fb17e4fe78b9b5",
+      "candidate_id": "c006",
+      "query_id": "test-hi-03",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "bea45725343e8dbd3c504def34a659bb835f8544e29e309aef2ed0c890e44809",
+      "candidate_id": "c007",
+      "query_id": "test-hi-03",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "77c14c35c67057338424f48ff4196b45d1f143f36f702cac0182d5e34413e4d4",
+      "candidate_id": "c008",
+      "query_id": "test-hi-03",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "a36cfbe392f31c1e92a88e0eef65f6d80431eb3de07b7ec4743657f762d13259",
+      "candidate_id": "c001",
+      "query_id": "test-hi-04",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "9e51133e7150ee2db4eeb0a0589fe074e1fab9a1008ba75058d8d5464063dda8",
+      "candidate_id": "c002",
+      "query_id": "test-hi-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0ab9cecad51ec82cb6a6741aea90cbf6c8a1af16a4cdb8fdb8359cbd4e3dc65a",
+      "candidate_id": "c003",
+      "query_id": "test-hi-04",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ddfaa706636c5b8bae96cb92c6ec015199e0549785bd3f391fa03e4228d96992",
+      "candidate_id": "c004",
+      "query_id": "test-hi-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0fae40a8409917c28a1212dea3017647646d09af5d2bbe1b299f371fb953b799",
+      "candidate_id": "c005",
+      "query_id": "test-hi-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "29b5c97e628510d0a373ac1d45a1b961e2f3f620bbf8861b4aead61bb5b2e867",
+      "candidate_id": "c006",
+      "query_id": "test-hi-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "4918d622bdf288552f725f691a2e8fd0ffc7129d4922525d57fb661a0b8135aa",
+      "candidate_id": "c007",
+      "query_id": "test-hi-04",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "6b7362a1df8d12db1daa1c609296f5173b156d70e3e862617e36bc765482590c",
+      "candidate_id": "c008",
+      "query_id": "test-hi-04",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "33703e1ac38c242966352c0e6708fab3a84356f28f8ef2a1938e25bc7de31631",
+      "candidate_id": "c001",
+      "query_id": "test-hi-05",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "c6a56c1997c4d87b3edeb6364fb9d5665bda224132e12d0e910dc9c13cd635cd",
+      "candidate_id": "c002",
+      "query_id": "test-hi-05",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "db3a29e1ab9e5f8ca4b8303b238b410253a793502edd2434408bcc2deb9f3a08",
+      "candidate_id": "c003",
+      "query_id": "test-hi-05",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "984f57f7ccd7fc3bf41eb4ed340eeb434916a8cdf477a528ad13bae592d104f9",
+      "candidate_id": "c004",
+      "query_id": "test-hi-05",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "f95b9698d22cbacb6b227724150fc68e448ac5e5c7d401176c149a845b9c9778",
+      "candidate_id": "c005",
+      "query_id": "test-hi-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "617820b5c8fbbe1f1976ef2c3125a3fe5874a4f784966a0fc08ae458b8e801de",
+      "candidate_id": "c006",
+      "query_id": "test-hi-05",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "5a3c9da1a591f2c1582004e39a9ddc12914f6006c91f2dfb473a9f744e1cb777",
+      "candidate_id": "c007",
+      "query_id": "test-hi-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "576ab2ba80cbbadf3d098511f09577ab3b59d36a7d7f8e0d2f5b240b74f4a905",
+      "candidate_id": "c008",
+      "query_id": "test-hi-05",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "d1532d87d264be5574db71435c6879837cff733c2aadb7e3885f3d5024e7ebf6",
+      "candidate_id": "c009",
+      "query_id": "test-hi-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0d60c22386810f18739ae54e7a2c508cdde94fbdf42d9555e3459e639790ce12",
+      "candidate_id": "c010",
+      "query_id": "test-hi-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "4ac094587c783345879d9b448b55ef77795813aa14b51341511c4a741bad66fc",
+      "candidate_id": "c001",
+      "query_id": "test-hi-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c42210a4a399854a6302f0c654aae83547584699241a59f84b17f7095bdaaf7f",
+      "candidate_id": "c002",
+      "query_id": "test-hi-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1e0a56dfeca498c455e0f7d8d90bcf5627fa08acbbe6101511b3cf1ad402f41a",
+      "candidate_id": "c003",
+      "query_id": "test-hi-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "417cd3008908949e49ab85f898110265e4af941105f48a62c29ac60e24eee7b6",
+      "candidate_id": "c004",
+      "query_id": "test-hi-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "98db2808c17917359c71d51b8f0ffa9392c26bd9e3c3d36698dacaf2a8115ec4",
+      "candidate_id": "c005",
+      "query_id": "test-hi-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0d60c22386810f18739ae54e7a2c508cdde94fbdf42d9555e3459e639790ce12",
+      "candidate_id": "c006",
+      "query_id": "test-hi-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "ac3ae045b1457b06beb390785a474500a74874a824a248bd55124634f118fb7e",
+      "candidate_id": "c007",
+      "query_id": "test-hi-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "513d82258c25e251b58b0b3c5c4c0e901814bbde692269dabc28b275b9d41877",
+      "candidate_id": "c008",
+      "query_id": "test-hi-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "dbf2f50b407a99838adcf7c06ec3c4f799b583c4c65fff50a2f494afb111bf04",
+      "candidate_id": "c009",
+      "query_id": "test-hi-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "bc31d1e990ea3b684b9621dd5948a7f0cda3a36ee3698ab4c84e89bd4a1e517c",
+      "candidate_id": "c010",
+      "query_id": "test-hi-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "4c9dce733126642bb1f509466b6816461c0c9b854b99d938200307f2e521ed9e",
+      "candidate_id": "c001",
+      "query_id": "test-hi-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "b86058c1ebbea2df5ce46b2f5098ea24a4aa96785064873bbf8a7b42b3ce6f53",
+      "candidate_id": "c002",
+      "query_id": "test-hi-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "9e3270e9bb438383a290e025f8a4d5b6063470b7a8d01b59cd96ab5c1a711a39",
+      "candidate_id": "c003",
+      "query_id": "test-hi-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "1dd082cfaf0a38aba3933845722eee097ecda500d14df65d244c14d0ec68e90e",
+      "candidate_id": "c004",
+      "query_id": "test-hi-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "3f9882b3b5b059742a22950d6016b0cbb8e1518273d430f618ddf50947c2d31a",
+      "candidate_id": "c005",
+      "query_id": "test-hi-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "40724bbcc4018fa82d811420b428658e75445c9c9ab48b2a2be1f526b7d8abd5",
+      "candidate_id": "c006",
+      "query_id": "test-hi-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "9e51133e7150ee2db4eeb0a0589fe074e1fab9a1008ba75058d8d5464063dda8",
+      "candidate_id": "c007",
+      "query_id": "test-hi-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "37c32b6f204a4a73bb953f8811732d732b08632ee7b2865331145098090eedf7",
+      "candidate_id": "c008",
+      "query_id": "test-hi-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "6aa09102fabc497bd850a45f026f5d645dcdaaa4e24dfdeec8f3d7c696afcffd",
+      "candidate_id": "c009",
+      "query_id": "test-hi-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "e747c80c110a4533d4dd41351748f7e3637cff4d4ae8bf33646a528c0526a718",
+      "candidate_id": "c010",
+      "query_id": "test-hi-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bbf206b825ae179134ebcf79915303ce2108f17599ebbc0237c20d66252276e2",
+      "candidate_id": "c001",
+      "query_id": "test-hi-08",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "7415868a07b959cd007f3b34f855cf87e4733aa14e88a49efa22a5f8b36975d2",
+      "candidate_id": "c002",
+      "query_id": "test-hi-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "6d62b70783e7299b9207388cc4099d9bceb0ba7fd605004492e0fb74c933c9e2",
+      "candidate_id": "c003",
+      "query_id": "test-hi-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "fdf0675f3ff15173866f0a4893caaa6e56c303f8b43e645b7d1b87b9d5cea132",
+      "candidate_id": "c004",
+      "query_id": "test-hi-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c9c25517db916215cc95a18a8ff86058232afb2236e91ab02f4a598a7f40d7b3",
+      "candidate_id": "c005",
+      "query_id": "test-hi-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "6cd470559a7d257a094effe01546791886ebf0ff229ac68ca22ece9224e4c429",
+      "candidate_id": "c006",
+      "query_id": "test-hi-08",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "d8beb03bbcd580187587ceb0737ef49b75e4876b2d778658b3092ec1a3471ac2",
+      "candidate_id": "c007",
+      "query_id": "test-hi-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c25a3d2d5bdda608a3bea79e68b3166d2049329b92b5de882ee89b4a003be34a",
+      "candidate_id": "c008",
+      "query_id": "test-hi-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "d93da04033937608c8c6877ad5412765d27d0ae77534c282f8f9bb2ab347d04b",
+      "candidate_id": "c009",
+      "query_id": "test-hi-08",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "a36cfbe392f31c1e92a88e0eef65f6d80431eb3de07b7ec4743657f762d13259",
+      "candidate_id": "c001",
+      "query_id": "test-hi-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "f7343813be481ac4512e07452e7fa76b7f62e841a1d8abd9e2cbd448f503c564",
+      "candidate_id": "c002",
+      "query_id": "test-hi-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "28123b723f142d2026be59abe63467ef67ae74cf764d320e26a1316866e9f325",
+      "candidate_id": "c003",
+      "query_id": "test-hi-09",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "49069577b434607ab3b5066dbcf8771c6ac732531bba50ff470912d31efe0957",
+      "candidate_id": "c004",
+      "query_id": "test-hi-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "6e75f7c4266ac199c5634a41fd36a095a800a13046ea41fa650804ed629cb2d4",
+      "candidate_id": "c005",
+      "query_id": "test-hi-09",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "c84ab311adde7ec2130ff606e39b8232f5c2e346c20e13bb129f4752a847199d",
+      "candidate_id": "c006",
+      "query_id": "test-hi-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "ea989b795cdd0be8f22542a4b8ea64a708770502222d1470d058f84f09716e3d",
+      "candidate_id": "c007",
+      "query_id": "test-hi-09",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "1c0f6f2cc85dc5444bf8d880b51c815d84c6ebb6462f3b09fabb024e9baa5aee",
+      "candidate_id": "c008",
+      "query_id": "test-hi-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "99772c8797b2bd6f3bd2167d2ec336796b4dab6ff15956c83d1b2a47d4d7e4cd",
+      "candidate_id": "c009",
+      "query_id": "test-hi-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "a62d8ac36ac6fe0bdc4802dd2f7503fb998e459ece884120a4b6f2ce557d654f",
+      "candidate_id": "c010",
+      "query_id": "test-hi-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "be9fbfc0e3df2a2161d567d43051ca1946903a9fb0df2d22e98471b5ddc80e31",
+      "candidate_id": "c011",
+      "query_id": "test-hi-09",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c0329c555b7a945bc04c3d7024de61f1bb140f5d2c40fbad479cbd127ebb40cf",
+      "candidate_id": "c001",
+      "query_id": "test-hi-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "aa7c1497f2a589f57d62a3b394755dbbb5f965738ddef0eaf61ea3967737dafe",
+      "candidate_id": "c002",
+      "query_id": "test-hi-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "068fafe9994d5191c5eb41ac17f13fe282333eb6f1128576405dee9c17b7018d",
+      "candidate_id": "c003",
+      "query_id": "test-hi-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "69e98b022963769eb4085d8237fcf2b0260d5ed3125fd3ab9a03896543812167",
+      "candidate_id": "c004",
+      "query_id": "test-hi-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "98db2808c17917359c71d51b8f0ffa9392c26bd9e3c3d36698dacaf2a8115ec4",
+      "candidate_id": "c005",
+      "query_id": "test-hi-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "09a14cdecc74c3b8b00294331266604e1c349707c3daa244e6941ee4e3c9ec4f",
+      "candidate_id": "c006",
+      "query_id": "test-hi-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f4a41505da31b00c2a901030d70ec520655a16312f2d1b670a9ab3042f1977d4",
+      "candidate_id": "c007",
+      "query_id": "test-hi-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "e6af5fb1349ee6291dbd5ac23c49e12fe2dca6b4af5c6ec66f63cd67e3f4746d",
+      "candidate_id": "c008",
+      "query_id": "test-hi-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "663f425991acf1fe8b243b8af38db6ac650ae2b570dbdae290bcc0ec118025b5",
+      "candidate_id": "c009",
+      "query_id": "test-hi-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "730e8ff5f2129778aff2abb00ba71930b3e31d7f27f8f6a0137185d8723e07ff",
+      "candidate_id": "c010",
+      "query_id": "test-hi-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0d60c22386810f18739ae54e7a2c508cdde94fbdf42d9555e3459e639790ce12",
+      "candidate_id": "c001",
+      "query_id": "test-hi-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "8e80990d31d1cb5554a65d0c57989e1367067c2d2eb73541708dc4e3f074eb11",
+      "candidate_id": "c002",
+      "query_id": "test-hi-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "a6a79ccd787287d66936caa29d2ea0b8151cc88e20546058bd4e0134655f3b47",
+      "candidate_id": "c003",
+      "query_id": "test-hi-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "130d53b7f63cf3ed416465d05d3da00fd4ac3dc3b9a74c7fe1f92f60ab4e04cd",
+      "candidate_id": "c004",
+      "query_id": "test-hi-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "7639aa172ac9251057ef1d51f5f10dda66221f9453f381bb8b14964bc5f47ab4",
+      "candidate_id": "c005",
+      "query_id": "test-hi-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0b26dd5aa3867822c6c1f45b0067802bc347aa84bad3d9440aa7f94fb1ffd60b",
+      "candidate_id": "c006",
+      "query_id": "test-hi-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "5a8b95d54cc1394c2664b4666422553d242d14759b366cce0e105e79c5923f03",
+      "candidate_id": "c007",
+      "query_id": "test-hi-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "16e8a87bad0bf41f0e6148ae3a28463783f11d5bab5def1ab596cd62dbf3276f",
+      "candidate_id": "c008",
+      "query_id": "test-hi-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "cf9c2be2239ddd53a284ca781768efa08b497dc29fe59c4cc0627d69cf38dfd5",
+      "candidate_id": "c009",
+      "query_id": "test-hi-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0d70facbc9b284ad01394770f532f257130e317cd4ec7b4bb6cf351b6c610d82",
+      "candidate_id": "c010",
+      "query_id": "test-hi-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "92aa40b5e01639dbc0ea8048f4e108e6505268c1a8690b5fc7233acd7f47507c",
+      "candidate_id": "c001",
+      "query_id": "test-hi-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "eefde9d74278a0b698870e511d5c413ff912335da7315b6059961acacfe351cf",
+      "candidate_id": "c002",
+      "query_id": "test-hi-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "5b1796bb06866beeaa3bdcf86ea8bdbbee4ae19f2ed16a59d13df7cd5fcc4edc",
+      "candidate_id": "c003",
+      "query_id": "test-hi-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "a414ef817bdda392bedf627ae68bdfed10d52564bc8974f72eddddcb91806488",
+      "candidate_id": "c004",
+      "query_id": "test-hi-12",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1dc289ffd85b5514a1955e461967f6c9c643497f51ea552e0e11fe67374f52d6",
+      "candidate_id": "c005",
+      "query_id": "test-hi-12",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "a6a79ccd787287d66936caa29d2ea0b8151cc88e20546058bd4e0134655f3b47",
+      "candidate_id": "c006",
+      "query_id": "test-hi-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "041d32d0a84df25cb02c732c7453338f8ed54893f4f864088279e8c62dce0d62",
+      "candidate_id": "c007",
+      "query_id": "test-hi-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "536d442661a4b7362827c054be48a6b7caf31d27d59f98c345362dd1e65c948f",
+      "candidate_id": "c008",
+      "query_id": "test-hi-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "573b2c55da205d0e5894e4635320db528fa51410848887843d4e7f323f26a363",
+      "candidate_id": "c001",
+      "query_id": "test-mr-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "49159d2ce11f54429f1efe7218654536fa004f7eae5f0aa7b2008d7f91b39ee2",
+      "candidate_id": "c002",
+      "query_id": "test-mr-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f9238089e09304c07cdd3ca631e792d99b1570b3be1564df0361876ce5948c92",
+      "candidate_id": "c003",
+      "query_id": "test-mr-01",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bba8a9d19ff89139990b2177b46480a3578fe0d9124c8055b10448d84f58fdfe",
+      "candidate_id": "c004",
+      "query_id": "test-mr-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "961ffc7fd0befe7a346367c4bf5a55c4b6e599e70f064265c4ac3d05c9dd3f1d",
+      "candidate_id": "c005",
+      "query_id": "test-mr-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "af7ad817ef0e6e8030f6e80e44cf42f325203cb97773a57141e772c610a7b354",
+      "candidate_id": "c006",
+      "query_id": "test-mr-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "4c3d72bc0fabf9fe32da62fbb9d9427e5b1df62f0825481725dfcf36a23c1e28",
+      "candidate_id": "c007",
+      "query_id": "test-mr-01",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "cf5916650cb637ceab5bb26048c316656029438f1c51bac2ddf633126df11601",
+      "candidate_id": "c008",
+      "query_id": "test-mr-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "d5b495408a887630167efd5f4456405bb9a9d2e74e1bf0f8fc36fd297925b988",
+      "candidate_id": "c009",
+      "query_id": "test-mr-01",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c0329c555b7a945bc04c3d7024de61f1bb140f5d2c40fbad479cbd127ebb40cf",
+      "candidate_id": "c001",
+      "query_id": "test-mr-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "2dc4fad1930c7c2b21d409af38e259c4cac9f256b454dc2e803ad0ec25c31894",
+      "candidate_id": "c002",
+      "query_id": "test-mr-02",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "af7ad817ef0e6e8030f6e80e44cf42f325203cb97773a57141e772c610a7b354",
+      "candidate_id": "c003",
+      "query_id": "test-mr-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "bba8a9d19ff89139990b2177b46480a3578fe0d9124c8055b10448d84f58fdfe",
+      "candidate_id": "c004",
+      "query_id": "test-mr-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "12d091c4707c8952a0017704c725bffb3dfa5ddaff3a700826df23cd047e47c6",
+      "candidate_id": "c005",
+      "query_id": "test-mr-02",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "33b9e96cc42adb5bc0b9621b3db30ad4e2bd67cd640ad507f804d82d3e67b325",
+      "candidate_id": "c006",
+      "query_id": "test-mr-02",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "8302d62d44db9966289a4ca35b70cdbf6083a1720223f417e985385c9b83f70d",
+      "candidate_id": "c007",
+      "query_id": "test-mr-02",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "de6f16f4c0ecc728f81b03637ff2df77941b86e65ffdcfc6190ab6c2a90851bd",
+      "candidate_id": "c008",
+      "query_id": "test-mr-02",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "4b447320a5ee9a4894fe4458eb73ced8bfd008354c696a86adbb2df305936af2",
+      "candidate_id": "c009",
+      "query_id": "test-mr-02",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "7056ca955827aac694574432bbbe40025a6c26680d01b7666790c02d3ab60984",
+      "candidate_id": "c001",
+      "query_id": "test-mr-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "d42414df6328be510f5b648113a619a4e64a331a578e51ee45d5b6fcd81a2204",
+      "candidate_id": "c002",
+      "query_id": "test-mr-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ce87d7d1123efeddfc48dbc1c6a69821b96e921bfa70bd3525465b3fab623aff",
+      "candidate_id": "c003",
+      "query_id": "test-mr-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "b231387e02ca11f8fe3cb8597f46d1965f1f3811486aafa1956fcb90d5c83717",
+      "candidate_id": "c004",
+      "query_id": "test-mr-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "15b6bbb10e288aa2bd982bfa27c4a19a51ca44d0c8d052291564416022c45a85",
+      "candidate_id": "c005",
+      "query_id": "test-mr-03",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bea45725343e8dbd3c504def34a659bb835f8544e29e309aef2ed0c890e44809",
+      "candidate_id": "c001",
+      "query_id": "test-mr-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bba8a9d19ff89139990b2177b46480a3578fe0d9124c8055b10448d84f58fdfe",
+      "candidate_id": "c002",
+      "query_id": "test-mr-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "8302d62d44db9966289a4ca35b70cdbf6083a1720223f417e985385c9b83f70d",
+      "candidate_id": "c003",
+      "query_id": "test-mr-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "03a408227def1af7cac8e702063a3aaed0b6b7b87e27237472ec6790a5da8910",
+      "candidate_id": "c004",
+      "query_id": "test-mr-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "4f09e534c52d6206fe38c0c541be34111a92a3ef9c8edf75f6d6c28b9950ca40",
+      "candidate_id": "c005",
+      "query_id": "test-mr-04",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "36ec80638d17fb7aad8f0f84c382ab1bc5895ef6000e4f70535a9b3f0a9206cc",
+      "candidate_id": "c006",
+      "query_id": "test-mr-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "573b2c55da205d0e5894e4635320db528fa51410848887843d4e7f323f26a363",
+      "candidate_id": "c007",
+      "query_id": "test-mr-04",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "17c6748d3ce878ac914b8efd0b882670b9e6d10c802ab7de60db085a0f26581a",
+      "candidate_id": "c008",
+      "query_id": "test-mr-04",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "496707f2003294e596b36d30e8b23a76bb084bb834ca6429b4177aaac4fa511a",
+      "candidate_id": "c009",
+      "query_id": "test-mr-04",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "56a4cf440aa43d9318828393e2d442062eea918e530b92ed985d7d212c979743",
+      "candidate_id": "c010",
+      "query_id": "test-mr-04",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "417cd3008908949e49ab85f898110265e4af941105f48a62c29ac60e24eee7b6",
+      "candidate_id": "c001",
+      "query_id": "test-mr-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "4e5c23e40e48d25368d3de8c262727028ff1a343c13cf840a03b1decdaaeb9af",
+      "candidate_id": "c002",
+      "query_id": "test-mr-05",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1e0a56dfeca498c455e0f7d8d90bcf5627fa08acbbe6101511b3cf1ad402f41a",
+      "candidate_id": "c003",
+      "query_id": "test-mr-05",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "90f362ee33f192a4669e97a5e8f9a0f5dfe5397dad986704e09883b8e074fa90",
+      "candidate_id": "c004",
+      "query_id": "test-mr-05",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "0b97362b70002d8f9a9fa414e15cef5a7459d8cb8ac15c3338e3a077ec90fb58",
+      "candidate_id": "c005",
+      "query_id": "test-mr-05",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bba8a9d19ff89139990b2177b46480a3578fe0d9124c8055b10448d84f58fdfe",
+      "candidate_id": "c006",
+      "query_id": "test-mr-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c42210a4a399854a6302f0c654aae83547584699241a59f84b17f7095bdaaf7f",
+      "candidate_id": "c007",
+      "query_id": "test-mr-05",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "70d1720d8a1b6151031c03814b0dee24597bd259805abd2df4765384d8945a37",
+      "candidate_id": "c008",
+      "query_id": "test-mr-05",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "bc31d1e990ea3b684b9621dd5948a7f0cda3a36ee3698ab4c84e89bd4a1e517c",
+      "candidate_id": "c009",
+      "query_id": "test-mr-05",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "513d82258c25e251b58b0b3c5c4c0e901814bbde692269dabc28b275b9d41877",
+      "candidate_id": "c010",
+      "query_id": "test-mr-05",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "6272644bb37028aff0c41fd9f1c9055cfc6893e3e3c39dd3ae3821c055416dfe",
+      "candidate_id": "c001",
+      "query_id": "test-mr-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1f4a5fa875afce4d075f42b467815abc0529f43f71c4d5191ab73b5a4250b132",
+      "candidate_id": "c002",
+      "query_id": "test-mr-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "e747c80c110a4533d4dd41351748f7e3637cff4d4ae8bf33646a528c0526a718",
+      "candidate_id": "c003",
+      "query_id": "test-mr-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "5fad36518141bb648cbd7ac71d7122147b454d6d50448b28a62db4cdb0bf25a5",
+      "candidate_id": "c004",
+      "query_id": "test-mr-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c3c64c7cf2cd5c09d0272acd1c57b946f18b39de85bce9c28159f4994252d9e3",
+      "candidate_id": "c005",
+      "query_id": "test-mr-06",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "3f9882b3b5b059742a22950d6016b0cbb8e1518273d430f618ddf50947c2d31a",
+      "candidate_id": "c006",
+      "query_id": "test-mr-06",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "1e0a56dfeca498c455e0f7d8d90bcf5627fa08acbbe6101511b3cf1ad402f41a",
+      "candidate_id": "c007",
+      "query_id": "test-mr-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "af7ad817ef0e6e8030f6e80e44cf42f325203cb97773a57141e772c610a7b354",
+      "candidate_id": "c008",
+      "query_id": "test-mr-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "b231387e02ca11f8fe3cb8597f46d1965f1f3811486aafa1956fcb90d5c83717",
+      "candidate_id": "c009",
+      "query_id": "test-mr-06",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "030a26cf0f6eb523de16373cde556a216c72afd191582ba64c2dbf56c4547f64",
+      "candidate_id": "c010",
+      "query_id": "test-mr-06",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "4f4eb330b07002c289001e90364b82273453919b8a9f5de5b91263a831c34809",
+      "candidate_id": "c001",
+      "query_id": "test-mr-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "99d23981790ef1d495d41328b66be7ed96d38ec31bd98e901150fd64265d18cd",
+      "candidate_id": "c002",
+      "query_id": "test-mr-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "8673f5094c754fe515d70e93f4fee27fcf71517cf66b5b05e357d8a6dac4bccc",
+      "candidate_id": "c003",
+      "query_id": "test-mr-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "72809a855e2c0272a3114482518fcdb719a1dc3a15c2ce86a3c4e63657cab68f",
+      "candidate_id": "c004",
+      "query_id": "test-mr-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "7056ca955827aac694574432bbbe40025a6c26680d01b7666790c02d3ab60984",
+      "candidate_id": "c005",
+      "query_id": "test-mr-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "ec73b156086b56e8c9e5715ed1b4acc87ca2a60f2c3ad2ba673c566bd281b6ed",
+      "candidate_id": "c006",
+      "query_id": "test-mr-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "bba8a9d19ff89139990b2177b46480a3578fe0d9124c8055b10448d84f58fdfe",
+      "candidate_id": "c007",
+      "query_id": "test-mr-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "c92edc834eea330864bd8662709c69969be2e06a590cdc7eb0f18ad846623bb6",
+      "candidate_id": "c008",
+      "query_id": "test-mr-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "01dda5962677e4497c3c4a30a600850d8f76612818b7fe65abdbe912ed18bc5a",
+      "candidate_id": "c009",
+      "query_id": "test-mr-07",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "6064a1ef6e8863b6e5c4811ed524f5c54a999e59de2cfab22d275c1c6b5a3932",
+      "candidate_id": "c010",
+      "query_id": "test-mr-07",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0538aa3f969a35780767b8e092d13f2ea3b0bae4de1f804a4fc06536c31c3ac4",
+      "candidate_id": "c001",
+      "query_id": "test-mr-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "1e0a56dfeca498c455e0f7d8d90bcf5627fa08acbbe6101511b3cf1ad402f41a",
+      "candidate_id": "c002",
+      "query_id": "test-mr-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "eb451a1c8560cd330d3d2dc46af7ad8cb211d30cc7c883f7c23c682495103763",
+      "candidate_id": "c003",
+      "query_id": "test-mr-08",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "040720bd5a70ae012c11c72bbbbd090e6239398c13df2f26719648fde1cf618f",
+      "candidate_id": "c004",
+      "query_id": "test-mr-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "bba8a9d19ff89139990b2177b46480a3578fe0d9124c8055b10448d84f58fdfe",
+      "candidate_id": "c005",
+      "query_id": "test-mr-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "19283515a55a5d3adacae50e20351e320040e75948979d3cd05e658efa258a34",
+      "candidate_id": "c006",
+      "query_id": "test-mr-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c92edc834eea330864bd8662709c69969be2e06a590cdc7eb0f18ad846623bb6",
+      "candidate_id": "c007",
+      "query_id": "test-mr-08",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "54142c91646e9d8faf803aaaa4a6f89b18aa5b0c9f0966b456b18e9e879b2180",
+      "candidate_id": "c008",
+      "query_id": "test-mr-08",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "01430d2fa95e11551488ebea2527432659ad49bf4625f39486b90f0ad730f710",
+      "candidate_id": "c009",
+      "query_id": "test-mr-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "90e262d8b8361424f1c9650de29d50003991e2858a934f20ac08112bc3307f2c",
+      "candidate_id": "c010",
+      "query_id": "test-mr-08",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "429233d9adb939f3f9d600046380e8836187c02f4a91838626aae674f933d332",
+      "candidate_id": "c001",
+      "query_id": "test-mr-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c84ab311adde7ec2130ff606e39b8232f5c2e346c20e13bb129f4752a847199d",
+      "candidate_id": "c002",
+      "query_id": "test-mr-09",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "49069577b434607ab3b5066dbcf8771c6ac732531bba50ff470912d31efe0957",
+      "candidate_id": "c003",
+      "query_id": "test-mr-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "e9b7fcb9f32cbbd77736397f8df35a097182c1710a9857df51575213dc1437c3",
+      "candidate_id": "c004",
+      "query_id": "test-mr-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "53e4f8e0e7111836de97472050d3f3736aea2823cf20e53879fecf9968ee859e",
+      "candidate_id": "c005",
+      "query_id": "test-mr-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "be9fbfc0e3df2a2161d567d43051ca1946903a9fb0df2d22e98471b5ddc80e31",
+      "candidate_id": "c006",
+      "query_id": "test-mr-09",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "ea7bb805ea4c625bd9e3e69595109cc41ff586e24323c9e81f9e4be7f66620e4",
+      "candidate_id": "c007",
+      "query_id": "test-mr-09",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "865503aa0add415473106e65cef2e92ac44c5207405a8165ef584b2d17558665",
+      "candidate_id": "c008",
+      "query_id": "test-mr-09",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "a62d8ac36ac6fe0bdc4802dd2f7503fb998e459ece884120a4b6f2ce557d654f",
+      "candidate_id": "c009",
+      "query_id": "test-mr-09",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "f7343813be481ac4512e07452e7fa76b7f62e841a1d8abd9e2cbd448f503c564",
+      "candidate_id": "c010",
+      "query_id": "test-mr-09",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "af7ad817ef0e6e8030f6e80e44cf42f325203cb97773a57141e772c610a7b354",
+      "candidate_id": "c001",
+      "query_id": "test-mr-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "e6af5fb1349ee6291dbd5ac23c49e12fe2dca6b4af5c6ec66f63cd67e3f4746d",
+      "candidate_id": "c002",
+      "query_id": "test-mr-10",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "bba8a9d19ff89139990b2177b46480a3578fe0d9124c8055b10448d84f58fdfe",
+      "candidate_id": "c003",
+      "query_id": "test-mr-10",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0c60560993505f06e8473694d3e703cb3b6b855f176f5943538bea6cb261e460",
+      "candidate_id": "c004",
+      "query_id": "test-mr-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "89db3bef0adbd7b0347071374303ba85cf207336dbe0f5db4c75894786f26840",
+      "candidate_id": "c005",
+      "query_id": "test-mr-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "2e8b84882013d911bf8df2f7bc8b1081d6a41d53f823552f7b8a3fbfce4bd0e0",
+      "candidate_id": "c006",
+      "query_id": "test-mr-10",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "f91ab9ecf3186400e3a23c7683f5a2afd8b524744368ef7a235eb47045174c27",
+      "candidate_id": "c007",
+      "query_id": "test-mr-10",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "c0329c555b7a945bc04c3d7024de61f1bb140f5d2c40fbad479cbd127ebb40cf",
+      "candidate_id": "c008",
+      "query_id": "test-mr-10",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "d7f8aa2c99eb83012694994d8a4f6a91b4fb9653a3f82ddfd9dd90a8afef1cda",
+      "candidate_id": "c001",
+      "query_id": "test-mr-11",
+      "systems": [
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "084d40a4fdb1dd30477758801bda8d5f776058f2dae642a5b28269d53723b27d",
+      "candidate_id": "c002",
+      "query_id": "test-mr-11",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "1dc289ffd85b5514a1955e461967f6c9c643497f51ea552e0e11fe67374f52d6",
+      "candidate_id": "c003",
+      "query_id": "test-mr-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "d3e28f840f0cbd8ed81edaba02d4b6123d4fc3748eeefdea1da8198b7a924e89",
+      "candidate_id": "c004",
+      "query_id": "test-mr-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "af7ad817ef0e6e8030f6e80e44cf42f325203cb97773a57141e772c610a7b354",
+      "candidate_id": "c005",
+      "query_id": "test-mr-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "53e4f8e0e7111836de97472050d3f3736aea2823cf20e53879fecf9968ee859e",
+      "candidate_id": "c006",
+      "query_id": "test-mr-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "5a8b95d54cc1394c2664b4666422553d242d14759b366cce0e105e79c5923f03",
+      "candidate_id": "c007",
+      "query_id": "test-mr-11",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "16e8a87bad0bf41f0e6148ae3a28463783f11d5bab5def1ab596cd62dbf3276f",
+      "candidate_id": "c008",
+      "query_id": "test-mr-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "0417b5bd218300662d32ec0341001d896be9b3996f2cc9b2345b1d51388b8141",
+      "candidate_id": "c009",
+      "query_id": "test-mr-11",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "cf9c2be2239ddd53a284ca781768efa08b497dc29fe59c4cc0627d69cf38dfd5",
+      "candidate_id": "c010",
+      "query_id": "test-mr-11",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "92aa40b5e01639dbc0ea8048f4e108e6505268c1a8690b5fc7233acd7f47507c",
+      "candidate_id": "c001",
+      "query_id": "test-mr-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "53e4f8e0e7111836de97472050d3f3736aea2823cf20e53879fecf9968ee859e",
+      "candidate_id": "c002",
+      "query_id": "test-mr-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "536d442661a4b7362827c054be48a6b7caf31d27d59f98c345362dd1e65c948f",
+      "candidate_id": "c003",
+      "query_id": "test-mr-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "57b05df5efc3b238a4fcb3171f00ec7e39784faa450fff034d73d3f9721a1cc5",
+      "candidate_id": "c004",
+      "query_id": "test-mr-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "0d5dbcc8afed926995447a24598c5fe5b77edf00a7c960d2e466c40c36560a86",
+      "candidate_id": "c005",
+      "query_id": "test-mr-12",
+      "systems": [
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "8064ffad26b5dd3f00d46ec36d80d8ac25911f129ba47145fa3ce912418ec9e2",
+      "candidate_id": "c006",
+      "query_id": "test-mr-12",
+      "systems": [
+        "bm25"
+      ]
+    },
+    {
+      "article_id": "1dc289ffd85b5514a1955e461967f6c9c643497f51ea552e0e11fe67374f52d6",
+      "candidate_id": "c007",
+      "query_id": "test-mr-12",
+      "systems": [
+        "bm25",
+        "dense",
+        "hybrid"
+      ]
+    },
+    {
+      "article_id": "eefde9d74278a0b698870e511d5c413ff912335da7315b6059961acacfe351cf",
+      "candidate_id": "c008",
+      "query_id": "test-mr-12",
+      "systems": [
+        "dense"
+      ]
+    },
+    {
+      "article_id": "a414ef817bdda392bedf627ae68bdfed10d52564bc8974f72eddddcb91806488",
+      "candidate_id": "c009",
+      "query_id": "test-mr-12",
+      "systems": [
+        "bm25",
+        "hybrid"
+      ]
+    }
+  ],
+  "candidate_pairs": 427,
+  "packets_sha256": "5157a4bb1e3e68ad41020ec9711daf99985516586a1f4da9dbc7e804c59a6aa9",
+  "queries_sha256": "6f210ec78a55b0a5ba1195767382ca153f9211ff88d1afc96a4994ffc8fbffac",
+  "run_sha256": "64261101c7c613dcbe7f5e6e459ff8e405076aca99b212aa0df81d8c91835651",
+  "schema_version": 1,
+  "seed": 42,
+  "snapshot_id": "corpus-59b2b589fe3bbdbffdc3",
+  "status": "unjudged"
+}
