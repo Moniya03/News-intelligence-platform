@@ -1,10 +1,12 @@
 import {
-  ChatResponse,
-  Cluster,
-  ClusterDetail,
+  CorpusResponse,
   HealthResponse,
   SearchRequest,
-  SearchResult,
+  SearchResponse,
+  SummaryRequest,
+  SummaryResponse,
+  TopicDetail,
+  TopicsResponse,
 } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -27,44 +29,52 @@ async function requireSuccess(res: Response): Promise<void> {
   throw new Error(`Request failed (${res.status}): ${detail}`);
 }
 
-export async function chatQuery(query: string, langFilter?: string[] | null): Promise<ChatResponse> {
-  const res = await fetchWithTimeout(`${API_URL}/api/chat`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query,
-      lang_filter: langFilter && langFilter.length > 0 ? langFilter : null,
-    }),
-  });
-  await requireSuccess(res);
-  return await res.json();
-}
-
-export async function searchArticles(req: SearchRequest): Promise<SearchResult[]> {
+export async function searchArticles(req: SearchRequest): Promise<SearchResponse> {
   const res = await fetchWithTimeout(`${API_URL}/api/search`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(req),
   });
   await requireSuccess(res);
-  const data = await res.json();
-  return (data?.results ?? data) as SearchResult[];
+  return await res.json();
 }
 
-export async function getClusters(): Promise<Cluster[]> {
-  const res = await fetchWithTimeout(`${API_URL}/api/clusters`, {
-    method: "GET",
-    headers: { "Accept": "application/json" },
+export async function summarizeSearch(req: SummaryRequest): Promise<SummaryResponse> {
+  const res = await fetchWithTimeout(`${API_URL}/api/search/summary`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
   });
   await requireSuccess(res);
-  const data = await res.json();
-  return (data?.clusters ?? data) as Cluster[];
+  const response: SummaryResponse = await res.json();
+  if (response.snapshot_id !== req.snapshot_id) {
+    throw new Error("Summary snapshot changed. Run Search again before requesting a summary.");
+  }
+  return response;
 }
 
-export async function getClusterDetail(id: number, page = 1, limit = 20): Promise<ClusterDetail> {
+export async function getClusters(): Promise<TopicsResponse> {
+  const res = await fetchWithTimeout(`${API_URL}/api/clusters`, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+  });
+  await requireSuccess(res);
+  return await res.json();
+}
+
+export async function getClusterDetail(id: number, page = 1, limit = 20): Promise<TopicDetail> {
   const res = await fetchWithTimeout(`${API_URL}/api/clusters/${id}?page=${page}&limit=${limit}`, {
     method: "GET",
-    headers: { "Accept": "application/json" },
+    headers: { Accept: "application/json" },
+  });
+  await requireSuccess(res);
+  return await res.json();
+}
+
+export async function corpusSummary(): Promise<CorpusResponse> {
+  const res = await fetchWithTimeout(`${API_URL}/api/corpus`, {
+    method: "GET",
+    headers: { Accept: "application/json" },
   });
   await requireSuccess(res);
   return await res.json();

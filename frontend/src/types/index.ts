@@ -1,37 +1,10 @@
-export type Language = "en" | "hi" | "bn" | "ta";
-
-export interface Citation {
-  chunk_id: string;
-  article_id: string;
-  title: string;
-  lang: "en" | "hi" | "bn" | "ta" | string;
-  source: string;
-  url: string | null;
-  snippet: string;
-  veracity?: "Likely reliable" | "Uncertain" | "Likely misleading";
-  reason?: string;
-}
-
-export interface Credibility {
-  agreement_score: number; // 0.0 - 1.0
-  agreement_label: string; // e.g. "High cross-source agreement"
-}
-
-export interface ChatRequest {
-  query: string;
-  lang_filter?: string[] | null; // ["en", "hi", "bn", "ta"]
-}
-
-export interface ChatResponse {
-  answer: string;
-  citations: Citation[];
-  credibility?: Credibility;
-}
+export type Language = "en" | "hi" | "bn" | "mr";
+export type SearchMode = "hybrid" | "dense" | "bm25";
 
 export interface SearchRequest {
   query: string;
-  lang_filter?: string[] | null;
-  mode?: "hybrid" | "dense" | "bm25";
+  lang_filter?: Language[] | null;
+  mode?: SearchMode;
   top_k?: number;
 }
 
@@ -44,41 +17,103 @@ export interface SearchResult {
   snippet: string;
   score: number;
   url: string | null;
+  published_at?: string | null;
+  snapshot_id: string;
 }
 
-export interface ClusterLangCounts {
-  en: number;
-  hi: number;
-  bn: number;
-  ta: number;
-  [key: string]: number;
+export interface SearchResponse {
+  results: SearchResult[];
+  metadata: {
+    snapshot_id: string;
+    requested_mode: SearchMode;
+    executed_mode: SearchMode;
+    reranker_status: "disabled" | "applied" | "unavailable";
+    elapsed_ms: number;
+  };
 }
 
-export interface Cluster {
+export interface Topic {
   id: number;
   label: string;
   size: number;
-  lang_counts: ClusterLangCounts;
+  lang_counts: Record<string, number>;
+  source_counts: Record<string, number>;
   top_terms: string[];
+  representative_article_ids: string[];
 }
 
-export interface ClusterArticle {
+export interface TopicsResponse {
+  snapshot_id: string;
+  run_id: string | null;
+  settings_hash: string | null;
+  algorithm: string | null;
+  topic_count: number;
+  outlier_count: number;
+  clusters: Topic[];
+}
+
+export interface TopicArticle {
   article_id: string;
   title: string;
   lang: string;
   source: string;
   category: string;
   url: string | null;
+  published_at: string;
 }
 
-export interface ClusterDetail {
-  cluster: Cluster;
-  articles: ClusterArticle[];
+export interface TopicDetail {
+  snapshot_id: string;
+  run_id: string;
+  settings_hash: string;
+  articles: TopicArticle[];
   total: number;
+  cluster: Topic;
+}
+
+export interface CorpusResponse {
+  snapshot_id: string;
+  article_count: number;
+  chunk_count: number;
+  language_counts: Record<string, number>;
+  source_counts: Record<string, number>;
+  source_adapter_counts: Record<string, number>;
+  category_counts: Record<string, number>;
+  coverage: Record<string, Record<string, Record<string, number>>>;
+  published_from: string;
+  published_to: string;
+  last_successful_crawl_at: string | null;
+  collection_status: string;
+  collection_name: string | null;
+  topic_counts: Record<string, number> | null;
+  topic_status: string;
+  rejected_count: number | null;
+  crawl_status: string;
+  duplicate_count: number | null;
+}
+
+export interface SummaryRequest {
+  query: string;
+  article_ids: string[];
+  snapshot_id: string;
+}
+
+export interface SummaryResponse {
+  status: "available" | "unavailable" | "insufficient_evidence";
+  summary: string | null;
+  citations: Array<{
+    citation_id: string;
+    article_id: string;
+    title: string;
+    url: string | null;
+    source: string;
+    lang: string;
+  }>;
+  snapshot_id: string;
+  reason: string | null;
 }
 
 export interface HealthResponse {
   status: string;
-  version?: string;
-  models_loaded?: boolean;
+  services?: { mongodb: boolean; weaviate: boolean };
 }

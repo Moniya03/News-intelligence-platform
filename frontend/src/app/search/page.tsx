@@ -1,302 +1,50 @@
 "use client";
-
-import React, { useState } from "react";
-import {
-  Search as SearchIcon,
-  SlidersHorizontal,
-  Filter,
-  X,
-  Sparkles,
-  Zap,
-  BookOpen,
-  AlertCircle,
-} from "lucide-react";
+import { useRef, useState } from "react";
+import Link from "next/link";
+import { Search, ArrowRight, FileText } from "lucide-react";
 import { LangFilter } from "@/components/LangFilter";
 import { SearchResultCard } from "@/components/SearchResultCard";
-import { SearchSkeletonList } from "@/components/LoadingSkeleton";
-import { searchArticles } from "@/lib/api";
-import { SearchResult } from "@/types";
-
-type SearchMode = "hybrid" | "dense" | "bm25";
-
-const MODES: { id: SearchMode; label: string; desc: string; icon: React.ElementType }[] = [
-  {
-    id: "hybrid",
-    label: "Hybrid",
-    desc: "Dense semantic + Sparse BM25 fused",
-    icon: Sparkles,
-  },
-  {
-    id: "dense",
-    label: "Dense",
-    desc: "Multilingual vector embeddings",
-    icon: Zap,
-  },
-  {
-    id: "bm25",
-    label: "BM25",
-    desc: "Lexical & exact keyword index",
-    icon: BookOpen,
-  },
-];
-
-const SUGGESTED_QUERIES = [
-  "Elections and voting reforms",
-  "Cricket World Cup finals",
-  "Reserve Bank repo rate",
-  "South Asian monsoon climate",
-  "Semiconductor hardware startups",
-];
-
+import { searchArticles, summarizeSearch } from "@/lib/api";
+import type { Language, SearchRequest, SearchResponse, SummaryResponse } from "@/types";
+const modes = [{id:"bm25",label:"Keyword",help:"Match specific words and names in the articles."},{id:"dense",label:"Semantic",help:"Find related meaning across the corpus languages."},{id:"hybrid",label:"Hybrid",help:"Combine keyword matches with semantic similarity."}] as const;
 export default function SearchPage() {
-  const [query, setQuery] = useState("");
-  const [mode, setMode] = useState<SearchMode>("hybrid");
-  const [selectedLangs, setSelectedLangs] = useState<string[]>([]);
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const performSearch = async (targetQuery?: string) => {
-    const q = (targetQuery ?? query).trim();
-    if (!q) return;
-
-    setIsLoading(true);
-    setError(null);
-    setResults([]);
-    setHasSearched(true);
-
-    try {
-      const data = await searchArticles({
-        query: q,
-        mode,
-        lang_filter: selectedLangs.length > 0 ? selectedLangs : null,
-        top_k: 20,
-      });
-      setResults(data);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Search query failed.";
-      setError(msg);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Trigger search when mode changes if query exists
-  const handleModeChange = (newMode: SearchMode) => {
-    setMode(newMode);
-    if (query.trim() && hasSearched) {
-      // Re-run with new mode
-      setTimeout(() => {
-        performSearch();
-      }, 50);
-    }
-  };
-
-  // Re-run search if lang filter changes when search has happened
-  const handleLangChange = (langs: string[]) => {
-    setSelectedLangs(langs);
-    if (query.trim() && hasSearched) {
-      setTimeout(() => {
-        performSearch();
-      }, 50);
-    }
-  };
-
-  return (
-    <div className="flex flex-col min-h-[calc(100vh-3.5rem)] lg:min-h-screen bg-gray-950 px-4 sm:px-8 py-6 max-w-6xl w-full mx-auto space-y-6">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-100 tracking-tight flex items-center gap-2">
-          <span>Multilingual News Search</span>
-          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-            Cross-Lingual Index
-          </span>
-        </h1>
-        <p className="text-xs sm:text-sm text-gray-400 mt-1">
-          Search the indexed news corpus using lexical or multilingual semantic retrieval
-        </p>
-      </div>
-
-      {/* Main Search Controls Box */}
-      <div className="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-4 sm:p-5 shadow-lg space-y-4">
-        {/* Search Bar */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            performSearch();
-          }}
-          className="relative flex items-center"
-        >
-          <div className="absolute left-4 text-gray-400 pointer-events-none">
-            <SearchIcon className="w-5 h-5" />
-          </div>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search keywords, headlines, or entities across all languages..."
-            className="w-full pl-12 pr-28 py-3.5 bg-gray-950/80 border border-gray-800 rounded-xl text-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/40 transition-all"
-          />
-
-          {query && (
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              className="absolute right-24 text-gray-400 hover:text-gray-200 p-1"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-
-          <button
-            type="submit"
-            disabled={!query.trim() || isLoading}
-            className="absolute right-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white text-xs font-semibold rounded-lg transition-all shadow-md shadow-indigo-600/30"
-          >
-            Search
-          </button>
-        </form>
-
-        {/* Filter and Mode Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-1 border-t border-gray-800/60">
-          {/* Mode Selector */}
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <div className="flex items-center gap-1.5 text-xs text-gray-400 mr-1">
-              <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>Retrieval Mode:</span>
-            </div>
-
-            <div className="inline-flex rounded-xl bg-gray-950 p-1 border border-gray-800">
-              {MODES.map((m) => {
-                const isSelected = mode === m.id;
-                const Icon = m.icon;
-
-                return (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => handleModeChange(m.id)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                      isSelected
-                        ? "bg-indigo-600 text-white shadow-sm"
-                        : "text-gray-400 hover:text-gray-200 hover:bg-gray-900"
-                    }`}
-                    title={m.desc}
-                  >
-                    <Icon className="w-3 h-3" />
-                    <span>{m.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Language filter */}
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 text-xs text-gray-400">
-              <Filter className="w-3.5 h-3.5" />
-              <span>Languages:</span>
-            </div>
-            <LangFilter
-              selected={selectedLangs}
-              onChange={handleLangChange}
-              showAllOption={true}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Suggested Quick Queries (if user hasn't searched yet or wants quick ideas) */}
-      {!hasSearched && (
-        <div className="space-y-2">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Suggested Queries
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {SUGGESTED_QUERIES.map((sq, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  setQuery(sq);
-                  performSearch(sq);
-                }}
-                className="px-3 py-1.5 rounded-lg bg-gray-900/60 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 text-xs text-gray-300 transition-colors"
-              >
-                {sq}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Results Header / Sorting Meta */}
-      {hasSearched && !isLoading && !error && (
-        <div className="flex items-center justify-between text-xs text-gray-400 border-b border-gray-800/60 pb-3">
-          <div>
-            <span>Found </span>
-            <span className="font-semibold text-gray-200">{results.length} articles</span>
-            <span> matching &ldquo;{query}&rdquo;</span>
-          </div>
-
-          <div className="flex items-center gap-2 font-mono text-[11px]">
-            <span>Sorted by:</span>
-            <span className="text-indigo-400 font-semibold uppercase">
-              {mode} Relevance Score
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Error State */}
-      {error && (
-        <div role="alert" className="p-4 rounded-xl bg-rose-950/40 border border-rose-800/60 text-rose-300 text-sm flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 shrink-0" />
-          <div>
-            <div className="font-semibold">Search request failed</div>
-            <p className="text-xs text-rose-300/80">{error}</p>
-          </div>
-        </div>
-      )}
-
-      {/* Loading Skeleton */}
-      {isLoading && <SearchSkeletonList count={4} />}
-
-      {/* Results List */}
-      {!isLoading && hasSearched && !error && results.length > 0 && (
-        <div className="space-y-3.5">
-          {results.map((item, index) => (
-            <SearchResultCard
-              key={item.article_id || index}
-              result={item}
-              index={index}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Empty State */}
-      {!isLoading && hasSearched && results.length === 0 && !error && (
-        <div className="text-center py-16 bg-gray-900/30 border border-gray-800/60 rounded-2xl p-6">
-          <BookOpen className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-          <h3 className="text-base font-semibold text-gray-200">
-            No matching articles found
-          </h3>
-          <p className="text-xs text-gray-400 max-w-md mx-auto mt-1 mb-4">
-            Try adjusting your query or resetting language filters to broaden coverage across
-            the indexed corpus.
-          </p>
-          <button
-            onClick={() => {
-              setSelectedLangs([]);
-              performSearch(query);
-            }}
-            className="px-3.5 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-medium text-gray-200 border border-gray-700 transition-colors"
-          >
-            Clear Language Filters & Re-search
-          </button>
-        </div>
-      )}
-    </div>
-  );
+  const [query,setQuery]=useState("");
+  const [mode,setMode]=useState<NonNullable<SearchRequest["mode"]>>("hybrid");
+  const [languages,setLanguages]=useState<Language[]>([]);
+  const [data,setData]=useState<SearchResponse|null>(null);
+  const [searchedQuery,setSearchedQuery]=useState("");
+  const [loading,setLoading]=useState(false);
+  const [error,setError]=useState("");
+  const [summary,setSummary]=useState<SummaryResponse|null>(null);
+  const [summaryError,setSummaryError]=useState("");
+  const [summarizing,setSummarizing]=useState(false);
+  const generation=useRef(0);
+  async function search() {
+    if (!query.trim()) return;
+    const request=++generation.current;
+    setLoading(true);setError("");setData(null);setSummary(null);setSummaryError("");setSummarizing(false);setSearchedQuery(query.trim());
+    try { const response=await searchArticles({query:query.trim(),mode,lang_filter:languages.length?languages:null,top_k:20});if(generation.current===request)setData(response); }
+    catch(e) {if(generation.current===request)setError(e instanceof Error?e.message:"Search is unavailable. Please retry.");}
+    finally {if(generation.current===request)setLoading(false);}
+  }
+  async function summarize() {
+    if(!data?.results.length)return;
+    const request=generation.current;
+    setSummarizing(true);setSummaryError("");
+    try {const response=await summarizeSearch({query:searchedQuery,article_ids:data.results.slice(0,10).map(r=>r.article_id),snapshot_id:data.metadata.snapshot_id});if(generation.current===request)setSummary(response);}
+    catch(e) {if(generation.current===request)setSummaryError(e instanceof Error?e.message:"Summary is unavailable.");}
+    finally {if(generation.current===request)setSummarizing(false);}
+  }
+  return <><header className="page-heading"><span className="eyebrow">EXPLORE THE CORPUS</span><h1>Search the news</h1><p>Follow a story across English, Hindi, Bengali and Marathi sources.</p></header>
+    <form className="search-panel" onSubmit={e=>{e.preventDefault();void search();}}>
+      <label htmlFor="query" className="sr-only">Search query</label><div className="query-row"><Search size={21} aria-hidden="true"/><input id="query" required maxLength={2000} value={query} onChange={e=>setQuery(e.target.value)} placeholder="A topic, a name, a question…"/><button className="primary" disabled={loading||!query.trim()}>{loading?"Searching…":"Search"}<ArrowRight size={16} aria-hidden="true"/></button></div>
+      <div className="search-options"><fieldset><legend>Retrieval mode</legend><div className="segmented">{modes.map(m=><button className="chip" key={m.id} type="button" aria-pressed={mode===m.id} onClick={()=>setMode(m.id)}>{m.label}</button>)}</div><p className="control-help">{modes.find(m=>m.id===mode)?.help}</p></fieldset><LangFilter selected={languages} onChange={setLanguages}/></div><p className="form-note">Changes apply when you select Search. Results are ranked articles from the frozen snapshot.</p>
+    </form>
+    {loading && <div className="state" role="status"><span className="loading-dot"/>Searching the index…</div>}
+    {error && <div className="error" role="alert"><h2>Search unavailable</h2><p>{error}</p><p>Check index availability and retry your search.</p><button className="secondary" onClick={()=>void search()}>Retry search</button></div>}
+    {data && <><div className="section-heading"><h2>{data.results.length} articles <span className="muted">for “{searchedQuery}”</span></h2><span className="muted small">Ranked by retrieval score</span></div><div className="execution-meta"><span>Requested: {modes.find(m=>m.id===data.metadata.requested_mode)?.label}</span><span>Executed: {modes.find(m=>m.id===data.metadata.executed_mode)?.label}</span><span>Reranker: {data.metadata.reranker_status}</span><span>{Math.round(data.metadata.elapsed_ms)} ms</span><span className="snapshot">Snapshot: {data.metadata.snapshot_id}</span></div>
+      {data.results.length===0?<div className="state" role="status"><h2>No articles found</h2><p>Try a broader query or include more languages.</p></div>:<><div className="results">{data.results.map((r,i)=><SearchResultCard key={r.article_id} result={r} index={i}/>)}</div><section className="summary-panel" aria-labelledby="summary-heading"><div className="section-heading"><div><h2 id="summary-heading"><FileText size={17} aria-hidden="true"/>Evidence summary <span className="badge">Optional</span></h2><p className="muted small">Uses up to the first 10 retrieved articles. Search results remain available.</p></div><button className="secondary" disabled={summarizing} onClick={()=>void summarize()}>{summarizing?"Requesting…":summary||summaryError?"Retry summary":"Request summary"}</button></div>{summarizing&&<p role="status">Requesting an evidence summary…</p>}{summaryError&&<div className="error" role="alert"><p>{summaryError}</p><p>If the snapshot has changed (409), run Search again before requesting a summary.</p></div>}{summary&&<div role="status">{summary.status==="available"&&summary.summary?<><p>{summary.summary}</p><ul className="citations">{summary.citations.map(c=><li key={c.citation_id}>[{c.citation_id}] {c.url&&/^https?:\/\//i.test(c.url)?<a href={c.url} target="_blank" rel="noopener noreferrer">{c.title}</a>:c.title} · {c.source}</li>)}</ul></>:<p className="notice">{summary.status==="insufficient_evidence"?"Insufficient usable evidence for a summary.":"Summary unavailable."} <span className="muted">{summary.reason?.replaceAll("_"," ")}</span></p>}</div>}</section></>}
+    </>}
+    {!loading&&!error&&!data&&<section className="getting-started"><span className="eyebrow">START WITH A QUESTION</span><h2>One query. Several perspectives.</h2><p>Use Keyword for exact names, Semantic for related ideas, or Hybrid to combine both.</p><div className="suggestions">{["Reserve Bank interest rates","India elections","भारतीय अर्थव्यवस्था"].map(q=><button className="secondary" key={q} onClick={()=>{setQuery(q);document.getElementById("query")?.focus();}}>{q}<ArrowRight size={14} aria-hidden="true"/></button>)}</div><Link className="text-link" href="/corpus">See what the corpus covers <ArrowRight size={14} aria-hidden="true"/></Link></section>}
+  </>;
 }

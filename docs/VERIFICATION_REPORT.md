@@ -1,7 +1,7 @@
 # Runtime verification report
 
 Date: 13 November 2026
-Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, the isolated 90-day corpus campaign, Slice 06 search/API behavior, and Slice 07 topic artifacts/API behavior. This does not certify the full overhaul, retrieval quality, publisher permission, or production-wide source coverage.
+Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier bounded spider-to-Mongo pilot, the isolated 90-day corpus campaign, Slice 06 search/API behavior, Slice 07 topic artifacts/API behavior, and the Slice 08 browser workspace. This does not certify retrieval quality, publisher permission, or production-wide source coverage.
 
 ## Results
 
@@ -14,6 +14,7 @@ Scope: local MongoDB/Weaviate readiness, real local model inference, an earlier 
 | Scrapy-to-Mongo pilot | PASS (bounded gate) | Independent review passed the eight latest live runs, Mongo raw/current references, quarantine audit, and lifecycle test. This verifies the bounded ingestion path, not production-wide coverage or corpus quality. See details below. |
 | Isolated corpus campaign | PASS (collection and read-only audit) | Campaign `corpus-20261112T194939Z` contains 516 accepted current records, 586 raw versions and 66 rejected raw versions in `news_intel_corpus_v1`; details and limitations below. |
 | Slice 07 topics and baseline | PASS (focused gate) | Real BERTopic and fixed TF-IDF/KMeans artifacts match the frozen snapshot; focused topic/API checks, metric/provenance self-check, saved comparison, compilation, diff check and read-only API checks passed. Results are weak-label agreement, not verified truth. |
+| Slice 08 frontend | PASS (independent review) | Frontend client tests 14/14, lint and production build passed. Real-browser desktop and 390px checks covered Search, Topics, Corpus, keyboard focus, live API results, and labeled simulated states; no horizontal overflow was found. |
 | Summary generation/provider access | NOT TESTED | The Slice 06 route returned its unavailable state; no model call or account-access request was made. Rotate/revoke any active key that appeared in tool output before use. |
 
 The model checks establish execution and output validity only. They do not measure retrieval relevance, ranking quality, summary quality, or API account entitlement.
@@ -107,7 +108,42 @@ The API reads only verified local topic artifacts: list provenance includes snap
 
 Independent Slice 00 reviews passed the focused backend/retrieval and evaluation-safety checks, plus frontend checks (15 Node tests, lint, production build and production dependency audit with zero findings). The development dependency audit reported seven moderate findings. The reviewers also checked readiness behavior with dependency stubs: missing embedding/index dependencies report degraded readiness; configured usable dependencies report ready. This is bounded implementation verification, not a populated-index or end-to-end research acceptance result. These gates were run by the independent implementation reviewers; this report update does not claim they were rerun here.
 
-The updated API returns valid empty search/topic results as empty responses, reports unavailable dependencies as errors, and does not fabricate article, topic or chat fallback content. Legacy generated evaluation entrypoints are disabled, and the legacy loader refuses the configured application database. Existing ignored datasets and result artifacts were preserved; they are not certified as the new corpus or valid experimental results. The full corpus, indexed search quality, topic evaluation and UI acceptance remain incomplete. See [OVERHAUL_PLAN.md](OVERHAUL_PLAN.md) for slice status and remaining acceptance criteria.
+The updated API returns valid empty search/topic results as empty responses, reports unavailable dependencies as errors, and does not fabricate article, topic or chat fallback content. Legacy generated evaluation entrypoints are disabled, and the legacy loader refuses the configured application database. Existing ignored datasets and result artifacts were preserved; they are not certified as the new corpus or valid experimental results. Search relevance remains unevaluated on human judgments. See [OVERHAUL_PLAN.md](OVERHAUL_PLAN.md) for slice status and remaining acceptance criteria.
+
+## Slice 08 Search, Topics, Corpus browser gate (13 November 2026)
+
+The independent UI review passed after the final CSS focus fix. `npm run lint`,
+`npm run build`, and `node --test tests/api.test.mjs` passed (14/14 client
+tests); the final serial production build after the focus fix passed. This
+documentation phase did not rerun those gates.
+
+The browser used the local API with healthy MongoDB and Weaviate. BM25, dense,
+and hybrid searches each returned 20 real results from snapshot
+`corpus-59b2b589fe3bbdbffdc3`, with reranking applied. Publisher links and
+valid-or-unavailable dates rendered. The optional summary returned
+`provider_access_unverified`; no provider call was made. Topics rendered 11
+non-noise topics and 17 unassigned articles, real article links, and working
+pagination. Corpus rendered 516 articles and 2,135 chunks across English
+(123), Hindi (116), Bengali (156), and Marathi (121), with eight adapters
+across five publisher families. Crawl/rejection counts remained unavailable
+where the snapshot had no immutable linkage; categories are weak section labels
+and environment coverage is zero.
+
+Desktop checks at 1440px and mobile checks at 390px passed without horizontal
+overflow on all three routes. The final browser artifacts recorded 13 initial
+Search/API assertions, 12 refreshed desktop assertions, 8 mobile assertions,
+2 simulated-state assertions, and 17 focus assertions. Keyboard focus retained
+a visible 3px ring and idle controls had no focus outline. Browser interception
+simulated successful empty/error Search responses and a stale topic snapshot;
+those assertions test state rendering, not a live failure or live corpus
+response. The four clean idle screenshots are in [`images/slice08`](images/slice08/)
+and documented in the [frontend guide](frontend_guide.md).
+
+The smoke query, browser layout, and successful local service checks establish
+that the reviewed interface can display the active snapshot. They do not
+establish search relevance, summary quality, topic coherence, source
+permissions, or release readiness. Airflow remains deferred; source-policy
+uncertainty and local-only raw text remain as recorded above.
 
 ## Slice 01 runtime gate (13 November 2026)
 

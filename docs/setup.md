@@ -364,10 +364,13 @@ make api
 # Runs .venv/bin/python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-The browser UI and retrieval quality were not evaluated. Slice 06 smoke checks
-covered all three search modes and the summary route's explicitly unavailable
-provider response; no summary generation or account access was tested. See the
-[API reference](api_reference.md) for response fields and failure states.
+That Slice 06 API smoke did not evaluate the browser UI or retrieval quality.
+Separate Slice 08 browser checks passed against the active snapshot, but
+retrieval relevance remains unevaluated on a judged dataset. The Slice 06
+smoke covered all three search modes and the summary route's explicitly
+unavailable provider response; no summary generation or account access was
+tested. See the [API reference](api_reference.md) for response fields and
+failure states.
 
 ### API readiness and health
 
@@ -406,7 +409,7 @@ In a new terminal window, navigate to the `frontend/` directory, install package
 
 ```bash
 cd frontend
-npm install
+npm ci
 npm run dev
 ```
 
@@ -420,13 +423,13 @@ The installed Next.js 16.4.6 development server will start on port `3000`:
  ✓ Ready in 1200ms
 ```
 
-Open **[http://localhost:3000](http://localhost:3000)** to start the frontend.
-The existing Chat, Search, and Clusters routes are legacy interface paths; they
-have not passed the revised project acceptance checks and should not be used
-as a faculty demo claim. The presentation target is Search, Topics, and Corpus
-as defined in the [overhaul plan](OVERHAUL_PLAN.md). In particular, the old
-chat and credibility screens and their deterministic fallback responses are
-not validated product features.
+Open **[http://localhost:3000](http://localhost:3000)**. The workspace has three
+routes: Search, Topics, and Corpus. Search queries the active frozen snapshot;
+Topics reads the saved topic run; Corpus reports snapshot coverage. The bounded
+browser review passed at desktop and 390px mobile widths. See the
+[frontend guide](frontend_guide.md) for route behavior, screenshots, empty and
+unavailable states, and research limits. Chat and credibility are not part of
+this workspace.
 
 ---
 
@@ -460,9 +463,10 @@ For clustering, use the snapshot-scoped `eval.snapshot_topics` commands in
 section 6.2 and cite its saved artifacts. Those results compare clustering to
 publisher-section weak labels; they do not establish factual topic truth.
 BM25, dense and hybrid have passed API behavior smoke checks against the active
-frozen snapshot, but retrieval relevance has not been evaluated on a judged
-dataset. The plan specifies minimal, risk-targeted checks for each
-implementation slice; broad duplicate test runs are not required.
+frozen snapshot, and the Search/Topics/Corpus browser gate passed against real
+services. Retrieval relevance has not been evaluated on a judged dataset. The
+plan specifies minimal, risk-targeted checks for each implementation slice;
+broad duplicate test runs are not required.
 
 ---
 
