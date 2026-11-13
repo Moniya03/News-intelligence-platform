@@ -1,0 +1,214 @@
+{
+  "currency": "USD",
+  "provider": "OpenAI Responses API",
+  "model": "gpt-6-luna",
+  "pricing_preflight_sources": [
+    "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "https://developers.openai.com/api/docs/guides/reasoning"
+  ],
+  "pricing_basis": {
+    "input_per_million_usd": 0.1,
+    "cached_input_per_million_usd": 0.01,
+    "cache_write_per_million_usd": 0.125,
+    "output_per_million_usd": 0.5,
+    "max_prompt_utf8_bytes": 12000,
+    "max_output_tokens": 1024,
+    "worst_case_tokens_assumption": "12000 uncached input tokens + 1024 output tokens",
+    "reserve_usd_per_attempt_including_framing": 0.003,
+    "attempt_limit": 8,
+    "total_reserved_limit_usd": 0.024,
+    "project_cap_usd": 0.5
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "question_id": "en_air_health_multilingual",
+      "language": "en",
+      "reserved_usd": 0.003,
+      "state": "response_captured",
+      "usage": null,
+      "actual_cost_usd": null,
+      "http_status": 503,
+      "client_elapsed_ms": 291.7,
+      "output_file": "artifacts/ask_demo/calls/01-en_air_health_multilingual.json",
+      "provider_usage_source": "API structured log; no ask_complete usage entry observed",
+      "api_stage_observed": "retrieval_failed_before_generation",
+      "provider_usage": null,
+      "reservation_refunded": false,
+      "diagnosis": "Retrieval failed before generation. BGE-M3 initially moved to CUDA and raised out of memory; no ask_complete usage was observed. Provider usage is unconfirmed, so the full $0.003 reservation remains counted."
+    },
+    {
+      "attempt": 2,
+      "question_id": "en_air_health_multilingual",
+      "language": "en",
+      "reserved_usd": 0.003,
+      "state": "response_captured",
+      "usage": {
+        "input_tokens": 1816,
+        "output_tokens": 210,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 105
+      },
+      "actual_cost_usd": 0.0002866,
+      "http_status": 200,
+      "client_elapsed_ms": 7528.5,
+      "output_file": "artifacts/ask_demo/calls/02-en_air_health_multilingual.json",
+      "provider_usage_source": "api.ask ask_complete structured log",
+      "provider_usage": {
+        "input_tokens": 1816,
+        "output_tokens": 210,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 105
+      }
+    },
+    {
+      "attempt": 3,
+      "question_id": "hi_air_health",
+      "language": "hi",
+      "reserved_usd": 0.003,
+      "state": "response_captured",
+      "usage": {
+        "input_tokens": 1485,
+        "output_tokens": 279,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 88
+      },
+      "actual_cost_usd": 0.000288,
+      "http_status": 200,
+      "client_elapsed_ms": 5039.4,
+      "output_file": "artifacts/ask_demo/calls/03-hi_air_health.json",
+      "provider_usage_source": "api.ask ask_complete structured log",
+      "provider_usage": {
+        "input_tokens": 1485,
+        "output_tokens": 279,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 88
+      }
+    },
+    {
+      "attempt": 4,
+      "question_id": "bn_millet_village",
+      "language": "bn",
+      "reserved_usd": 0.003,
+      "state": "response_captured",
+      "usage": {
+        "input_tokens": 1612,
+        "output_tokens": 222,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 68
+      },
+      "actual_cost_usd": 0.0002722,
+      "http_status": 200,
+      "client_elapsed_ms": 4675.8,
+      "output_file": "artifacts/ask_demo/calls/04-bn_millet_village.json",
+      "provider_usage_source": "api.ask ask_complete structured log",
+      "provider_usage": {
+        "input_tokens": 1612,
+        "output_tokens": 222,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 68
+      }
+    },
+    {
+      "attempt": 5,
+      "question_id": "mr_gus_logie_award",
+      "language": "mr",
+      "reserved_usd": 0.003,
+      "state": "response_captured",
+      "usage": {
+        "input_tokens": 1650,
+        "output_tokens": 187,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 43
+      },
+      "actual_cost_usd": 0.0002585,
+      "http_status": 200,
+      "client_elapsed_ms": 6417,
+      "output_file": "artifacts/ask_demo/calls/05-mr_gus_logie_award.json",
+      "provider_usage_source": "api.ask ask_complete structured log",
+      "provider_usage": {
+        "input_tokens": 1650,
+        "output_tokens": 187,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 43
+      }
+    },
+    {
+      "attempt": 6,
+      "question_id": "en_millet_cross_language",
+      "language": "en",
+      "reserved_usd": 0.003,
+      "state": "response_captured",
+      "usage": {
+        "input_tokens": 1612,
+        "output_tokens": 185,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 64
+      },
+      "actual_cost_usd": 0.0002537,
+      "http_status": 200,
+      "client_elapsed_ms": 5696.9,
+      "output_file": "artifacts/ask_demo/calls/06-en_millet_cross_language.json",
+      "provider_usage_source": "api.ask ask_complete structured log",
+      "provider_usage": {
+        "input_tokens": 1612,
+        "output_tokens": 185,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 64
+      }
+    },
+    {
+      "attempt": 7,
+      "question_id": "en_cricket_future_injection",
+      "language": "en",
+      "state": "response_captured",
+      "usage": {
+        "input_tokens": 1686,
+        "output_tokens": 96,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 53
+      },
+      "actual_cost_usd": 0.0002166,
+      "http_status": 200,
+      "client_elapsed_ms": 3818,
+      "output_file": "artifacts/ask_demo/calls/07-en_cricket_future_injection.json",
+      "provider_usage_source": "api.ask ask_complete structured log",
+      "reserved_usd": 0.003,
+      "provider_usage": {
+        "input_tokens": 1686,
+        "output_tokens": 96,
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 53
+      },
+      "reservation_deviation": "The authorized call was submitted before the reservation was recorded because the browser harness looked up reserve_usd_per_attempt instead of reserve_usd_per_attempt_including_framing. The missing $0.003 reservation was added immediately after the response."
+    },
+    {
+      "attempt": 8,
+      "question_id": "en_millet_revenue_gap",
+      "language": "en",
+      "reserved_usd": 0.003,
+      "state": "response_captured",
+      "usage": null,
+      "actual_cost_usd": null,
+      "http_status": 200,
+      "client_elapsed_ms": 6436,
+      "output_file": "artifacts/ask_demo/calls/08-en_millet_revenue_gap.json",
+      "provider_usage_source": "No usage fields in normal UI response; no accessible ask_complete structured log captured for this attempt",
+      "provider_usage": null,
+      "reservation_refunded": false,
+      "diagnosis": "The application returned a successful response. Provider token usage was not available in the response or accessible structured-log artifacts, so actual cost remains unknown and the full $0.003 reservation is retained."
+    }
+  ],
+  "reserved_total_usd": 0.024,
+  "reported_actual_total_usd": 0.0015756,
+  "notes": [
+    "Seven application Ask attempts have been made: attempt 1 failed during retrieval before generation; attempts 2–7 completed. Attempts 2–5 cover English, Hindi, Bengali and Marathi; attempt 6 tests English synthesis from Bengali millet evidence; attempt 7 tests an unsupported future prediction with an embedded instruction through the normal browser UI. Attempt 1 has no confirmed provider usage; its $0.003 reservation remains counted.",
+    "One serialized worker owns paid app tests. No retries; any retry is a new reserved attempt.",
+    "Unknown or ambiguous usage retains its full reservation.",
+    "Non-paid CPU readiness check: BGE-M3 startup logged cpu/fp16=False and /api/health returned 200 (MongoDB and Weaviate true), but hybrid /api/search returned 503 because FlagEmbedding inference attempted CUDA allocation; no paid generation request was made.",
+    "Non-paid CPU retry after the inference-device fix: BGE-M3 loaded on cpu/fp16=False; health returned 200 (MongoDB and Weaviate true); hybrid /api/search returned 200 for the expected snapshot with 10 results in 4444.1ms, including the planned English and Hindi ABP air-health articles. No paid generation request was made. The Ask workflow calls retrieve_hybrid directly without the Search endpoint reranker.",
+    "Attempt 7 process deviation: its authorized $0.003 reservation was not recorded before browser submission because the harness referenced a nonexistent pricing key. The reservation was entered immediately after the response; no further calls are authorized or planned.",
+    "Coordinator-authorized final attempt 8 tests everyday-food use and 2025 revenue gap through the normal UI. Its $0.003 reservation was recorded before the browser submission; hard stop at attempt limit 8.",
+    "Attempt 8 completed normally through the browser UI (HTTP 200, 6436ms click-to-response; 7016ms including page load). It cited Bengali passages for millet momos, kachoris and noodles, and stated that the supplied passages do not give the exact 2025 revenue. The UI response contained no token usage, and no accessible structured usage-log artifact was captured for this request; its full $0.003 reservation remains counted as unknown actual cost. Hard stop reached at 8 attempts."
+  ]
+}

@@ -11,6 +11,9 @@ flowchart LR
   W --> A[BM25 / dense / hybrid search]
   F --> T[BERTopic artifacts]
   A --> U[Search interface]
+  A --> Q[Ask evidence retrieval]
+  Q --> G[Bounded OpenAI generation]
+  G --> U
   T --> U
   F --> U[Topics and Corpus views]
 ```
@@ -44,10 +47,12 @@ reproduction. See [the verification report](VERIFICATION_REPORT.md) and
 - **Topics:** BERTopic produced 11 non-noise topics and 17 outliers from the
   same snapshot. Comparison to TF-IDF/KMeans uses coarse publisher-section
   labels; those scores do not establish factual truth or event coherence.
-- **API/UI:** FastAPI exposes Search, Topics and Corpus data, plus chat and an
-  optional summary endpoint. Summary provider access is unverified. The local
-  rehearsal displayed the unavailable summary state. Playwright's 503 state
-  was explicitly simulated by request interception; it was not a live outage.
+- **API/UI:** FastAPI exposes Search, Ask, Topics and Corpus. Ask uses one
+  original-question hybrid retrieval and validates snapshot/chunk/article
+  provenance before generation and response delivery. Its context, output,
+  and timeout are bounded in the [API reference](api_reference.md). The local
+  frontend gates pass; actual application language review remains in progress.
+  A failed provenance check is not a semantic claim-support guarantee.
 
 ## Deferred and incomplete
 
@@ -55,6 +60,6 @@ Slice 09's engineering/provenance checks passed, but relevance-quality
 acceptance remains unmet: at least 86 pairs must be double-judged, with at
 least 513 initial helper decisions overall, followed by agreement,
 adjudication and score review. No synthetic or generated labels are valid
-substitutes. Airflow, continuous ingestion, summary-provider verification,
+substitutes. Airflow, continuous ingestion,
 near-duplicate/syndication checks, and a fresh-clone full-pipeline rehearsal
 are deferred or unverified. Overall project completion is not claimed.

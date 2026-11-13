@@ -33,12 +33,12 @@ test("search preserves backend response metadata and sends the selected request"
   assert.deepEqual(JSON.parse(request.options.body), { query: "news", mode: "bm25", lang_filter: ["mr"] });
 });
 
-test("topics, topic detail, corpus, and summary preserve their backend envelopes", async () => {
+test("topics, topic detail, corpus, and Ask preserve their backend envelopes", async () => {
   const responses = [
     { snapshot_id: "snap", clusters: [], topic_count: 0 },
     { snapshot_id: "snap", run_id: "run", settings_hash: "hash", articles: [], total: 0, cluster: { id: 1 } },
     { snapshot_id: "snap", article_count: 0, language_counts: { mr: 0 } },
-    { status: "unavailable", summary: null, citations: [], snapshot_id: "snap", reason: "provider_access_unverified" },
+    { status: "generation_unavailable", answer_segments: [], gap: null, citations: [], snapshot_id: "snap", reason: "provider_unavailable" },
   ];
   const urls = [];
   const api = client(async (url) => {
@@ -48,11 +48,11 @@ test("topics, topic detail, corpus, and summary preserve their backend envelopes
   assert.equal((await api.getClusters()).snapshot_id, "snap");
   assert.equal((await api.getClusterDetail(7, 2, 10)).total, 0);
   assert.equal((await api.corpusSummary()).article_count, 0);
-  assert.equal((await api.summarizeSearch({ query: "news", article_ids: ["id"], snapshot_id: "snap" })).status, "unavailable");
+  assert.equal((await api.askQuestion({ question: "news" })).status, "generation_unavailable");
   assert.match(urls[0], /\/api\/clusters$/);
   assert.match(urls[1], /\/api\/clusters\/7\?page=2&limit=10$/);
   assert.match(urls[2], /\/api\/corpus$/);
-  assert.match(urls[3], /\/api\/search\/summary$/);
+  assert.match(urls[3], /\/api\/ask$/);
 });
 
 for (const [name, call] of [
@@ -60,7 +60,7 @@ for (const [name, call] of [
   ["topics", (api) => api.getClusters()],
   ["topic detail", (api) => api.getClusterDetail(999)],
   ["corpus", (api) => api.corpusSummary()],
-  ["summary", (api) => api.summarizeSearch({ query: "test", article_ids: ["id"], snapshot_id: "snap" })],
+  ["Ask", (api) => api.askQuestion({ question: "test" })],
 ]) {
   test(`${name} propagates network errors`, async () => {
     await assert.rejects(call(client(async () => { throw new Error("network unavailable"); })), /network unavailable/);
@@ -81,9 +81,18 @@ test("successful empty responses stay empty instead of becoming errors", async (
 });
 
 
-test("summary rejects a mismatched snapshot without replacing search results", async () => {
-  const api = client(async () => new Response(JSON.stringify({
-    status: "available", summary: "Stale summary", citations: [], snapshot_id: "other", reason: null,
-  }), { status: 200 }));
-  await assert.rejects(api.summarizeSearch({ query: "news", article_ids: ["id"], snapshot_id: "snap" }), /snapshot changed/);
+test("Ask sends one standalone question and preserves claim citation links and evidence", async () => {
+  let request;
+  const response = {
+    status: "answered", answer_segments: [{ text: "Supported claim", citation_ids: ["C1"] }], gap: "An unanswered part",
+    citations: [{ citation_id: "C1", chunk_id: "chunk", article_id: "article", passage: "<script>untrusted text</script>", title: "A title", url: "https://example.com/article", source: "Publisher", language: "hi", published_at: null }],
+    snapshot_id: "snap",
+  };
+  const api = client(async (url, options) => {
+    request = { url, options };
+    return new Response(JSON.stringify(response), { status: 200 });
+  });
+  assert.deepEqual(await api.askQuestion({ question: "क्या हुआ?" }), response);
+  assert.deepEqual(JSON.parse(request.options.body), { question: "क्या हुआ?" });
+  assert.match(request.url, /\/api\/ask$/);
 });

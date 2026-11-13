@@ -3,8 +3,8 @@ import {
   HealthResponse,
   SearchRequest,
   SearchResponse,
-  SummaryRequest,
-  SummaryResponse,
+  AskRequest,
+  AskResponse,
   TopicDetail,
   TopicsResponse,
 } from "@/types";
@@ -39,18 +39,14 @@ export async function searchArticles(req: SearchRequest): Promise<SearchResponse
   return await res.json();
 }
 
-export async function summarizeSearch(req: SummaryRequest): Promise<SummaryResponse> {
-  const res = await fetchWithTimeout(`${API_URL}/api/search/summary`, {
+export async function askQuestion(req: AskRequest): Promise<AskResponse> {
+  const res = await fetchWithTimeout(`${API_URL}/api/ask`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(req),
-  });
+  }, 120000);
   await requireSuccess(res);
-  const response: SummaryResponse = await res.json();
-  if (response.snapshot_id !== req.snapshot_id) {
-    throw new Error("Summary snapshot changed. Run Search again before requesting a summary.");
-  }
-  return response;
+  return await res.json();
 }
 
 export async function getClusters(): Promise<TopicsResponse> {

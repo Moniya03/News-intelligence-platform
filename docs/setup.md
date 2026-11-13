@@ -55,7 +55,15 @@ ls -la
 
 ## 3. Environment Configuration
 
-The verified local runtime and spider path need MongoDB and Weaviate connection settings. A Gemini key is not required for the verified infrastructure, model, or crawler checks; any Gemini configuration is optional legacy behavior and is outside the current project scope.
+The local runtime and spider path need MongoDB and Weaviate connection settings. Ask uses the existing direct OpenAI client and `gpt-6-luna`; keep its credential in the application runtime environment. Do not paste credentials into commands, documentation, or logs.
+
+On this 4 GB GPU, the first Ask request failed while embedding the query because CUDA ran out of memory. The same BGE-M3 model and frozen index passed a non-paid hybrid Search check with CPU embeddings. To select CPU before the embedding singleton initializes, start the API in that shell with:
+
+```bash
+NEWS_EMBED_DEVICE=cpu .venv/bin/uvicorn api.main:app --host 127.0.0.1 --port 8000
+```
+
+This setting applies to the API process; restarting is required after changing it. The reviewed CPU hybrid Search query embedding took 4.444 seconds. Five reviewed Ask answers took 4,675.8–7,528.5 ms end to end; see the per-request record in [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md). CPU mode does not change the model or establish answer quality.
 
 ### 3.1 Backend Environment (`.env`)
 
@@ -80,10 +88,9 @@ WEAVIATE_PORT=8080
 WEAVIATE_GRPC_PORT=50051
 ```
 
-The Gemini summary and credibility paths are legacy project behavior and are
-outside the current project scope. No summary provider has been verified. A
-deterministic fallback response is not evidence that a summary, chat, or
-credibility result is real.
+The former Search-summary and chat generation paths have been removed. Ask
+does not use a deterministic fallback or a second provider. Its request,
+response, and resource bounds are documented in [api_reference.md](api_reference.md).
 
 ### 3.2 Frontend Environment (`frontend/.env.local`)
 
@@ -397,9 +404,9 @@ make api
 That Slice 06 API smoke did not evaluate the browser UI or retrieval quality.
 Separate Slice 08 browser checks passed against the active snapshot, but
 retrieval relevance remains unevaluated on a judged dataset. The Slice 06
-smoke covered all three search modes and the summary route's explicitly
-unavailable provider response; no summary generation or account access was
-tested. See the [API reference](api_reference.md) for response fields and
+smoke covered all three search modes and the then-existing summary route's
+explicitly unavailable provider response. This is historical evidence for the
+removed endpoint, not an Ask generation test. See the [API reference](api_reference.md) for response fields and
 failure states.
 
 ### API readiness and health
@@ -455,8 +462,8 @@ Demo Search → cross-language results → original publisher URL → Topics →
 Corpus → the measured latency table in
 [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md). The rehearsal query was
 `test-en-05`: “Find Hindi coverage explaining why October inflation crossed
-the central bank’s tolerance ceiling.” Search's optional summary should show
-provider access unverified. The rehearsal's publisher URL returned HTTP 200,
+the central bank’s tolerance ceiling.” The former summary-unavailable state is
+historical; it does not describe Ask. The rehearsal's publisher URL returned HTTP 200,
 but external availability can change. A Playwright 503 screen was simulated
 with request interception; no service was stopped. The full flow and scratch
 recovery details are in the runtime rehearsal record. This is not a fresh

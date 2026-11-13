@@ -16,8 +16,8 @@ Create a faculty-reviewable NLP research demo for this question: **Can multiling
 
 ## Current status
 
-A bounded pilot verified eight source-language spiders and Mongo persistence, plus local model execution. It does not yet meet the roadmap's corpus or evaluation acceptance criteria. The API, frontend and remaining research slices are still being integrated. See [the roadmap](OVERHAUL_PLAN.md) and [verification report](VERIFICATION_REPORT.md).
+A bounded pilot verified eight source-language spiders and Mongo persistence, plus local model execution. The frozen corpus, Search/Topics/Corpus workspace, and retrieval-evaluation engineering are in place; held-out retrieval relevance still lacks human judgments. Five Ask responses passed bounded passage/citation review across English, Hindi, Bengali and Marathi, including one English answer grounded in Bengali-only evidence. Final user acceptance remains pending. See [the roadmap](OVERHAUL_PLAN.md) and [verification report](VERIFICATION_REPORT.md).
 
 ## Deferred or excluded
 
-Misinformation detection, credibility scoring, consensus scores, fake verification badges, general chat, Airflow scheduling, model training and an in-app experiments dashboard are excluded from the current scope. Chat is a limited evidence-grounded API capability, not a research result or core project claim.
+Misinformation detection, credibility scoring, consensus scores, fake verification badges, general chat, Airflow scheduling, model training and an in-app experiments dashboard are excluded from the current scope. Ask is a limited cited-Q&A demo, not a fact checker or a measured answer-quality result.

@@ -61,25 +61,51 @@ Returns verified facts from the active immutable snapshot and explicitly labels 
 
 `collection_status: "configured"` reports the configured index collection; it is not a live index-health check. When no verified topic run exists for the active snapshot, `topic_counts` is `null` and `topic_status` is `"not_generated"`; invalid/unavailable topic artifacts set `topic_status` to `"unavailable"`. `rejected_count` and `last_successful_crawl_at` are `null`, and `crawl_status` is `"unavailable"`: campaign rejection/crawl-run records cannot be linked rigorously to this frozen snapshot. Snapshot load, identity, or checksum failure returns `503`.
 
-## `POST /api/search/summary`
+## `POST /api/ask`
 
-Accepts a nonblank `query`, 1–10 distinct SHA-256 `article_ids`, and the active `snapshot_id`:
+Accepts one independent question:
+
+```json
+{ "question": "What health risks do reports about Delhi-NCR's toxic air describe?" }
+```
+
+The question is trimmed, must not be blank, and is limited to 2,000 Unicode code points. Invalid questions return `422`; unavailable retrieval returns `503`. Ask embeds the original question and calls the existing hybrid retrieval once across all corpus languages (`alpha=0.7`, up to 30 candidates, no reranking). The workflow verifies all retrieved candidates against the active snapshot and its authoritative chunk/article data before generation, and checks the active snapshot again before returning. At most 8 complete passages and 12,000 UTF-8 bytes of serialized prompt are sent to `gpt-6-luna`; generation has a 1,024-token output cap, 45-second timeout and disabled SDK retries. The prompt instructs the model to use only retrieved passages. There is no translation, query fanout, chat history, tools, or outside source access. Prompt instructions do not guarantee semantic claim support.
+
+Responses contain `status`, `answer_segments`, `gap`, `citations`, and `snapshot_id`; `reason` is included for unavailable generation. Each answer segment has text and one or more `citation_ids`. Citations are built by the server from trusted snapshot data and contain `citation_id`, `chunk_id`, `article_id`, the exact `passage`, `url`, `title`, `source`, `language`, and `published_at`. The client renders text as text and links only HTTP(S) article URLs.
+
+Possible statuses:
+
+- `answered`: checked answer segments, with citation IDs that resolve to returned citations. `gap` can identify unanswered parts.
+- `insufficient_evidence`: the corpus returned no evidence, or generation abstained; no unsupported factual answer is returned.
+- `generation_unavailable`: provider failure, an invalid/incomplete model response, or a prompt context limit. The response includes validated evidence when available, but no partial answer. `reason` identifies the failure.
+- `evidence_integrity_error`: snapshot/chunk/article provenance failed. No answer or citations are returned.
+
+For example, generation failure retains validated source evidence:
 
 ```json
 {
-  "query": "What changed in the energy policy?",
-  "article_ids": ["<sha256>"],
-  "snapshot_id": "corpus-59b2b589fe3bbdbffdc3"
+  "status": "generation_unavailable",
+  "answer_segments": [],
+  "gap": null,
+  "citations": [
+    {
+      "citation_id": "C1",
+      "chunk_id": "<snapshot-chunk-id>",
+      "article_id": "<sha256>",
+      "passage": "<exact indexed passage>",
+      "url": "https://example.org/article",
+      "title": "Example headline",
+      "source": "example-source",
+      "language": "en",
+      "published_at": "2026-11-01T12:00:00Z"
+    }
+  ],
+  "snapshot_id": "corpus-59b2b589fe3bbdbffdc3",
+  "reason": "provider_unavailable"
 }
 ```
 
-With usable article text (at least 200 characters per article), the current response is `status: "unavailable"`, `summary: null`, `reason: "provider_access_unverified"`, and citations for the supplied usable articles. If no supplied article has enough body text, it returns `status: "insufficient_evidence"`, no citations, and `reason: "insufficient_evidence"`. This threshold checks text availability only; it does not verify relevance, facts, or citation support for a generated summary. Optional generation remains disabled: provider credentials/account access were not verified, and this endpoint does not call a summary model.
-
-Malformed input returns `422`, an active-snapshot mismatch returns `409`, unknown article IDs return `404`, and invalid/unavailable snapshot data returns `503`.
-
-## `POST /api/chat`
-
-Accepts `query` and optional `lang_filter` (same language codes). The response contains `answer` and `citations`. No retrieved candidates return `200` with `"Not found in the indexed articles."` and an empty citation list. Unavailable retrieval or answer generation returns `503`; citation validation failure returns `502`. Chat is not an article-veracity or fact-checking service.
+Citation and provenance validation establishes identity and source mapping, not semantic support for each generated claim. The application provides no runtime semantic guarantee or measured retrieval/answer quality. For source and evidence limits, see the [Ask design](design.md) and [verification report](VERIFICATION_REPORT.md).
 
 ## `GET /api/clusters` and `GET /api/clusters/{cluster_id}`
 
@@ -91,4 +117,4 @@ The detail response contains `snapshot_id`, `run_id`, `settings_hash`, the reque
 
 ## Scope and status
 
-These contracts describe current API behavior, not a retrieval-quality result. A configured local API/UI rehearsal passed, including Search, Topics, Corpus and summary-unavailable behavior; the simulated Playwright 503 was not a live outage test. Search relevance and summary quality remain unevaluated. Topic comparison is measured only against weak publisher-section labels; agreement is not evidence of event coherence or factual truth. See [verification evidence](VERIFICATION_REPORT.md) and [the phased plan](OVERHAUL_PLAN.md).
+These contracts describe current API behavior, not a retrieval-quality result. Search relevance remains unevaluated; Ask's bounded app review is recorded separately and does not establish answer quality. Topic comparison is measured only against weak publisher-section labels; agreement is not evidence of event coherence or factual truth. See [verification evidence](VERIFICATION_REPORT.md) and [the phased plan](OVERHAUL_PLAN.md).

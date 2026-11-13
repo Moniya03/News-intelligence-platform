@@ -14,11 +14,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 
-from api.routers import chat, clusters, corpus, health, search, summary
+from api.routers import ask, clusters, corpus, health, search
 from core.config import get_config
 from core.embed import get_embed_model
 from core.index import get_weaviate_client
-from core.rag import get_gemini_client
+from core.rag import get_async_openai_client
 from core.rerank import get_rerank_model
 
 # Load environment variables
@@ -72,14 +72,14 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         logger.warning("Could not connect to Weaviate: %s", e)
         app.state.weaviate_client = None
 
-    # 4. Initialize Gemini client
+    # 4. Initialize the configured answer provider.
     try:
-        app.state.gemini_client = get_gemini_client()
-        if app.state.gemini_client is not None:
-            logger.info("Gemini Flash client initialized.")
+        app.state.ask_openai_client = get_async_openai_client()
+        if app.state.ask_openai_client is not None:
+            logger.info("OpenAI client initialized.")
     except Exception as e:
-        logger.warning("Could not initialize Gemini client: %s", e)
-        app.state.gemini_client = None
+        logger.warning("Could not initialize OpenAI client: %s", e)
+        app.state.ask_openai_client = None
 
     logger.info("Backend initialization complete.")
     yield
@@ -89,6 +89,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     if getattr(app.state, "mongo_client", None) is not None:
         app.state.mongo_client.close()
         logger.info("Closed MongoDB client connection.")
+    if getattr(app.state, "ask_openai_client", None) is not None:
+        await app.state.ask_openai_client.close()
     if getattr(app.state, "weaviate_client", None) is not None:
         try:
             if hasattr(app.state.weaviate_client, "close"):
@@ -115,9 +117,8 @@ app.add_middleware(
 )
 
 # Register routers under /api
-app.include_router(chat.router, prefix="/api")
+app.include_router(ask.router, prefix="/api")
 app.include_router(search.router, prefix="/api")
-app.include_router(summary.router, prefix="/api")
 app.include_router(corpus.router, prefix="/api")
 app.include_router(clusters.router, prefix="/api")
 app.include_router(health.router, prefix="/api")

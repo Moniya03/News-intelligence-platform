@@ -1,14 +1,8 @@
 from __future__ import annotations
 
-import asyncio
 import unittest
 from unittest.mock import patch
 
-from fastapi import HTTPException
-from pydantic import ValidationError
-
-from api.routers import summary
-from api.routers.summary import SummaryRequest
 from api.snapshot_evidence import corpus_summary, load_active_snapshot
 
 
@@ -35,49 +29,3 @@ class ApiCorpusSummaryTests(unittest.TestCase):
             payload = corpus_summary(manifest, articles)
         self.assertEqual(payload["topic_status"], "generated")
         self.assertEqual(payload["topic_counts"], {"-1": 2, "0": 3})
-
-
-    def test_summary_request_requires_nonblank_query_and_distinct_article_ids(self):
-        valid_id = "a" * 64
-        with self.assertRaises(ValidationError):
-            SummaryRequest(query="  ", article_ids=[valid_id], snapshot_id="snapshot")
-        with self.assertRaises(ValidationError):
-            SummaryRequest(query="news", article_ids=[valid_id, valid_id], snapshot_id="snapshot")
-
-
-    def test_summary_mismatch_is_conflict_and_provider_is_honestly_unavailable(self):
-        article = {
-            "article_id": "a" * 64,
-            "title": "Verified title",
-            "body": "server-side evidence only",
-            "source_family": "publisher",
-            "lang": "en",
-            "canonical_url": "https://example.test/story",
-        }
-        load_snapshot = summary.load_active_snapshot
-        summary.load_active_snapshot = lambda: ({"snapshot_id": "active"}, [article])
-        try:
-            missing = SummaryRequest(query="what happened?", article_ids=["b" * 64], snapshot_id="active")
-            with self.assertRaises(HTTPException) as error:
-                asyncio.run(summary.summarize(missing))
-            self.assertEqual(error.exception.status_code, 404)
-
-            request = SummaryRequest(query="what happened?", article_ids=[article["article_id"]], snapshot_id="stale")
-            with self.assertRaises(HTTPException) as error:
-                asyncio.run(summary.summarize(request))
-            self.assertEqual(error.exception.status_code, 409)
-
-            request.snapshot_id = "active"
-            response = asyncio.run(summary.summarize(request))
-            self.assertEqual(response.status, "insufficient_evidence")
-            self.assertEqual(response.reason, "insufficient_evidence")
-            self.assertEqual(response.citations, [])
-
-            article["body"] = "usable source evidence " * 12
-            response = asyncio.run(summary.summarize(request))
-            self.assertEqual(response.status, "unavailable")
-            self.assertIsNone(response.summary)
-            self.assertEqual(response.reason, "provider_access_unverified")
-            self.assertEqual(response.citations[0].article_id, article["article_id"])
-        finally:
-            summary.load_active_snapshot = load_snapshot

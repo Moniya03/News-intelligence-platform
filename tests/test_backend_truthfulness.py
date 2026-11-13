@@ -1,13 +1,15 @@
 """Focused tests for honest API and model-unavailable behavior."""
 
 import asyncio
+import sys
 import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
 
 from fastapi import HTTPException
 
-from api.routers import chat, clusters, search
+from api.routers import clusters, search
+from core import embed
 from core.embed import EmbedModel
 from core.rerank import RerankModel
 
@@ -134,42 +136,33 @@ class TestClusterTruthfulness(unittest.TestCase):
         self.assertEqual(caught.exception.status_code, 503)
 
 
-class TestChatTruthfulness(unittest.TestCase):
-    class _Embedder:
-        def embed_query(self, query):
-            return [0.1]
-
-    class _Reranker:
-        def rerank(self, query, candidates, top_k):
-            return candidates[:top_k]
-
-    def test_no_retrieved_evidence_returns_empty_answer(self):
-        with patch("api.routers.chat.retrieve_hybrid", return_value=[]):
-            result = asyncio.run(chat.chat_endpoint(
-                chat.ChatRequest(query="unknown"), self._Embedder(), self._Reranker(), object(), None
-            ))
-        self.assertEqual(result.answer, "Not found in the indexed articles.")
-        self.assertEqual(result.citations, [])
-
-    @patch("api.routers.chat.retrieve_hybrid", return_value=[{"article_id": "1", "chunk_id": "1", "text": "evidence", "score": 1.0}])
-    @patch("api.routers.chat.generate_answer", side_effect=RuntimeError("provider missing"))
-    def test_missing_answer_provider_is_503(self, _generate, _retrieve):
-        with self.assertRaises(HTTPException) as caught:
-            asyncio.run(chat.chat_endpoint(
-                chat.ChatRequest(query="question"), self._Embedder(), self._Reranker(), object(), None
-            ))
-        self.assertEqual(caught.exception.status_code, 503)
-
-    @patch("api.routers.chat.retrieve_hybrid", side_effect=RuntimeError("index unavailable"))
-    def test_retrieval_outage_is_503(self, _retrieve):
-        with self.assertRaises(HTTPException) as caught:
-            asyncio.run(chat.chat_endpoint(
-                chat.ChatRequest(query="question"), self._Embedder(), self._Reranker(), object(), None
-            ))
-        self.assertEqual(caught.exception.status_code, 503)
-
-
 class TestModelFallbackRemoval(unittest.TestCase):
+    def test_embed_device_can_be_overridden_per_process(self):
+        with patch.object(embed, "_GLOBAL_EMBED_MODEL", None), \
+                patch.object(embed, "get_config", return_value={"models": {"device": "cuda"}}), \
+                patch.dict("os.environ", {"NEWS_EMBED_DEVICE": "cpu"}), \
+                patch.object(embed, "EmbedModel") as model_factory:
+            embed.get_embed_model()
+        self.assertEqual(model_factory.call_args.kwargs["device"], "cpu")
+
+    def test_flagembedding_encode_uses_configured_cpu_device(self):
+        class FakeBGEM3FlagModel:
+            def __init__(self, model_name, **kwargs):
+                self.devices = kwargs["devices"]
+                self.encoded_on = []
+
+            def encode(self, texts, **kwargs):
+                self.encoded_on.append(self.devices)
+                return {"dense_vecs": [[0.0] * embed.EMBED_DIM for _ in texts]}
+
+        flag_embedding = SimpleNamespace(BGEM3FlagModel=FakeBGEM3FlagModel)
+        with patch.dict(sys.modules, {"FlagEmbedding": flag_embedding}), \
+                patch("torch.cuda.is_available", return_value=False):
+            model = EmbedModel(device="cpu")
+            model.embed_query("cpu query")
+
+        self.assertEqual(model._model.encoded_on, ["cpu"])
+
     def test_embedder_does_not_emit_synthetic_vectors(self):
         model = EmbedModel.__new__(EmbedModel)
         model.backend = "unavailable"

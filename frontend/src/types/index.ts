@@ -92,25 +92,29 @@ export interface CorpusResponse {
   duplicate_count: number | null;
 }
 
-export interface SummaryRequest {
-  query: string;
-  article_ids: string[];
-  snapshot_id: string;
+export interface AskRequest {
+  question: string;
 }
 
-export interface SummaryResponse {
-  status: "available" | "unavailable" | "insufficient_evidence";
-  summary: string | null;
-  citations: Array<{
-    citation_id: string;
-    article_id: string;
-    title: string;
-    url: string | null;
-    source: string;
-    lang: string;
-  }>;
-  snapshot_id: string;
-  reason: string | null;
+export interface AskCitation {
+  citation_id: string;
+  chunk_id: string;
+  article_id: string;
+  passage: string;
+  url: string;
+  title: string;
+  source: string;
+  language: string;
+  published_at: string | null;
+}
+
+export interface AskResponse {
+  status: "answered" | "insufficient_evidence" | "generation_unavailable" | "evidence_integrity_error";
+  answer_segments: Array<{ text: string; citation_ids: string[] }>;
+  gap: string | null;
+  citations: AskCitation[];
+  snapshot_id: string | null;
+  reason?: string;
 }
 
 export interface HealthResponse {

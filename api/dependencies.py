@@ -10,7 +10,7 @@ from fastapi import HTTPException, Request
 
 from core.embed import get_embed_model as _default_embed_model, EmbedModel
 from core.rerank import get_rerank_model as _default_rerank_model, RerankModel
-from core.rag import get_gemini_client as _default_gemini_client
+from core.rag import get_async_openai_client as _default_openai_client
 from core.index import get_weaviate_client as _default_weaviate_client
 from pymongo import MongoClient
 from core.config import get_config
@@ -65,12 +65,12 @@ def get_weaviate_client(request: Request) -> Any:
         return None
 
 
-def get_gemini_client(request: Request) -> Optional[Any]:
-    """Return the Gemini client instance from application state or create instance."""
-    client = getattr(request.app.state, "gemini_client", None)
+def get_openai_client(request: Request) -> Optional[Any]:
+    """Return the OpenAI client instance from application state or create instance."""
+    client = getattr(request.app.state, "ask_openai_client", None)
     if client is not None:
         return client
     try:
-        return _default_gemini_client()
+        return _default_openai_client()
     except Exception:
         return None

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 from pathlib import Path
 from typing import List, Optional
 import numpy as np
@@ -65,7 +66,7 @@ class EmbedModel:
             self._model = BGEM3FlagModel(
                 target_path,
                 use_fp16=use_fp16,
-                device=resolved_device,
+                devices=resolved_device,
             )
             self.backend = "flagembedding"
             logger.info("Successfully loaded FlagEmbedding BGEM3FlagModel.")
@@ -147,7 +148,9 @@ def get_embed_model() -> EmbedModel:
         _GLOBAL_EMBED_MODEL = EmbedModel(
             model_name=m_cfg.get("embedder", "BAAI/bge-m3"),
             fp16=m_cfg.get("fp16", True),
-            device=m_cfg.get("device", "cuda"),
+            # Let deployments with constrained GPU memory select the existing
+            # CPU backend per process without changing the shared config.
+            device=os.environ.get("NEWS_EMBED_DEVICE", m_cfg.get("device", "cuda")),
         )
     return _GLOBAL_EMBED_MODEL
 
