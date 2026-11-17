@@ -63,7 +63,7 @@ On this 4 GB GPU, the first Ask request failed while embedding the query because
 NEWS_EMBED_DEVICE=cpu .venv/bin/uvicorn api.main:app --host 127.0.0.1 --port 8000
 ```
 
-This setting applies to the API process; restarting is required after changing it. The reviewed CPU hybrid Search query embedding took 4.444 seconds. Five reviewed Ask answers took 4,675.8–7,528.5 ms end to end; see the per-request record in [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md). CPU mode does not change the model or establish answer quality.
+This setting applies to the API process; restarting is required after changing it. The reviewed CPU hybrid Search query embedding took 4.444 seconds. Five full reviewed Ask answers took 4,675.8–7,528.5 ms end to end; this is a small observed sample, not a latency benchmark. See the per-request record in [VERIFICATION_REPORT.md](VERIFICATION_REPORT.md). CPU mode does not change the model or establish answer quality.
 
 ### 3.1 Backend Environment (`.env`)
 
@@ -491,10 +491,11 @@ The installed Next.js 16.4.6 development server will start on port `3000`:
  ✓ Ready in 1200ms
 ```
 
-Open **[http://localhost:3000](http://localhost:3000)**. The workspace has three
-routes: Search, Topics, and Corpus. Search queries the active frozen snapshot;
-Topics reads the saved topic run; Corpus reports snapshot coverage. The bounded
-browser review passed at desktop and 390px mobile widths. See the
+Open **[http://localhost:3000](http://localhost:3000)**. The workspace has four
+routes: Search, Ask, Topics, and Corpus. Search queries the active frozen
+snapshot; Ask retrieves cited passages for one question; Topics reads the saved
+topic run; Corpus reports snapshot coverage. The bounded browser review passed
+at desktop and 390px mobile widths. See the
 [frontend guide](frontend_guide.md) for route behavior, screenshots, empty and
 unavailable states, and research limits. Chat and credibility are not part of
 this workspace.

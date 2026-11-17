@@ -51,8 +51,11 @@ reproduction. See [the verification report](VERIFICATION_REPORT.md) and
   original-question hybrid retrieval and validates snapshot/chunk/article
   provenance before generation and response delivery. Its context, output,
   and timeout are bounded in the [API reference](api_reference.md). The local
-  frontend gates pass; actual application language review remains in progress.
-  A failed provenance check is not a semantic claim-support guarantee.
+  frontend gates pass. The bounded Ask review returned seven HTTP 200 outputs
+  from eight attempts: five complete answers, one abstention, and one partial
+  answer. Passage and citation provenance were independently reviewed; final
+  user acceptance is pending. These examples provide neither a quality
+  estimate nor a semantic claim-support guarantee.
 
 ## Deferred and incomplete
 

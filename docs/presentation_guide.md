@@ -2,7 +2,7 @@
 
 ## Present the project honestly
 
-**Working title:** Multilingual News Retrieval and Topic Exploration
+**Working title:** Multilingual News Retrieval, Topic Exploration, and Grounded Ask
 
 **Research question:** Can multilingual embeddings help retrieve Indian news across English, Hindi, Bengali and Marathi, and can topic clustering help readers browse a collected corpus?
 
@@ -10,11 +10,31 @@ Describe this as an NLP project in progress. The active local snapshot has 516 a
 
 ## Suggested 8–10 minute structure
 
-1. **Motivation (1–2 min):** Readers can miss reporting published in another language. Frame this as a question to test, not an assumed benefit.
-2. **Method (2 min):** Explain the eight Scrapy adapters, provenance, frozen snapshot, and BM25/dense/hybrid comparison. Describe topic clusters as exploratory groupings.
-3. **Evidence so far (2 min):** Show the verified corpus counts, snapshot/index hashes, 48 held-out query rankings and real retrieval-only latency table. Make clear that latency is measured, relevance quality is not. State source/category limits from [the verification report](VERIFICATION_REPORT.md).
-4. **Limitations and next work (2 min):** Explain that 427 pooled pairs still need human labels, including at least 86 double judgments and at least 513 initial helper decisions. Topic comparison uses weak publisher-section labels. Near-duplicate/syndication checks and source representativeness are unresolved.
-5. **Demo (1–2 min):** Use the runbook below for Search → cross-language result → publisher source → Topics → Corpus → latency table, then show one of the reviewed Ask examples if the services are available. The original source returned HTTP 200 during rehearsal. If showing the historical error screen, identify the Playwright 503 as simulated; no live service was stopped.
+1. **Question and scope (1 min):** Readers may miss reporting published in
+   another language. Ask whether retrieval helps; state that this is a
+   hypothesis, not a finding. The system does not fact-check stories.
+2. **Corpus and architecture (1.5 min):** Show the 516-article, 2,135-chunk
+   snapshot, four language counts and provenance path. Name the eight bounded
+   adapters and disclose uneven source/category coverage.
+3. **Retrieval method (1.5 min):** Contrast BM25 lexical matching, BGE-M3
+   dense retrieval and their hybrid. Show Search's mode control, then explain
+   that this project has no judged relevance result yet.
+4. **Topic exploration (1 min):** Show the saved run's 11 non-noise topics and
+   17 outliers. Explain that publisher sections are weak labels, not topic
+   truth.
+5. **Grounded Ask (2 min):** Show the English Kumai millet question, open a
+   Bengali citation, then ask the partial revenue question and point to its
+   explicit gap. Explain that citation provenance is checked, while semantic
+   support is not guaranteed.
+6. **Evidence and limits (1.5–2 min):** Report the 48 held-out queries and
+   427 unjudged pairs (`metrics: null`), then the eight-call Ask sample (one
+   pre-generation failure and seven reviewed HTTP 200 outputs). State that
+   these samples do not establish retrieval or answer quality. Close with the
+   judgment and coverage work still required.
+
+If time is short, keep the question, the two-screen Ask example, the null
+retrieval metric, and the trust-boundary explanation. The full study path and
+model viva answers are in the [study guide](study_guide.md).
 
 ## Claims to avoid
 
@@ -27,7 +47,48 @@ Do not claim fact-checking, credibility scoring, zero hallucinations, cross-sour
 - Verify the exact UI flow and indexed data on the machine used for the talk. Do not assume local development server availability means the research pipeline works.
 - Clearly label the campaign as bounded and discuss uneven source/category coverage, the absent environment category, and unchecked near-duplicates.
 
-## Rehearsed local demo runbook
+## Current demo preflight and runbook
+
+The current API command uses CPU embeddings on this project environment and
+the frontend uses port 3001. The documented 13 November rehearsal below used
+port 3000 and is historical evidence; do not claim that services are running
+or that this runbook itself was freshly rehearsed. Start only the dependencies
+needed for the local demo:
+
+```bash
+make up
+make infra-smoke
+NEWS_EMBED_DEVICE=cpu ./.venv/bin/python -m uvicorn api.main:app --host 127.0.0.1 --port 8000
+```
+
+In another terminal:
+
+```bash
+cd frontend
+npm run dev -- --hostname 127.0.0.1 --port 3001
+```
+
+Preflight without inspecting secrets: check `curl -i http://127.0.0.1:8000/`
+and `curl -i http://127.0.0.1:8000/api/health`; readiness and health should be
+successful, and Corpus should show snapshot
+`corpus-59b2b589fe3bbdbffdc3`. Open `http://127.0.0.1:3001/ask`. The local
+snapshot/topic artifacts and model weights must already be present; these
+commands do not download or rebuild them.
+
+If MongoDB/Weaviate, the embedding model, or the generation provider is
+unavailable, do not keep retrying during the talk. Show the documented
+snapshot counts and reviewed examples described here and in the verification
+report. Saved per-call Ask bodies live only in local ignored files and may not
+be present on another checkout; the committed ledger and this guide contain
+summary evidence, not reusable local passage bodies. Do not fabricate a live
+answer or imply the provider is available.
+
+To stop the demo, send Ctrl-C in each API and frontend terminal, then run
+`make down` to stop/remove the Compose containers and network. Compose named
+data volumes are retained. This stops only the demo services started through
+these commands; check their terminals if processes were launched another way.
+
+## Historical 13 November local rehearsal
 
 The 13 November 2026 rehearsal used the configured local environment, existing
 MongoDB and Weaviate services, local snapshot/topic artifacts and a browser at

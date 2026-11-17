@@ -202,7 +202,7 @@
   "reserved_total_usd": 0.024,
   "reported_actual_total_usd": 0.0015756,
   "notes": [
-    "Seven application Ask attempts have been made: attempt 1 failed during retrieval before generation; attempts 2–7 completed. Attempts 2–5 cover English, Hindi, Bengali and Marathi; attempt 6 tests English synthesis from Bengali millet evidence; attempt 7 tests an unsupported future prediction with an embedded instruction through the normal browser UI. Attempt 1 has no confirmed provider usage; its $0.003 reservation remains counted.",
+    "Eight application Ask attempts have been made: attempt 1 failed during retrieval before generation; attempts 2–8 returned HTTP 200. Attempts 2–5 cover English, Hindi, Bengali and Marathi; attempt 6 tests English synthesis from Bengali millet evidence; attempt 7 tests an unsupported future prediction with an embedded instruction through the normal browser UI; attempt 8 tests everyday-food use and an exact-revenue gap. Attempts 1 and 8 have no confirmed provider usage; each $0.003 reservation remains counted.",
     "One serialized worker owns paid app tests. No retries; any retry is a new reserved attempt.",
     "Unknown or ambiguous usage retains its full reservation.",
     "Non-paid CPU readiness check: BGE-M3 startup logged cpu/fp16=False and /api/health returned 200 (MongoDB and Weaviate true), but hybrid /api/search returned 503 because FlagEmbedding inference attempted CUDA allocation; no paid generation request was made.",

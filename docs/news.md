@@ -16,7 +16,7 @@ Create a faculty-reviewable NLP research demo for this question: **Can multiling
 
 ## Current status
 
-A bounded pilot verified eight source-language spiders and Mongo persistence, plus local model execution. The frozen corpus, Search/Topics/Corpus workspace, and retrieval-evaluation engineering are in place; held-out retrieval relevance still lacks human judgments. Five Ask responses passed bounded passage/citation review across English, Hindi, Bengali and Marathi, including one English answer grounded in Bengali-only evidence. Final user acceptance remains pending. See [the roadmap](OVERHAUL_PLAN.md) and [verification report](VERIFICATION_REPORT.md).
+A bounded pilot verified eight source-language spiders and Mongo persistence, plus local model execution. The frozen corpus, Search/Ask/Topics/Corpus workspace, and retrieval-evaluation engineering are in place; held-out retrieval relevance still lacks human judgments. Seven of eight bounded Ask attempts returned HTTP 200: five full answers, one unsupported-question abstention, and one partial answer. The seven outputs passed passage/citation review across English, Hindi, Bengali and Marathi, including one English answer grounded in Bengali-only evidence; attempt 1 returned HTTP 503 before generation. Final user acceptance remains pending. See [the roadmap](OVERHAUL_PLAN.md) and [verification report](VERIFICATION_REPORT.md).
 
 ## Deferred or excluded
 
